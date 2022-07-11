@@ -25,7 +25,12 @@
 .myMessage {
     align-self: flex-end;
     background-color: rgb(240, 231, 136);
+    cursor: pointer;
 }
+.editMessage{
+    background-color: rgb(31, 7, 75);
+}
+
 .messageBox { 
     display: flex;
     padding: 20px;

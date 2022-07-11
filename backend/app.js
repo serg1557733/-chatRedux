@@ -10,8 +10,6 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config(); // add dotnv for config
 
-console.log(Message)
-
 
 const server = http.createServer(app);
 app.use(cors());

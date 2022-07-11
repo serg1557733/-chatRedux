@@ -139,8 +139,14 @@ export const ChatPage = () => {
                             </Avatar>   
                             <div 
                                 key={item._id}
+                                onClick = {(e) => {
+                                    if(e.target.className.includes('myMessage')){
+                                        e.currentTarget.className += ' editMessage' 
+                                    }
+                                }}
+
                                 className={ 
-                                (item.userName == user.userName)
+                                (item.userName ==user.userName)
                                 ? 
                                 'message myMessage' 
                                 :
@@ -168,7 +174,7 @@ export const ChatPage = () => {
                         </Box>
                             <MessageForm 
                                     data = {user} 
-                                    sendMessage = {(data) => {sendMessage(data, socket)}}>
+                                    sendMessage = {data => sendMessage(data, socket)}>
                             </MessageForm>
                         </Box>
 

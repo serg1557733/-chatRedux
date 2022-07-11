@@ -12,6 +12,6 @@ export default function App() {
         localStorage.setItem('token', store.getState().token)
     });
     
-    return token ? <ChatPage /> : <LoginForm/> // delete setToken after unmounted
+    return token ? <ChatPage /> : <LoginForm/>
 };
 
