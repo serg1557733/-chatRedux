@@ -26,10 +26,6 @@ const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
 const HASH_KEY = 7;
 
-// //main test page
-// app.get('/', (req, res) => {
-//     res.send('here will be login page')
-// })
 
 const generateToken = (id, userName, isAdmin) => {
     const payload = {
@@ -89,8 +85,6 @@ app.post('/login', async (req, res) => {
         }
         res.json({
             token:  generateToken(dbUser.id, dbUser.userName, dbUser.isAdmin),
-            message: 'Login success!!!'
-
         })
 
     } catch (e) {

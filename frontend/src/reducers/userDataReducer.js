@@ -26,6 +26,7 @@ export const getUserData = createAsyncThunk(
                 const response =  sendForm(POST_URL, userData);
                 return response;
             }catch (err) {
+                console.log('err', err)
                 return err?.message
             }
         }
@@ -43,9 +44,15 @@ const getUserDataSlice = createSlice({
        builder
           .addCase(getUserData.fulfilled, (state, action) => {
             state.userLoadingStatus = 'fulfilled'
-            state.token = action.payload
-            localStorage.setItem('token', action.payload.token)
-            console.log('fulfilled',action.payload.token)
+            if(action.payload.token){
+                state.token = action.payload.token
+                localStorage.setItem('token', action.payload.token)
+            }
+            if(action.payload?.message){
+                state.responseMessage = action.payload.message
+                localStorage.setItem('token', action.payload.token)
+            }
+            console.log('fulfilled',action.payload, action.payload.message)
           })
            .addCase(getUserData.rejected, (state) => {
                state.userLoadingStatus = 'error';

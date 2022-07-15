@@ -5,7 +5,6 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Modal } from '../modalMessage/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
 import  {setUserName, setUserPassword, getUserData} from '../../reducers/userDataReducer'
 
 export const LoginForm = () => {
@@ -13,15 +12,13 @@ export const LoginForm = () => {
     const dispatch = useDispatch();
     const userName = useSelector(state => state.userName);
     const password = useSelector(state => state.password);
-   console.log('logform', userName)
     return (
         <Container maxWidth="xs">
             <Box
                 component="form" 
                 onSubmit={(e) => {
                     e.preventDefault();
-                    console.log('submit', userName)
-                   dispatch(getUserData())
+                    dispatch(getUserData())
             }
                 }
                 sx={{
@@ -57,11 +54,7 @@ export const LoginForm = () => {
                             dispatch(setUserPassword({password: e.target.value}))
                         }
                 />
-                <Modal 
-                    //text={textModal}
-                    //propDisplay = {display}
-                
-                ></Modal>
+                <Modal/>
                 <Button 
                     type="submit"
                     variant="contained"
