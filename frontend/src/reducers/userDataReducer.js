@@ -12,7 +12,6 @@ const initialState = {
     responseMessage: ''
 }
 
-
 const POST_URL =  process.env.REACT_APP_POST_URL || 'http://localhost:5000/login';
 
 export const getUserData = createAsyncThunk(
@@ -38,7 +37,8 @@ const getUserDataSlice = createSlice({
     reducers: {
         setUserName: (state, action) => {state.userName = action.payload.userName},
         setUserPassword: (state, action) => {state.password = action.payload.password},
-        removeToken: (state, action) => {state.token = ''}
+        removeToken: state => {state.token = ''},
+        deleteResponseMessage: state => {state.responseMessage = ''}
     },
     extraReducers: (builder) => { 
        builder
@@ -52,11 +52,13 @@ const getUserDataSlice = createSlice({
                 state.responseMessage = action.payload.message
                 localStorage.setItem('token', action.payload.token)
             }
-            console.log('fulfilled',action.payload, action.payload.message)
           })
-           .addCase(getUserData.rejected, (state) => {
+           .addCase(getUserData.rejected, (state, action) => {
                state.userLoadingStatus = 'error';
-               console.log('rejected', state)
+               if(action.payload?.message){
+                state.responseMessage = action.payload.message
+            } 
+            state.responseMessage = 'Something went wrong...'
           })
         }
 });
@@ -68,5 +70,6 @@ export default userDataReducer;
 export const {
     setUserName,
     setUserPassword,
-    removeToken
+    removeToken,
+    deleteResponseMessage
 } = actions;

@@ -53,7 +53,6 @@ const getOneUser = async (userName) => {
 app.post('/login', async (req, res) => {
     try {
         const {userName,password} = req.body;
-        console.log(userName,password)
         if (!isValidUserName(userName)){
             return res.status(400).json({message: 'Invalid username'})
         }
