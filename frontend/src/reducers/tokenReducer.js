@@ -2,7 +2,7 @@ const initialState = {
     token: ''
   }
   
-const reducer = (state = initialState, action) => {
+const tokenReducer = (state = initialState, action) => {
     switch (action.type){
     case 'SET_TOKEN':  
         return {...state, 
@@ -19,4 +19,4 @@ const reducer = (state = initialState, action) => {
     }
   };
 
- export default reducer;
+ export default tokenReducer;

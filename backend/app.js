@@ -26,10 +26,10 @@ const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
 const HASH_KEY = 7;
 
-//main test page
-app.get('/', (req, res) => {
-    res.send('here will be login page')
-})
+// //main test page
+// app.get('/', (req, res) => {
+//     res.send('here will be login page')
+// })
 
 const generateToken = (id, userName, isAdmin) => {
     const payload = {
@@ -56,8 +56,10 @@ const getOneUser = async (userName) => {
 }
 
 app.post('/login', async (req, res) => {
+    
     try {
         const {userName,password} = req.body;
+        console.log(userName,password)
         if (!isValidUserName(userName)){
             return res.status(400).json({message: 'Invalid username'})
         }

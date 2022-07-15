@@ -1,11 +1,14 @@
-import reducer from './reducers/reducer';
-import thunk from 'redux-thunk';
-import { createStore, compose, applyMiddleware } from 'redux';
+import tokenReducer from './reducers/tokenReducer';
+import socketReducer from './reducers/socketReducer';
+import userDataReducer from './reducers/userDataReducer';
 
-export const store = createStore(reducer, compose(
-  applyMiddleware(
-    thunk,
-  ),
-//  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-));
+import { configureStore } from '@reduxjs/toolkit'
+
+
+export  const store = configureStore({
+    reducer: {tokenReducer, socketReducer, userDataReducer},
+    middleware: getDefaultMiddleware => getDefaultMiddleware(),
+    devTools: process.env.NODE_ENV !== 'production',
+})
+
 

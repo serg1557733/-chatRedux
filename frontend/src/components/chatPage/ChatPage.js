@@ -10,7 +10,7 @@ import { banUser } from './service/banUser';
 import { muteUser } from './service/muteUser';
 import {sendMessage} from './service/sendMessage';
 import { store } from '../../store';
-import { removeToken } from '../../actions/actions';
+import { removeToken} from '../../reducers/userDataReducer'
 
 
 import { useDispatch } from 'react-redux';
@@ -103,6 +103,7 @@ export const ChatPage = () => {
                 sx={{
                     display: 'flex',
                     flexGrow:'2',
+                    maxWidth: '75%',
                     flexDirection: 'column',                    
                 }}>
                     <Box className='messageBox'>                     
@@ -123,7 +124,7 @@ export const ChatPage = () => {
                                     }
                                     :
                                     {
-                                        backgroundColor:  (usersOnline.map(current =>{
+                                        backgroundColor:  (usersOnline.map(current => {
                                             if(item.userName == current.userName ) {
                                                 return current.color
                                             }
@@ -143,6 +144,7 @@ export const ChatPage = () => {
                                     if(e.target.className.includes('myMessage')){
                                         e.currentTarget.className += ' editMessage' 
                                     }
+                                    //add function to edit message
                                 }}
 
                                 className={ 
@@ -187,9 +189,10 @@ export const ChatPage = () => {
                                 sx={{margin:'10px 5px'}}
                                 variant="outlined"
                                 onClick={(e)=> {
-                                        socket.disconnect()
-                                        dispatch(removeToken())
-                                        }}>
+                                            socket.disconnect();
+                                            localStorage.removeItem('token');
+                                            dispatch(removeToken());
+                                            }}>
                                 Logout
                         </Button>
 
