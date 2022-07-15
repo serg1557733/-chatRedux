@@ -54,9 +54,7 @@ const getOneUser = async (userName) => {
     const userInDb = await User.findOne({userName});
     return userInDb;
 }
-
 app.post('/login', async (req, res) => {
-    
     try {
         const {userName,password} = req.body;
         console.log(userName,password)

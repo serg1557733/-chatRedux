@@ -7,7 +7,7 @@ import { store } from './store';
 export default function App() {
 
     const token = useSelector(state => state.userDataReducer.token) 
-
+    
     return token ? <ChatPage /> : <LoginForm/>
 };
 
