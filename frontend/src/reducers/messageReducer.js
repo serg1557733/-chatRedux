@@ -1,13 +1,12 @@
 import { createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
-    message:'',
-    time: ''
+    message:''
 }
 
 export const sendMessageToSocket = (state, data) => {
              if (state.message && state.message.length < 200) {    //remove to other file
-                data.socket.emit('message', {...data.user, message: state.message}); 
+                data.socket.emit('message', {...data.user, message: state.message});                   
             } 
     };
 
@@ -28,6 +27,6 @@ export default messageReducer;
 
 export const {
     setMessage, 
-   sendMessage,
+    sendMessage,
     clearMessage
     } = actions;

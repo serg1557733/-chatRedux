@@ -2,7 +2,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import { setMessage } from '../../../reducers/messageReducer';
+import { clearMessage, setMessage } from '../../../reducers/messageReducer';
 import { sendMessage } from '../../../reducers/messageReducer';
 
 
@@ -14,14 +14,19 @@ export const MessageForm = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     
 
+    const handelChange = () => {
+        dispatch(clearMessage({message: ''}))
+    }
+
+
     return (
         <Box 
             component="form" 
-            onSubmit = {e  =>
+            onSubmit = {(e )  =>
                 {
                     e.preventDefault()
-                     dispatch(sendMessage({user, socket}))
-                    
+                    dispatch(sendMessage({user, socket})) 
+                    handelChange()
                 }}
                 
                 sx={{
@@ -37,13 +42,6 @@ export const MessageForm = () => {
                         placeholder='type you message...'
                         minRows={3}
                         maxRows={4}
-                        // onKeyPress={(e) => {
-                        //     if (e.key === "Enter")   {
-                        //         e.preventDefault();
-                        //         dispatch(sendStoreMessage())
-                        //         dispatch(setMessage({message: ''}));// add localstorage save message later
-                        //     }
-                        // }}
                         onChange={e => dispatch(setMessage({message: e.target.value}))} 
                         style={{
                             width: '80%',

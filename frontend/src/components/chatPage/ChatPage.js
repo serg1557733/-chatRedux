@@ -22,6 +22,8 @@ export const ChatPage = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
+    const socket = useSelector(state => state.getUserSocketReducer.socket)
+
 
     const randomColor = require('randomcolor'); 
     const endMessages = useRef(null);
@@ -36,8 +38,8 @@ export const ChatPage = () => {
     useEffect(() => {
         scrollToBottom(endMessages)
       }, [startMessages]);
-
-    let userColor = useMemo(() => randomColor(),[]);//color for myavatar
+      
+    const userColor = useMemo(() => randomColor(),[]);//color for myavatar
 
     return (
         <div className='rootContainer'>
@@ -95,7 +97,7 @@ export const ChatPage = () => {
                                 }}
 
                                 className={ 
-                                (item.userName ==user.userName)
+                                (item.userName === user.userName)
                                 ? 
                                 'message myMessage' 
                                 :
@@ -134,7 +136,7 @@ export const ChatPage = () => {
                                 variant="outlined"
                                 onClick={()=> {
                                         localStorage.removeItem('token');
-                                       // socket.disconnect(); 
+                                        socket.disconnect(); 
                                         dispatch(removeToken());
                                             }}>
                                 Logout
