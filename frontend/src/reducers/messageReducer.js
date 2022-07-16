@@ -6,7 +6,8 @@ const initialState = {
 
 export const sendMessageToSocket = (state, data) => {
              if (state.message && state.message.length < 200) {    //remove to other file
-                data.socket.emit('message', {...data.user, message: state.message});                   
+                data.socket.emit('message', {...data.user, message: state.message}); 
+                   
             } 
     };
 
@@ -14,7 +15,7 @@ const messageReducerSlice = createSlice({
     name: 'messageReducer',
     initialState,
     reducers: {
-        setMessage: (state, action) => {state.message = action.payload.message},
+        storeMessage: (state, action) => {state.message = action.payload.message},
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''}
     },
@@ -26,7 +27,7 @@ const messageReducer = reducer;
 export default messageReducer;
 
 export const {
-    setMessage, 
+    storeMessage, 
     sendMessage,
     clearMessage
     } = actions;

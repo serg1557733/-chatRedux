@@ -2,31 +2,29 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearMessage, setMessage } from '../../../reducers/messageReducer';
-import { sendMessage } from '../../../reducers/messageReducer';
+import { sendMessage, storeMessage } from '../../../reducers/messageReducer';
+import {  useState} from 'react';
 
 
 export const MessageForm = () => {
 
-    const dispatch = useDispatch();    
-    const message = useSelector(state => state.userName);
+    const dispatch = useDispatch();  
+      
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
-    
 
-    const handelChange = () => {
-        dispatch(clearMessage({message: ''}))
-    }
+    const [message, setMessage] = useState({message: ''});
+
 
 
     return (
         <Box 
             component="form" 
-            onSubmit = {(e )  =>
+            onSubmit = {e  =>
                 {
                     e.preventDefault()
-                    dispatch(sendMessage({user, socket})) 
-                    handelChange()
+                     dispatch(sendMessage({user, socket}))
+                     setMessage({message: ''})
                 }}
                 
                 sx={{
@@ -38,11 +36,21 @@ export const MessageForm = () => {
                         id="outlined-basic" 
                         label="Type a message..." 
                         variant="outlined" 
-                        value={message}
+                        value={message.message}
                         placeholder='type you message...'
                         minRows={3}
                         maxRows={4}
-                        onChange={e => dispatch(setMessage({message: e.target.value}))} 
+                        // onKeyPress={(e) => {
+                        //     if (e.key === "Enter")   {
+                        //         e.preventDefault();
+                        //         dispatch(sendStoreMessage())
+                        //         dispatch(setMessage({message: ''}));// add localstorage save message later
+                        //     }
+                        // }}
+                        onChange={e => { 
+                            dispatch(storeMessage({message: e.target.value}))
+                            setMessage({message: e.target.value})}
+                        } 
                         style={{
                             width: '80%',
                             resize: 'none',

@@ -38,7 +38,7 @@ export const ChatPage = () => {
     useEffect(() => {
         scrollToBottom(endMessages)
       }, [startMessages]);
-      
+
     const userColor = useMemo(() => randomColor(),[]);//color for myavatar
 
     return (

@@ -7,7 +7,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 
 export  const store = configureStore({
-    reducer: {userDataReducer,messageReducer, getUserSocketReducer },
+    reducer: {userDataReducer, getUserSocketReducer, messageReducer},
     middleware: getDefaultMiddleware => getDefaultMiddleware({
         serializableCheck: false
       }),
