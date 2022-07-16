@@ -15,6 +15,6 @@ export const Modal = () => {
     return <Alert 
                 severity="error"
                 sx={{display: (text ? 'block':'none' )}}>
-            {text}
+                {text}
             </Alert>
 };

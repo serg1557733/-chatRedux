@@ -1,9 +1,8 @@
-import { useEffect, useState, useMemo, useRef, Fragment} from 'react';
+import { useEffect, useMemo, useRef, Fragment} from 'react';
 import { MessageForm } from './messageForm/MessageForm';
 import {Button,Avatar, Box} from '@mui/material';
 import { UserInfo } from './userInfo/UserInfo';
 import { dateFormat } from './utils/dateFormat';
-import {io} from 'socket.io-client';
 import './chatPage.scss';
 import { scrollToBottom } from './utils/scrollToBottom';
 import { banUser } from './service/banUser';
@@ -11,84 +10,32 @@ import { muteUser } from './service/muteUser';
 import {sendMessage} from './service/sendMessage';
 import { store } from '../../store';
 import { removeToken} from '../../reducers/userDataReducer'
-
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {getSocket} from'../../reducers/socketReducer';
 
 export const ChatPage = () => {
-    
-    const [socket, setSocket] = useState(null);
-    const [messages, setMessages] = useState([])
-    const [user, setUser] = useState({})
-    const [usersOnline, setUsersOnline] = useState([])
-    const [allUsers, setAllUsers] = useState([])
+
+    const dispatch = useDispatch();
+    const token = useSelector(state => localStorage.getItem('token') || state.userDataReducer.token);
+
+    const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
+    const user = useSelector(state => state.getUserSocketReducer.socketUserData)
+    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
+    const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
+
     const randomColor = require('randomcolor'); 
     const endMessages = useRef(null);
-    const token = localStorage.getItem('token');
-    const dispatch = useDispatch();
-
+    
     useEffect(() => {
         if(token){
-            
-            try {
-                setSocket(io.connect( 
-                        process.env.REACT_APP_SERVER_URL || 'http://localhost:5000', 
-                        {auth: {token}})
-                        )
-            } catch (error) {
-                console.log(error)
-            } 
+            dispatch(getSocket())
         }
-    }, [token])
+    }, [])
 
-    useEffect(() => {
-
-        if(socket){
-            socket.on('connected', (data) => {
-                setUser(data);
-                }).on('error', (e) => {
-                console.log('On connected', e)
-            }); 
-            socket.on('allmessages', (data) => {
-                    setMessages(data)
-                    }).on('error', (e) => {
-                    console.log('allmessages', e)
-            }); 
-            socket.on('usersOnline', (data) => {
-                setUsersOnline(data)
-                }).on('error', (e) => {
-                console.log(e)
-            });  
-            socket.on('allDbUsers', (data) => {
-                setAllUsers(data);
-                }).on('error', (e) => {
-                console.log(e)
-            }); 
-            socket.on('disconnect', (data) => {
-                if(data === 'io server disconnect') {
-                   socket.disconnect();
-                   store.dispatch(removeToken()); 
-                } 
-                }).on('error', (e) => {
-                console.log('error token', e)
-            });  
-            socket.on('message', (data) => {
-                setMessages((messages) => [...messages, data] )
-                }).on('error', (e) => {
-                console.log(e)
-            }); 
-             
-        }
-
-        // return () => {
-        //     socket.off('connected');
-        //     socket.off('allmessages');
-        // }
-    }, [socket])
 
     useEffect(() => {
         scrollToBottom(endMessages)
-      }, [messages]);
+      }, [startMessages]);
 
     let userColor = useMemo(() => randomColor(),[]);//color for myavatar
 
@@ -108,7 +55,7 @@ export const ChatPage = () => {
                 }}>
                     <Box className='messageBox'>                     
                         {
-                        messages.map((item, i) =>
+                        startMessages.map((item, i) =>
                         <Fragment key={i} >
                             <Avatar 
                                 sx={
@@ -174,10 +121,7 @@ export const ChatPage = () => {
                         <div ref={endMessages}></div>
     
                         </Box>
-                            <MessageForm 
-                                    data = {user} 
-                                    sendMessage = {data => sendMessage(data, socket)}>
-                            </MessageForm>
+                            <MessageForm />
                         </Box>
 
                         <Box
@@ -188,10 +132,10 @@ export const ChatPage = () => {
                         <Button 
                                 sx={{margin:'10px 5px'}}
                                 variant="outlined"
-                                onClick={(e)=> {
-                                            socket.disconnect();
-                                            localStorage.removeItem('token');
-                                            dispatch(removeToken());
+                                onClick={()=> {
+                                        localStorage.removeItem('token');
+                                       // socket.disconnect(); 
+                                        dispatch(removeToken());
                                             }}>
                                 Logout
                         </Button>
@@ -217,28 +161,28 @@ export const ChatPage = () => {
                                             <Button
                                                 variant="contained"
                                                 onClick={()=>{
-                                                    muteUser(item.userName, item.isMutted, socket)
+                                                   //muteUser(item.userName, item?.isMutted, socket)
                                                     }}
                                                 sx={{
                                                     margin:'3px',
                                                     height: '25px'
                                                 }}>
-                                                    {item.isMutted
+                                                    {/* {item.isMutted
                                                     ? 
                                                     'unmute'
-                                                    : 'mute'}
+                                                    : 'mute'} */}
                                             </Button>
 
                                             <Button
                                                 variant="contained"
                                                 onClick={()=>{
-                                                    banUser(item.userName, item.isBanned, socket)
+                                                //banUser(item.userName, item.isBanned, socket)
                                                 }}
                                                 sx={{
                                                     margin:'3px',
                                                     height: '25px'
                                                 }}>
-                                                    {item.isBanned
+                                                    {item?.isBanned
                                                 ? 'unban'
                                                 : 'ban'}
                                             </Button>

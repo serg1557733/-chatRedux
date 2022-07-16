@@ -4,13 +4,14 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Modal } from '../modalMessage/Modal';
 import { useDispatch, useSelector } from 'react-redux';
-import  {setUserName, setUserPassword, getUserData} from '../../reducers/userDataReducer'
+import  {setUserName, setUserPassword, getUserData} from '../../reducers/userDataReducer';
 
 export const LoginForm = () => {
 
     const dispatch = useDispatch();
     const userName = useSelector(state => state.userName);
     const password = useSelector(state => state.password);
+
     return (
         <Container maxWidth="xs">
             <Box

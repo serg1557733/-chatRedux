@@ -26,7 +26,6 @@ const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
 const HASH_KEY = 7;
 
-
 const generateToken = (id, userName, isAdmin) => {
     const payload = {
         id,
@@ -85,6 +84,7 @@ app.post('/login', async (req, res) => {
         res.json({
             token:  generateToken(dbUser.id, dbUser.userName, dbUser.isAdmin),
         })
+        
 
     } catch (e) {
         console.log(e);
@@ -94,10 +94,11 @@ app.post('/login', async (req, res) => {
 
 
 io.use( async (socket, next) => {
-    const token = socket.handshake.auth.token;
+    const token = socket.handshake.auth.token; 
     const sockets = await io.fetchSockets();
-    
+   
     if(!token) {
+        console.log('socket')
         socket.disconnect();
         return;
     }
@@ -134,9 +135,10 @@ io.use( async (socket, next) => {
 
 io.on("connection", async (socket) => {
     const userName = socket.user.userName;
+
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
-
+    
     io.emit('usersOnline', sockets.map((sock) => sock.user)); // send array online users  
     socket.emit('connected', dbUser); //socket.user
    

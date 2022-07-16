@@ -1,20 +1,27 @@
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import Button from '@mui/material/Button';
-import { useState } from 'react';
 import Box from '@mui/material/Box';
+import { useDispatch, useSelector } from 'react-redux';
+import { setMessage } from '../../../reducers/messageReducer';
+import { sendMessage } from '../../../reducers/messageReducer';
 
-export const MessageForm = ({sendMessage, data}) => {
 
-    const [message, setMessage] = useState({message: ''});
+export const MessageForm = () => {
+
+    const dispatch = useDispatch();    
+    const message = useSelector(state => state.userName);
+    const user = useSelector(state => state.getUserSocketReducer.socketUserData)
+    const socket = useSelector(state => state.getUserSocketReducer.socket)
+    
 
     return (
         <Box 
             component="form" 
-            onSubmit = {(e) =>
+            onSubmit = {e  =>
                 {
                     e.preventDefault()
-                    sendMessage(message);
-                    setMessage({message: ''});
+                     dispatch(sendMessage({user, socket}))
+                    
                 }}
                 
                 sx={{
@@ -26,18 +33,18 @@ export const MessageForm = ({sendMessage, data}) => {
                         id="outlined-basic" 
                         label="Type a message..." 
                         variant="outlined" 
-                        value={message.message}
+                        value={message}
                         placeholder='type you message...'
                         minRows={3}
                         maxRows={4}
-                        onKeyPress={(e) => {
-                            if (e.key === "Enter")   {
-                                e.preventDefault();
-                                sendMessage(message);
-                                setMessage({message: ''});
-                            }
-                        }}
-                        onChange={e => setMessage({...message, message: e.target.value})}
+                        // onKeyPress={(e) => {
+                        //     if (e.key === "Enter")   {
+                        //         e.preventDefault();
+                        //         dispatch(sendStoreMessage())
+                        //         dispatch(setMessage({message: ''}));// add localstorage save message later
+                        //     }
+                        // }}
+                        onChange={e => dispatch(setMessage({message: e.target.value}))} 
                         style={{
                             width: '80%',
                             resize: 'none',
@@ -47,7 +54,7 @@ export const MessageForm = ({sendMessage, data}) => {
                     <Button 
                         variant="contained" 
                         type='submit'
-                        disabled={data.isMutted}
+                        disabled={user?.isMutted}
                         style={{
                             width: '20%',
                         }}

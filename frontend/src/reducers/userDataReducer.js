@@ -8,7 +8,7 @@ const initialState = {
     password: '',
     userLoadingStatus: 'idle',
     token: '',
-    socket: null,
+    socket: null, 
     responseMessage: ''
 }
 
@@ -18,18 +18,19 @@ export const getUserData = createAsyncThunk(
     'userData/getUser',
      ( t , thunkAPI) => {
       const userData = thunkAPI.getState().userDataReducer;
-          if(userData.userName){
-        if(isValidPayload({...userData}) && isValidUserName({...userData}))
-            console.log('getUserData', userData)
-            try {
-                const response =  sendForm(POST_URL, userData);
-                return response;
-            }catch (err) {
-                console.log('err', err)
-                return err?.message
+        if(userData.userName){
+            if(isValidPayload({...userData}) && isValidUserName({...userData}))
+                try {
+                    const response =  sendForm(POST_URL, userData);
+                    return response;
+                }catch (err) {
+                    console.log('error getUserData thunk', err)
+                    return err?.message
+                }
             }
-        }
+        
     });
+                    
 
 const getUserDataSlice = createSlice({
     name: 'userData',
@@ -37,30 +38,33 @@ const getUserDataSlice = createSlice({
     reducers: {
         setUserName: (state, action) => {state.userName = action.payload.userName},
         setUserPassword: (state, action) => {state.password = action.payload.password},
-        removeToken: state => {state.token = ''},
-        deleteResponseMessage: state => {state.responseMessage = ''}
+        removeToken: state => {
+            state.token = ''
+        },
+        deleteResponseMessage: state => {state.responseMessage = ''},
     },
     extraReducers: (builder) => { 
        builder
           .addCase(getUserData.fulfilled, (state, action) => {
-            state.userLoadingStatus = 'fulfilled'
-            if(action.payload.token){
+            if(action.payload?.token){
                 state.token = action.payload.token
+                state.userLoadingStatus = 'success'
                 localStorage.setItem('token', action.payload.token)
             }
             if(action.payload?.message){
                 state.responseMessage = action.payload.message
-                localStorage.setItem('token', action.payload.token)
+                state.userLoadingStatus = 'error';
             }
           })
            .addCase(getUserData.rejected, (state, action) => {
                state.userLoadingStatus = 'error';
                if(action.payload?.message){
                 state.responseMessage = action.payload.message
-            } 
+            }
             state.responseMessage = 'Something went wrong...'
           })
-        }
+        },
+        
 });
 
 const {actions, reducer} = getUserDataSlice;
@@ -71,5 +75,5 @@ export const {
     setUserName,
     setUserPassword,
     removeToken,
-    deleteResponseMessage
+    deleteResponseMessage,
 } = actions;
