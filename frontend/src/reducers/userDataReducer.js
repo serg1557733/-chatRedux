@@ -1,6 +1,6 @@
-import { isValidPayload } from "../components/loginForm/utils/validations/isValidPayload";
-import { isValidUserName } from '../components/loginForm/utils/validations/isValidUserName';
-import { sendForm } from '../components/loginForm/utils/sendForm';
+import { isValidPayload } from "../utils/validations/isValidPayload";
+import { isValidUserName } from '../utils/validations/isValidUserName';
+import { sendForm } from '../utils/sendForm';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -27,8 +27,7 @@ export const getUserData = createAsyncThunk(
                     console.log('error getUserData thunk', err)
                     return err?.message
                 }
-            }
-        
+            }  
     });
                     
 

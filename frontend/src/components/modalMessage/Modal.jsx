@@ -6,13 +6,14 @@ export const Modal = () => {
     
     let text = useSelector(state=> state.userDataReducer.responseMessage)
     const dispatch =useDispatch();
+    
     if (text){
             setTimeout(() => {
                dispatch(deleteResponseMessage())
                 }, 2500)
     }
     
-    return <Alert 
+    return  <Alert 
                 severity="error"
                 sx={{display: (text ? 'block':'none' )}}>
                 {text}

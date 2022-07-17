@@ -25,6 +25,7 @@ export const LoginForm = () => {
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
+                    
                 <TextField
                         margin="normal"
                         required
@@ -35,7 +36,9 @@ export const LoginForm = () => {
                         autoComplete="email"
                         autoFocus
                         value={userName}
-                        onChange={e => dispatch(setUserName({userName: e.target.value}))}/>
+                        onChange={e => dispatch(setUserName({userName: e.target.value}))
+                        }/>
+
                 <TextField
                         margin="normal"
                         required
@@ -49,13 +52,16 @@ export const LoginForm = () => {
                         onChange={e => 
                             dispatch(setUserPassword({password: e.target.value}))
                         }/>
+
                 <Modal/>
+
                 <Button 
                     type="submit"
                     variant="contained"
                     fullWidth>
                         Login
                 </Button>
+
             </Box>
         </Container>
     )
