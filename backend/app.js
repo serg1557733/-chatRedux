@@ -220,6 +220,7 @@ io.on("connection", async (socket) => {
                 const exist = sockets.find( current => current.user.userName == user)
                 
                 if(exist){
+                    exist.emit('ban', "dbUser")
                     exist.disconnect();  
                 }
             // }

@@ -38,6 +38,7 @@ const getUserDataSlice = createSlice({
     reducers: {
         setUserName: (state, action) => {state.userName = action.payload.userName},
         setUserPassword: (state, action) => {state.password = action.payload.password},
+            
         removeToken: state => {
             state.token = ''
         },

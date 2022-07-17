@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, Fragment} from 'react';
-import { MessageForm } from './messageForm/MessageForm';
 import {Button,Avatar, Box} from '@mui/material';
 import { UserInfo } from './userInfo/UserInfo';
 import { dateFormat } from './utils/dateFormat';
@@ -17,6 +16,9 @@ import { sendMessage, storeMessage } from '../../reducers/messageReducer';
 
 export const ChatPage = () => {
 
+
+    const SOCKET_EVENTS = process.env.REACT_APP_SERVER_URL || ['allmessages', 'usersOnline', 'allDbUsers']
+
     const dispatch = useDispatch();
     const token = useSelector(state => localStorage.getItem('token') || state.userDataReducer.token);
 
@@ -26,8 +28,6 @@ export const ChatPage = () => {
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const events = ['allmessages', 'usersOnline', 'allDbUsers']
-
     const [message, setMessage] = useState({message: ''});
 
 
@@ -36,9 +36,9 @@ export const ChatPage = () => {
     
     useEffect(() => {
         if(token){
-            events.map(event => dispatch(getSocket(event)))       
+            SOCKET_EVENTS.map(event => dispatch(getSocket(event)))       
         }
-    }, [])
+    }, [token])
 
 
     useEffect(() => {
@@ -153,13 +153,14 @@ export const ChatPage = () => {
                         placeholder='type you message...'
                         minRows={3}
                         maxRows={4}
-                        // onKeyPress={(e) => {
-                        //     if (e.key === "Enter")   {
-                        //         e.preventDefault();
-                        //         dispatch(sendStoreMessage())
-                        //         dispatch(setMessage({message: ''}));// add localstorage save message later
-                        //     }
-                        // }}
+                        onKeyPress={(e) => {
+                            if (e.key === "Enter")   {
+                                e.preventDefault();
+                                dispatch(sendMessage({user, socket}))
+                                dispatch(getSocket('allmessages'))
+                                setMessage({message: ''})
+                            }
+                        }}
                         onChange={e => { 
                             dispatch(storeMessage({message: e.target.value}))
                             setMessage({message: e.target.value})}
@@ -217,39 +218,45 @@ export const ChatPage = () => {
                                             
                                             }))}}>{item.userName}</div>
                                         <div>
-                                            <Button
-                                                variant="contained"
-                                                onClick={()=>{
-                                                   //muteUser(item.userName, item?.isMutted, socket)
+                                           { (user.userName === item.userName )? 
+                                           'admin'
+                                           :   
+                                           <>      
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={()=>{
+                                                    muteUser(item.userName, item?.isMutted, socket)
+                                                        }}
+                                                    sx={{
+                                                        margin:'3px',
+                                                        height: '25px'
+                                                    }}>
+                                                        {item.isMutted
+                                                        ? 
+                                                        'unmute'
+                                                        : 'mute'}
+                                                </Button>
+
+                                                <Button
+                                                    variant="contained"
+                                                    onClick={()=>{
+                                                    banUser(item.userName, item.isBanned, socket)
                                                     }}
-                                                sx={{
-                                                    margin:'3px',
-                                                    height: '25px'
-                                                }}>
-                                                    {/* {item.isMutted
-                                                    ? 
-                                                    'unmute'
-                                                    : 'mute'} */}
-                                            </Button>
-
-                                            <Button
-                                                variant="contained"
-                                                onClick={()=>{
-                                                //banUser(item.userName, item.isBanned, socket)
-                                                }}
-                                                sx={{
-                                                    margin:'3px',
-                                                    height: '25px'
-                                                }}>
-                                                    {item?.isBanned
-                                                ? 'unban'
-                                                : 'ban'}
-                                            </Button>
-
+                                                    sx={{
+                                                        margin:'3px',
+                                                        height: '25px'
+                                                    }}>
+                                                        {item?.isBanned
+                                                    ? 'unban'
+                                                    : 'ban'}
+                                                </Button> 
+                                            </> 
+                                             }
+                                   
                                         </div>
                                 {
-                                usersOnline.map((user, i) =>{
-                                                    if(item.userName == user.userName){
+                                usersOnline.map((user, i) => {
+                                                    if(item.userName === user.userName){
                                                     return <span key={i} style={{color: 'green'}}>online</span>
                                                     }
                                                 })

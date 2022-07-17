@@ -32,20 +32,25 @@ const connectToSocket = (event) => {
                                         break;
                             
                                     case 'usersOnline':
-                                        console.log(data)
                                         store.dispatch(getUsersOnline(data));
                                         break;
 
                                     case 'allDbUsers':
                                         store.dispatch(getAllUsers(data));
                                         break;
-                                }
+                                    default: 
+                                        break;
+                                    }
                                 })
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
                                 })
+                            .on('ban', (data) => {
+                                store.dispatch(removeToken()); 
+                                localStorage.removeItem('token');
+                                })
                             .on('disconnect', (data) => {
-                                if(data === 'io server disconnect') {
+                                if( data === 'io server disconnect') {
                                     socket.disconnect();
                                     store.dispatch(removeToken()); 
                                 }
