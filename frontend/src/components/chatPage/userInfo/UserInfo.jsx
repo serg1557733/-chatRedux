@@ -9,20 +9,28 @@ export const UserInfo = () => {
     //add foto loading function
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
-    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
+    const usersOnline = [...new Set(useSelector(state => state.getUserSocketReducer.usersOnline))];//Set?
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
+    const isTabletorMobile = (window.screen.width < 730);
+
     return (
-            <>
-                <Avatar sx={{ 
-                    bgcolor: 'grey',
-                    width: '100px',
-                    height: '100px',
-                    fontSize: 14,
-                    margin: '20px auto'
-                    }}>
-                    {user.userName}
-                </Avatar>
+            <> 
+                {
+                isTabletorMobile ? 
+                    '' 
+                    : <Avatar sx={{ 
+                            bgcolor: 'grey',
+                            width: '100px',
+                            height: '100px',
+                            fontSize: 14,
+                            margin: '20px auto'
+                            }}>
+                            {user.userName}
+                    </Avatar>
+                }
+
+                   
                     {user.isAdmin ? 
                         allUsers.map((item) =>
                             <div 
@@ -71,7 +79,7 @@ export const UserInfo = () => {
                                     </>}
                             
                                 </div>
-                                    { usersOnline.map((user, i) => {
+                                    {usersOnline.map((user, i) => {
                                         if(item.userName === user.userName){
                                             return <span key={i} style={{color: 'green'}}>online</span>
                                         }})}

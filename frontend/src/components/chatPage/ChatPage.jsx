@@ -8,6 +8,7 @@ import { removeToken} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage } from '../../reducers/messageReducer';
+
 import './chatPage.scss';
 
 
@@ -22,6 +23,8 @@ export const ChatPage = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
     const [message, setMessage] = useState({message: ''});
+
+
 
     useEffect(() => {
         if(token){
