@@ -1,11 +1,12 @@
 .rootContainer {
-    max-width: 90%;
+    max-width: 95%;
+    max-height: 95%;
     margin: 0 auto;
 }
 
 .rootBox {
     display: flex;
-    height: 100vh;
+    height: 97vh;
 }
 .rootMessageForm {
     display: flex;
@@ -56,6 +57,13 @@
     background-color: rgb(240, 231, 136);
     cursor: pointer;
 }
+.myData {
+    align-self: flex-end;
+}
+.data {
+    align-self: flex-start;
+}
+
 // .editMessage{
 //     background-color: rgb(246, 245, 235);
 //     transform:translate(-120px, -90px);
@@ -70,7 +78,7 @@
     flex-grow :2;
     flex-direction: column;
     overflow: scroll;
-    height: 100vh  
+    height: 90vh  
     
 }
 .usersBox { 
@@ -88,6 +96,27 @@
         margin-bottom: 5px;
         background-color:rgb(247, 233, 233);
         font-weight: 700;
+
+    }
+}
+
+.usersBoxMobile { 
+    align-content: flex-end;
+    text-align: center;
+    text-overflow: ellipsis;
+    padding: 5px;
+    width: 20%;
+    overflow: 'scroll';
+    font-size: 11px;
+    border-radius: 10px;
+    background-color:rgb(243, 243, 243);
+    .online {
+        border-radius: 5px;
+        text-overflow: ellipsis;
+        padding: 5px;
+        margin-bottom: 5px;
+        background-color:rgb(247, 233, 233);
+        font-weight: 500;
 
     }
 }

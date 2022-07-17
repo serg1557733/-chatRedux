@@ -3,7 +3,9 @@ import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
 import { Fragment, useRef, useEffect, useMemo} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
-           
+import { useDispatch } from 'react-redux';
+import { editMessage } from '../../../reducers/messageReducer';
+   
 export const MessageForm = () => {
 
     const randomColor = require('randomcolor');  
@@ -11,9 +13,9 @@ export const MessageForm = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userColor = useMemo(() => randomColor(),[]);
-       
+    const dispatch = useDispatch();
+   
     const endMessages = useRef(null);
- 
 
     useEffect(() => {
         scrollToBottom(endMessages)
@@ -59,25 +61,33 @@ export const MessageForm = () => {
                             onClick = {(e) => {
                                 if(e.target.className.includes('myMessage')){
                                     e.currentTarget.className += ' editMessage' 
+                                    startMessages.map( item => {
+                                        if((item.userName === user.userName) && (item.text === e.target.textContent)){
+                                            console.log('edit message',e.target.textContent )
+                                            dispatch(editMessage({editMessage: e.target.textContent}))                                        
+                                        }
+                                        })
                                     }
-                                //add function to edit message
+                                  
                             }}
-
                             className={ 
                                 (item.userName === user.userName)? 'message myMessage' :'message'}
                         >
 
                             <p>{item.text}</p>  
 
-                            <div className='time'>
-                                {dateFormat(item).time}
-                            </div> 
-                            
-                            <div className='date'>
-                                {dateFormat(item).year}
-                            </div>
                         </div>
-                
+                            <div className={ 
+                                (item.userName === user.userName)? 'myData' :'date'}>
+                                <div className='time'>
+                                    {dateFormat(item).time}
+                                </div> 
+                                
+                                <div className='date'>
+                                    {dateFormat(item).year}
+                                </div>
+                            
+                            </div>
                     </Fragment>
                 )}
 

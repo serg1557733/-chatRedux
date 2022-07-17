@@ -8,7 +8,7 @@ import { removeToken} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage } from '../../reducers/messageReducer';
-
+import { editMessage } from '../../reducers/messageReducer';
 import './chatPage.scss';
 
 
@@ -21,16 +21,20 @@ export const ChatPage = () => {
     const token = useSelector(state => localStorage.getItem('token') || state.userDataReducer.token);
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
-
+    const editOldMessage = useSelector(state => state.messageReducer.editMessage)
     const [message, setMessage] = useState({message: ''});
-
-
-
+    const isTabletorMobile = (window.screen.width < 730);
+    
+    
     useEffect(() => {
         if(token){
             SOCKET_EVENTS.map(event => dispatch(getSocket(event)))       
         }
-    }, [token])
+
+        console.log('editMessage chat', editOldMessage)
+
+    }, [token, editOldMessage])
+
 
 
     return (
@@ -48,19 +52,23 @@ export const ChatPage = () => {
                                         e.preventDefault()
                                         dispatch(sendMessage({user, socket}))
                                         dispatch(getSocket('allmessages'))
+                                        dispatch(editMessage({editMessage: ''}))
                                         setMessage({message: ''})
                                     }}
-                        sx={{
+                        sx={(isTabletorMobile)?{
                             display: 'flex',
-                            margin: '20px 5px'
-                        }}
-                    >
+                            margin: '10px 2px'}
+                        :{
+                            display: 'flex',
+                            margin: '20px 5px'}
+                           
+                        }>
             
                         <TextareaAutosize
                             id="outlined-basic" 
                             label="Type a message..." 
                             variant="outlined" 
-                            value={message.message}
+                            value={message.message || editOldMessage}
                             placeholder='type you message...'
                             minRows={3}
                             maxRows={4}
@@ -92,10 +100,14 @@ export const ChatPage = () => {
                     </Box>            
                 </Box>
 
-                <Box className='usersBox'>
+                <Box className={(isTabletorMobile)?'usersBoxMobile':'usersBox'}>
 
                     <Button 
-                        sx={{margin:'10px 5px'}}
+                        sx={(isTabletorMobile) ? 
+                            {
+                                maxHeight:'25px', 
+                                maxWidth: '20px'} 
+                            :{margin:'10px 5px'}}
                         variant="outlined"
                         onClick={()=> {
                                 localStorage.removeItem('token');

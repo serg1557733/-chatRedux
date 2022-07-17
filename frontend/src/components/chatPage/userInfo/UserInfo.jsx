@@ -2,6 +2,7 @@ import {Button,Avatar} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { banUser } from '../service/banUser';
 import { muteUser } from '../service/muteUser';
+import './userInfo.scss';
 
 
 export const UserInfo = () => {
@@ -16,19 +17,16 @@ export const UserInfo = () => {
 
     return (
             <> 
-                {
-                isTabletorMobile ? 
-                    '' 
-                    : <Avatar sx={{ 
+                 <Avatar  sx={ (isTabletorMobile) ? {} : 
+                            {
                             bgcolor: 'grey',
                             width: '100px',
                             height: '100px',
                             fontSize: 14,
-                            margin: '20px auto'
-                            }}>
-                            {user.userName}
-                    </Avatar>
-                }
+                            margin: '20px auto',
+                            cursor: 'pointer'
+                            }} /> 
+                
 
                    
                     {user.isAdmin ? 
@@ -55,10 +53,14 @@ export const UserInfo = () => {
                                             onClick={()=>{
                                                 muteUser(item.userName, item?.isMutted, socket)
                                             }}
-                                            sx={{
+                                            sx={(isTabletorMobile) 
+                                                ? 
+                                                {height: '15px',
+                                                 maxWidth:'20px'}: 
+                                                {
                                                 margin:'3px',
-                                                height: '25px'
-                                            }}>
+                                                height: '25px'}}>
+
                                                 {item.isMutted
                                                 ? 
                                                 'unmute'
@@ -70,10 +72,14 @@ export const UserInfo = () => {
                                             onClick={()=>{ 
                                                 banUser(item.userName, item.isBanned, socket)
                                             }}
-                                            sx={{
+                                            sx={(isTabletorMobile) 
+                                                ? 
+                                                {height: '15px',
+                                                margin:'2px'} : 
+                                                {
                                                 margin:'3px',
-                                                height: '25px'
-                                            }}>
+                                                height: '25px'}}
+                                       >
                                                 {item?.isBanned ? 'unban' : 'ban'}
                                         </Button> 
                                     </>}
@@ -84,9 +90,7 @@ export const UserInfo = () => {
                                             return <span key={i} style={{color: 'green'}}>online</span>
                                         }})}
                             </div>) 
-
                     :
-
                     usersOnline.map((item, i) =>
                         <div 
                             key={i}
