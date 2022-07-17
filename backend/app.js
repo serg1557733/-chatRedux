@@ -135,7 +135,6 @@ io.use( async (socket, next) => {
 
 io.on("connection", async (socket) => {
     const userName = socket.user.userName;
-
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
     
@@ -171,10 +170,13 @@ io.on("connection", async (socket) => {
             });
             try {
                 await message.save(); 
+                
+
             } catch (error) {
                 console.log('Message save to db error', error);   
             }
-            io.emit('message', message);
+           // const newMessagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
+            io.emit('newmessage', message);
         // }
         // } 
     });

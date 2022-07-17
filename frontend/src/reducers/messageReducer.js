@@ -1,6 +1,7 @@
 import { createSlice} from '@reduxjs/toolkit';
 
 const initialState = {
+    startMessages: [],
     message:''
 }
 
@@ -18,6 +19,7 @@ const messageReducerSlice = createSlice({
         storeMessage: (state, action) => {state.message = action.payload.message},
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''}
+        
     },
 });
 

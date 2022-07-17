@@ -7,11 +7,13 @@ import './chatPage.scss';
 import { scrollToBottom } from './utils/scrollToBottom';
 import { banUser } from './service/banUser';
 import { muteUser } from './service/muteUser';
-import {sendMessage} from './service/sendMessage';
 import { store } from '../../store';
 import { removeToken} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
+import { useState } from 'react';
+import TextareaAutosize from '@mui/material/TextareaAutosize';
+import { sendMessage, storeMessage } from '../../reducers/messageReducer';
 
 export const ChatPage = () => {
 
@@ -24,18 +26,23 @@ export const ChatPage = () => {
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
+    const events = ['allmessages', 'usersOnline', 'allDbUsers']
+
+    const [message, setMessage] = useState({message: ''});
+
 
     const randomColor = require('randomcolor'); 
     const endMessages = useRef(null);
     
     useEffect(() => {
         if(token){
-            dispatch(getSocket())
+            events.map(event => dispatch(getSocket(event)))       
         }
     }, [])
 
 
     useEffect(() => {
+        console.log('useEffect chat page')
         scrollToBottom(endMessages)
       }, [startMessages]);
 
@@ -74,7 +81,7 @@ export const ChatPage = () => {
                                     :
                                     {
                                         backgroundColor:  (usersOnline.map(current => {
-                                            if(item.userName == current.userName ) {
+                                            if(item.userName === current.userName ) {
                                                 return current.color
                                             }
                                           
@@ -123,7 +130,57 @@ export const ChatPage = () => {
                         <div ref={endMessages}></div>
     
                         </Box>
-                            <MessageForm />
+                        <Box 
+            component="form" 
+            onSubmit = {e  =>
+                {
+                    e.preventDefault()
+                     dispatch(sendMessage({user, socket}))
+                     dispatch(getSocket('allmessages'))
+                     setMessage({message: ''})
+                }}
+                
+                sx={{
+                    display: 'flex',
+                    margin: '20px 5px'
+                }}>
+        
+                    <TextareaAutosize
+                        id="outlined-basic" 
+                        label="Type a message..." 
+                        variant="outlined" 
+                        value={message.message}
+                        placeholder='type you message...'
+                        minRows={3}
+                        maxRows={4}
+                        // onKeyPress={(e) => {
+                        //     if (e.key === "Enter")   {
+                        //         e.preventDefault();
+                        //         dispatch(sendStoreMessage())
+                        //         dispatch(setMessage({message: ''}));// add localstorage save message later
+                        //     }
+                        // }}
+                        onChange={e => { 
+                            dispatch(storeMessage({message: e.target.value}))
+                            setMessage({message: e.target.value})}
+                        } 
+                        style={{
+                            width: '80%',
+                            resize: 'none',
+                            borderRadius: '4px',
+                        }}
+                        /> 
+                    <Button 
+                        variant="contained" 
+                        type='submit'
+                        disabled={user?.isMutted}
+                        style={{
+                            width: '20%',
+                        }}
+                    >
+                        Send
+                    </Button>
+        </Box>            
                         </Box>
 
                         <Box
@@ -153,7 +210,7 @@ export const ChatPage = () => {
                                     key={item._id}
                                     className='online'>
                                     <div style={
-                                        {color: (usersOnline.map(current =>{
+                                        {color: (usersOnline.map(current => {
                                                 if(item.userName == current.userName ) {
                                                     return current.color
                                                 }

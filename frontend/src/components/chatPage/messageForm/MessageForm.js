@@ -3,7 +3,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendMessage, storeMessage } from '../../../reducers/messageReducer';
-import {  useState} from 'react';
+import { useState } from 'react';
 
 
 export const MessageForm = () => {
@@ -12,9 +12,7 @@ export const MessageForm = () => {
       
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
-
     const [message, setMessage] = useState({message: ''});
-
 
 
     return (

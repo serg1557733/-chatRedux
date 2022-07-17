@@ -15,7 +15,7 @@ const initialState = {
 
 const SOCKET_URL =  process.env.REACT_APP_SERVER_URL || 'http://localhost:5000'; 
 
-const connectToSocket = () => {
+const connectToSocket = (event) => {
         try {
             const token = localStorage.getItem('token');
             if(token){
@@ -25,15 +25,25 @@ const connectToSocket = () => {
                     socket.on('connected', data => {
                                 store.dispatch(getUser(data));
                             })
-                            .on('allmessages', (data) => {
-                                store.dispatch(getAllMessages(data));
-                            })
-                            .on('usersOnline', (data) => {
-                                store.dispatch(getUsersOnline(data));
-                            })
-                            .on('allDbUsers', (data) => {
-                                store.dispatch(getAllUsers(data));
-                            })
+                            .on(event, (data) => {
+                                   switch (event){
+                                    case 'allmessages':
+                                        store.dispatch(getAllMessages(data));
+                                        break;
+                            
+                                    case 'usersOnline':
+                                        console.log(data)
+                                        store.dispatch(getUsersOnline(data));
+                                        break;
+
+                                    case 'allDbUsers':
+                                        store.dispatch(getAllUsers(data));
+                                        break;
+                                }
+                                })
+                            .on('newmessage', (data) => {
+                                store.dispatch(addNewMessage(data))
+                                })
                             .on('disconnect', (data) => {
                                 if(data === 'io server disconnect') {
                                     socket.disconnect();
@@ -56,14 +66,15 @@ export const getUserSocketSlice = createSlice({
         removeSocket: state => {
             state.socket = null
             state.socketStatus = 'disconnected'},
-        getSocket: state => {
-            state.socket = connectToSocket();
+        getSocket: (state, action) => {
+            state.socket = connectToSocket(action.payload);
             state.socketStatus = 'connected';
         },
         getUser: (state, action) => {state.socketUserData = action.payload},
         getAllMessages: (state, action) => {state.startMessages = action.payload},
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
-        getAllUsers: (state, action) => {state.allUsers = action.payload}
+        getAllUsers: (state, action) => {state.allUsers = action.payload},
+        addNewMessage: (state, action) => {state.startMessages.push(action.payload)}
         }
     }
 );
@@ -79,5 +90,6 @@ export const {
     getUser,
     getAllMessages,
     getUsersOnline,
+    addNewMessage,
     getAllUsers
 } = actions;
