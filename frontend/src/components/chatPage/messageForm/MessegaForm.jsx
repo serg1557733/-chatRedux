@@ -5,38 +5,39 @@ import { Fragment, useRef, useEffect, useMemo} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
-   
+import { TimeAgoMessage } from '../TimeAgoMessage';
+
 export const MessageForm = () => {
 
     const randomColor = require('randomcolor');  
+    const dispatch = useDispatch();
+
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userColor = useMemo(() => randomColor(),[]);
-    const dispatch = useDispatch();
+    const avatarImg = '';
    
     const endMessages = useRef(null);
 
     useEffect(() => {
         scrollToBottom(endMessages)
-      }, [startMessages]);
+      }, [startMessages, usersOnline]);
                   
     return (             
             <Box className='messageBox'>                     
                 {
                 startMessages.map((item, i) =>
-                    <Fragment key={i} >
+                    <div key={i} className={ 
+                        (item.userName === user.userName)? 'message myMessage' :'message'}>
 
                         <Avatar 
+                            src= {avatarImg || ''}
                             sx={
                                 (item.userName == user.userName)
                                 ? 
                                 {
                                     alignSelf: 'flex-end',
-                                    fontSize: 10,
-                                    width: '60px',
-                                    height: '60px',
-                                    color:'black',
                                     backgroundColor: userColor
                                 }
                                 :
@@ -45,15 +46,10 @@ export const MessageForm = () => {
                                         if(item.userName === current.userName ) {
                                             return current.color
                                         }
-                                    
                                     } )),
-                                    fontSize: 10,
-                                    width: '60px',
-                                    height: '60px',
-                                    color:'black'
                                 }
                             }> 
-                            {item.userName}
+                            {item.userName.slice(0, 1)}
                         </Avatar>   
 
                         <div 
@@ -77,18 +73,11 @@ export const MessageForm = () => {
                             <p>{item.text}</p>  
 
                         </div>
-                            <div className={ 
-                                (item.userName === user.userName)? 'myData' :'date'}>
-                                <div className='time'>
-                                    {dateFormat(item).time}
-                                </div> 
-                                
-                                <div className='date'>
-                                    {dateFormat(item).year}
-                                </div>
-                            
-                            </div>
-                    </Fragment>
+                        <div className={ 
+                                (item.userName === user.userName)? 'myDate' :'date'}>
+                                {dateFormat(item).time}
+                        </div>
+                    </div>
                 )}
 
                 <div ref={endMessages}></div>

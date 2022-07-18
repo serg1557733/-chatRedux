@@ -26,6 +26,7 @@
     font-style:italic;
     color: rgb(80, 80, 80);
     font-size: 12px;
+    margin-left: 30px;
 }
 
 .date {
@@ -41,7 +42,7 @@
 
 .message {
     padding: 10px;
-    margin: 5px;
+    margin: 2px 30px;
     max-width: 50%;
     align-self: flex-start;
     border-radius: 10px;
@@ -61,15 +62,25 @@
 
 .myMessage {
     align-self: flex-end;
+    position: relative;
     max-width: 50%;
     background-color: rgb(240, 231, 136);
     cursor: pointer;
 }
-.myData {
-    align-self: flex-end;
-}
-.data {
+.myDate {
     align-self: flex-start;
+    display: flex;
+    font-style:italic;
+    color: rgb(80, 80, 80);
+    font-size: 12px;
+}
+.date {
+    display: flex;
+    align-content:center;
+    align-self: flex-end;
+    font-style:italic;
+    color: rgb(80, 80, 80);
+    font-size: 12px;
 }
 
 // .editMessage{
@@ -79,6 +90,7 @@
 
 .messageBox { 
     display: flex;
+    position: relative;
     padding: 20px;
     border-radius: 10px;
     background-color:rgb(243, 243, 243);

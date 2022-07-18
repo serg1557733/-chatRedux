@@ -1,31 +1,51 @@
 import {Button,Avatar} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { banUser } from '../service/banUser';
+import Input from '@mui/material/Input';
 import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 
 
 export const UserInfo = () => {
 
+    const PC_AVATAR_STYLE =    {
+        bgcolor: 'grey',
+        width: '100px',
+        height: '100px',
+        fontSize: 14,
+        margin: '20px auto',
+        cursor: 'pointer'
+        };
+
+    const MOBILE_AVATAR_STYLE =  { margin: '5px auto'};
+  
     //add foto loading function
+      
+    let displayType = 'none';
+    const loadAvatarHandler = () => {
+        
+        console.log('load avatar')
+    }
+
+
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = [...new Set(useSelector(state => state.getUserSocketReducer.usersOnline))];//Set?
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
     const isTabletorMobile = (window.screen.width < 730);
+  
 
     return (
-            <> 
-                 <Avatar  sx={ (isTabletorMobile) ? {margin: '5px auto'} : 
-                            {
-                            bgcolor: 'grey',
-                            width: '100px',
-                            height: '100px',
-                            fontSize: 14,
-                            margin: '20px auto',
-                            cursor: 'pointer'
-                            }} /> 
+            <>  
+                <Input 
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    style = {{display: displayType}}
+                    />
+                <Avatar
+                    sx={ isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} 
+                    onClick={() => loadAvatarHandler()} /> 
                    
                     {user.isAdmin ? 
                         allUsers.map((item) =>

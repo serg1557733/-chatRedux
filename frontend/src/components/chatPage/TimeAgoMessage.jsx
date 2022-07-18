@@ -4,7 +4,7 @@ import buildFormatter from 'react-timeago/lib/formatters/buildFormatter'
 
 
 
-export const Time = () => {
+export const TimeAgoMessage = () => {
     
     const formatter = buildFormatter(frenchStrings)
 
