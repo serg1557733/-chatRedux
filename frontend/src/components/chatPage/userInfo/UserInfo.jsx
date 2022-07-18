@@ -17,7 +17,7 @@ export const UserInfo = () => {
 
     return (
             <> 
-                 <Avatar  sx={ (isTabletorMobile) ? {} : 
+                 <Avatar  sx={ (isTabletorMobile) ? {margin: '5px auto'} : 
                             {
                             bgcolor: 'grey',
                             width: '100px',
@@ -26,8 +26,6 @@ export const UserInfo = () => {
                             margin: '20px auto',
                             cursor: 'pointer'
                             }} /> 
-                
-
                    
                     {user.isAdmin ? 
                         allUsers.map((item) =>

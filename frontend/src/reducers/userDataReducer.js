@@ -9,7 +9,8 @@ const initialState = {
     userLoadingStatus: 'idle',
     token: '',
     socket: null, 
-    responseMessage: ''
+    responseMessage: '',
+    showUserInfoBox: true
 }
 
 const POST_URL =  process.env.REACT_APP_POST_URL || 'http://localhost:5000/login';
@@ -42,6 +43,10 @@ const getUserDataSlice = createSlice({
             state.token = ''
         },
         deleteResponseMessage: state => {state.responseMessage = ''},
+        showUserInfoBox: state => {
+            state.showUserInfoBox = !state.showUserInfoBox  //replace later to other reducer file
+            localStorage.setItem('showBox', !state.showUserInfoBox)
+        },
     },
     extraReducers: (builder) => { 
        builder
@@ -76,4 +81,5 @@ export const {
     setUserPassword,
     removeToken,
     deleteResponseMessage,
+    showUserInfoBox
 } = actions;

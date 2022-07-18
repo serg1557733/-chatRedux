@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage } from '../../reducers/messageReducer';
 import { editMessage } from '../../reducers/messageReducer';
+import { SwitchButton } from './SwitchButton';
 import './chatPage.scss';
 
 
@@ -22,27 +23,26 @@ export const ChatPage = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const editOldMessage = useSelector(state => state.messageReducer.editMessage)
+    let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
+
     const [message, setMessage] = useState({message: ''});
     const isTabletorMobile = (window.screen.width < 730);
-    
-    
+
     useEffect(() => {
         if(token){
             SOCKET_EVENTS.map(event => dispatch(getSocket(event)))       
         }
-
-        console.log('editMessage chat', editOldMessage)
-
-    }, [token, editOldMessage])
-
-
-
+    }, [token, editOldMessage, showUserInfoBox])
+ 
     return (
         <div className='rootContainer'>
 
             <Box className = 'rootBox'>
 
-                <Box className = 'rootMessageForm'>
+
+                { isTabletorMobile ? <SwitchButton/> : null}
+                
+                <Box className ={isTabletorMobile ? 'rootMessageFormMobile':'rootMessageForm'} >
                     
                     <MessageForm/>
 
@@ -78,6 +78,7 @@ export const ChatPage = () => {
                                     e.preventDefault();
                                     dispatch(sendMessage({user, socket}))
                                     dispatch(getSocket('allmessages'))
+                                    dispatch(editMessage({editMessage: ''}))
                                     setMessage({message: ''})
                                 }
                             }}
@@ -99,11 +100,13 @@ export const ChatPage = () => {
 
                     </Box>            
                 </Box>
-
-                <Box className={(isTabletorMobile)?'usersBoxMobile':'usersBox'}>
-
+                <Box className={isTabletorMobile?'usersBoxMobile':'usersBox'}
+                  sx = {showUserInfoBox ? {
+                        transform: "translateX(100%)",
+                        display: "none"
+                        }: {}}>
                     <Button 
-                        sx={(isTabletorMobile) ? 
+                        sx={isTabletorMobile ? 
                             {
                                 maxHeight:'25px', 
                                 maxWidth: '20px'} 
