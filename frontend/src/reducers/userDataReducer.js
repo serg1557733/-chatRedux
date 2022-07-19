@@ -45,7 +45,8 @@ const getUserDataSlice = createSlice({
         deleteResponseMessage: state => {state.responseMessage = ''},
         showUserInfoBox: state => {
             state.showUserInfoBox = !state.showUserInfoBox  //replace later to other reducer file
-            localStorage.setItem('showBox', !state.showUserInfoBox)
+            console.log('reducer showUserInfoBox', state.showUserInfoBox)
+          //localStorage.setItem('showBox', !state.showUserInfoBox)
         },
     },
     extraReducers: (builder) => { 

@@ -26,6 +26,7 @@ export const ChatPage = () => {
     let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
 
     const [message, setMessage] = useState({message: ''});
+    
     const isTabletorMobile = (window.screen.width < 730);
 
     useEffect(() => {

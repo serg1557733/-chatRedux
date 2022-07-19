@@ -62,13 +62,10 @@ export const MessageForm = () => {
                                             console.log('edit message',e.target.textContent )
                                             dispatch(editMessage({editMessage: e.target.textContent}))                                        
                                         }
-                                        })
-                                    }
-                                  
+                                        })}
                             }}
                             className={ 
-                                (item.userName === user.userName)? 'message myMessage' :'message'}
-                        >
+                                (item.userName === user.userName)? 'message myMessage' :'message'}>
 
                             <p>{item.text}</p>  
 
