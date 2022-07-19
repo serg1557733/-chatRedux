@@ -4,6 +4,8 @@ import { banUser } from '../service/banUser';
 import Input from '@mui/material/Input';
 import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
+import { useDispatch } from 'react-redux';
+import { getUserAvatar } from '../../../reducers/userDataReducer';
 
 
 export const UserInfo = () => {
@@ -18,13 +20,14 @@ export const UserInfo = () => {
         };
 
     const MOBILE_AVATAR_STYLE =  { margin: '5px auto'};
+
+    const dispatch = useDispatch();
   
     //add foto loading function
       
-    let displayType = 'none';
+    let displayType = 'block';
     const loadAvatarHandler = () => {
-        
-        console.log('load avatar')
+       // dispatch(getUserAvatar());
     }
 
 
@@ -34,6 +37,12 @@ export const UserInfo = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
     const isTabletorMobile = (window.screen.width < 730);
+
+    const inputHandler = (e) => {
+        const file = e.target.files[0]
+        console.log(file)
+        dispatch(getUserAvatar(file))
+    }
   
 
     return (
@@ -42,6 +51,7 @@ export const UserInfo = () => {
                     type="file"
                     accept="image/png, image/jpeg"
                     style = {{display: displayType}}
+                    onChange = {e => inputHandler(e)}
                     />
                 <Avatar
                     sx={ isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} 

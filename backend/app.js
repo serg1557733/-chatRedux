@@ -9,11 +9,14 @@ const Message = require('./db/models/Message');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config(); // add dotnv for config
+const Uuid = require('uuid'); //lib for unic id generate
+
 
 
 const server = http.createServer(app);
 app.use(cors());
-app.use(express.json());
+//app.use(express.json());
+app.use(express.static('static')); //folder for static files
 
 const io = require("socket.io")(server, {
     cors: {
@@ -92,6 +95,32 @@ app.post('/login', async (req, res) => {
     }
 })
 
+
+const STATIC_PATH = process.env. STATIC_PATH || 'static';
+
+const loadUserAvatar = async (req, res) =>  {
+
+    console.log(req.files)
+    try {
+        const file = req.files;
+        // const user = await getOneUser(req.userName);
+        // console.log(user)
+        const avatarFileName = Uuid.v4() + '.jpeg';
+
+        console.log(STATIC_PATH + '\\' + avatarFileName, req);
+
+        file.mv(STATIC_PATH + '\\' + avatarFileName)
+        // console.log(STATIC_PATH + '\\' + avatarFileName, req);
+        // user.avatar = avatarFileName;
+        // user.save;
+        return res.json({ message:'Avatar was uploud succesfully...'})
+        
+    } catch (error) {
+        res.status(400).json({message: `Error uppload file to serverp: ${error}`});
+    }
+}
+
+app.post('/avatar', loadUserAvatar);
 
 io.use( async (socket, next) => {
     const token = socket.handshake.auth.token; 

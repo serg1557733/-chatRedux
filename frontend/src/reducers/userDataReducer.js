@@ -10,10 +10,13 @@ const initialState = {
     token: '',
     socket: null, 
     responseMessage: '',
-    showUserInfoBox: true
+    showUserInfoBox: true,
+    avatar: ''
 }
 
 const POST_URL =  process.env.REACT_APP_POST_URL || 'http://localhost:5000/login';
+const GET_AVATAR_URL =  process.env.REACT_APP_GET_AVATAR_URL || 'http://localhost:5000/avatar';
+
 
 export const getUserData = createAsyncThunk(
     'userData/getUser',
@@ -30,6 +33,32 @@ export const getUserData = createAsyncThunk(
                 }
             }  
     });
+
+
+    export const getUserAvatar = createAsyncThunk(
+        'userData/getUserAvatar',
+        async (file) => {
+             try {
+                const token = localStorage.getItem('token') ;
+                const formData = new FormData()
+                formData.append('file', file)
+                console.log(formData)
+                const response = await fetch(GET_AVATAR_URL, 
+                                        {
+                                            method: 'POST',
+                                            body: formData,
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Authorization': `${token}`
+                                            }
+                                            });
+
+                return await response.json();
+            }catch (err) {
+                console.log('error getUserData thunk', err)
+                return err?.message
+            }
+        });
                     
 
 const getUserDataSlice = createSlice({
@@ -61,17 +90,22 @@ const getUserDataSlice = createSlice({
                 state.responseMessage = action.payload.message
                 state.userLoadingStatus = 'error';
             }
-          })
+        })
            .addCase(getUserData.rejected, (state, action) => {
                state.userLoadingStatus = 'error';
                if(action.payload?.message){
                 state.responseMessage = action.payload.message
-            }
+        }
             state.responseMessage = 'Something went wrong...'
-          })
-        },
-        
-});
+        })
+            .addCase(getUserAvatar.fulfilled, (state, action) => {
+            console.log('get avatar fulfiled', action.payload)
+        })
+        .addCase(getUserAvatar.rejected, (state, action) => {
+            console.log('get avatar rejected', action.payload)
+        })
+    }}   
+);
 
 const {actions, reducer} = getUserDataSlice;
 const userDataReducer = reducer;
