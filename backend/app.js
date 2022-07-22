@@ -174,7 +174,6 @@ io.on("connection", async (socket) => {
     }//sent all users from db to admin
 
     const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
-
     socket.emit('allmessages', messagesToShow.reverse());
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 
@@ -191,10 +190,13 @@ io.on("connection", async (socket) => {
 
         // if(!oneUser.isMutted && post){
         // if(((Date.now() - Date.parse(post.createDate)) > 150)){//change later 15000  
+        
         const message = new Message({
                 text: data.message,
                 userName: userName,
-                createDate: Date.now()
+                createDate: Date.now(),
+                user: oneUser.id, //add link to other collection by id
+                userAvatar: oneUser.avatar
             });
             try {
                 await message.save(); 

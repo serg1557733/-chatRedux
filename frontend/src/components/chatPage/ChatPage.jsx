@@ -33,7 +33,7 @@ export const ChatPage = () => {
         if(token){
             SOCKET_EVENTS.map(event => dispatch(getSocket(event)))       
         }
-    }, [token, editOldMessage, showUserInfoBox])
+    }, [token, editOldMessage, showUserInfoBox, ])
  
     return (
         <div className='rootContainer'>

@@ -11,13 +11,12 @@ export const MessageForm = () => {
 
     const randomColor = require('randomcolor');  
     const dispatch = useDispatch();
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userColor = useMemo(() => randomColor(),[]);
-    const avatarImg = '';
-   
     const endMessages = useRef(null);
 
     useEffect(() => {
@@ -30,9 +29,9 @@ export const MessageForm = () => {
                 startMessages.map((item, i) =>
                     <div key={i} className={ 
                         (item.userName === user.userName)? 'message myMessage' :'message'}>
-
+                                {console.log(item)}
                         <Avatar 
-                            src= {avatarImg || ''}
+                            src= {SERVER_URL + item.userAvatar}
                             sx={
                                 (item.userName == user.userName)
                                 ? 
@@ -49,7 +48,7 @@ export const MessageForm = () => {
                                     } )),
                                 }
                             }> 
-                            {item.userName.slice(0, 1)}
+                            {item?.userName.slice(0, 1)}
                         </Avatar>   
 
                         <div 

@@ -93,6 +93,7 @@ const getUserDataSlice = createSlice({
         })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 state.avatar = action.payload.data.avatarUrl
+                
         })
             .addCase(getUserAvatar.rejected, (state, action) => {
                 console.log('get avatar rejected', action.payload)
