@@ -10,13 +10,14 @@ const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config(); // add dotnv for config
 const Uuid = require('uuid'); //lib for unic id generate
-
+const fileupload = require('express-fileupload');
 
 
 const server = http.createServer(app);
 app.use(cors());
-//app.use(express.json());
-app.use(express.static('static')); //folder for static files
+app.use(express.json());
+app.use(fileupload())
+app.use(express.static('avatars')); //folder for static files
 
 const io = require("socket.io")(server, {
     cors: {
@@ -28,6 +29,8 @@ const randomColor = require('randomcolor');
 const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
 const HASH_KEY = 7;
+const STATIC_PATH = process.env. STATIC_PATH || 'avatars';
+
 
 const generateToken = (id, userName, isAdmin) => {
     const payload = {
@@ -70,7 +73,8 @@ app.post('/login', async (req, res) => {
                 hashPassword,
                 isAdmin: !await User.count().exec(),
                 isBanned: false,
-                isMutted: false
+                isMutted: false, 
+                avatar: ''
             });
 
             await user.save()
@@ -95,32 +99,27 @@ app.post('/login', async (req, res) => {
     }
 })
 
-
-const STATIC_PATH = process.env. STATIC_PATH || 'static';
-
-const loadUserAvatar = async (req, res) =>  {
-
-    console.log(req.files)
+app.post('/avatar', async (req, res) =>  {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json('No files were uploaded.');
+      }
     try {
-        const file = req.files;
-        // const user = await getOneUser(req.userName);
-        // console.log(user)
+        const file = req.files.file;
+        const user = jwt.verify(req.body.token, TOKEN_KEY);
         const avatarFileName = Uuid.v4() + '.jpeg';
-
-        console.log(STATIC_PATH + '\\' + avatarFileName, req);
-
-        file.mv(STATIC_PATH + '\\' + avatarFileName)
-        // console.log(STATIC_PATH + '\\' + avatarFileName, req);
-        // user.avatar = avatarFileName;
-        // user.save;
-        return res.json({ message:'Avatar was uploud succesfully...'})
+        file.mv(STATIC_PATH + '\/' + avatarFileName)
+        const userFromDb = await User.findOneAndUpdate({userName: user.userName},{ $set: {'avatar': avatarFileName}},   {
+            new: true
+          });
+        return res.json({ message:'Avatar was uploud succesfully...', avatarUrl: avatarFileName})
         
     } catch (error) {
-        res.status(400).json({message: `Error uppload file to serverp: ${error}`});
+        res.status(500).json({message: `Error uppload file to serverp: ${error}`});
     }
-}
+})
 
-app.post('/avatar', loadUserAvatar);
+
+
 
 io.use( async (socket, next) => {
     const token = socket.handshake.auth.token; 

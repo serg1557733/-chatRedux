@@ -6,6 +6,8 @@ import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
+import { useEffect } from 'react';
+import { store } from '../../../store';
 
 
 export const UserInfo = () => {
@@ -24,38 +26,44 @@ export const UserInfo = () => {
     const dispatch = useDispatch();
   
     //add foto loading function
-      
+    const avatarImg = useSelector(state => state.getUserSocketReducer.avatar)
+  
     let displayType = 'block';
-    const loadAvatarHandler = () => {
-       // dispatch(getUserAvatar());
-    }
 
+
+    const loadAvatarHandler = () => {
+
+     
+    }
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = [...new Set(useSelector(state => state.getUserSocketReducer.usersOnline))];//Set?
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
+
     const isTabletorMobile = (window.screen.width < 730);
 
     const inputHandler = (e) => {
         const file = e.target.files[0]
-        console.log(file)
         dispatch(getUserAvatar(file))
+        console.log(avatarImg)
     }
-  
+
 
     return (
             <>  
                 <Input 
                     type="file"
                     accept="image/png, image/jpeg"
+                    name='file'
                     style = {{display: displayType}}
                     onChange = {e => inputHandler(e)}
                     />
                 <Avatar
                     sx={ isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} 
-                    onClick={() => loadAvatarHandler()} /> 
+                    onClick={() => loadAvatarHandler()}
+                    src="/static/images/avatar/2.jpg"  /> 
                    
                     {user.isAdmin ? 
                         allUsers.map((item) =>

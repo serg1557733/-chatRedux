@@ -2,6 +2,8 @@ import { isValidPayload } from "../utils/validations/isValidPayload";
 import { isValidUserName } from '../utils/validations/isValidUserName';
 import { sendForm } from '../utils/sendForm';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
+
 
 const initialState = {
     userName:'',
@@ -39,21 +41,12 @@ export const getUserData = createAsyncThunk(
         'userData/getUserAvatar',
         async (file) => {
              try {
-                const token = localStorage.getItem('token') ;
+                const token = localStorage.getItem('token') ; //use axios becose fetch dont send files
                 const formData = new FormData()
                 formData.append('file', file)
-                console.log(formData)
-                const response = await fetch(GET_AVATAR_URL, 
-                                        {
-                                            method: 'POST',
-                                            body: formData,
-                                            headers: {
-                                                'Content-Type': 'application/json',
-                                                'Authorization': `${token}`
-                                            }
-                                            });
-
-                return await response.json();
+                formData.append('token', token)
+                const response = await axios.post(GET_AVATAR_URL, formData);
+                return await response;
             }catch (err) {
                 console.log('error getUserData thunk', err)
                 return err?.message
@@ -99,10 +92,10 @@ const getUserDataSlice = createSlice({
             state.responseMessage = 'Something went wrong...'
         })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
-            console.log('get avatar fulfiled', action.payload)
+                state.avatar = action.payload.data.avatarUrl
         })
-        .addCase(getUserAvatar.rejected, (state, action) => {
-            console.log('get avatar rejected', action.payload)
+            .addCase(getUserAvatar.rejected, (state, action) => {
+                console.log('get avatar rejected', action.payload)
         })
     }}   
 );
