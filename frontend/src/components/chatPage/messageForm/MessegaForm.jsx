@@ -17,7 +17,10 @@ export const MessageForm = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userColor = useMemo(() => randomColor(),[]);
+
     const endMessages = useRef(null);
+
+    
 
     useEffect(() => {
         scrollToBottom(endMessages)
@@ -28,10 +31,11 @@ export const MessageForm = () => {
                 {
                 startMessages.map((item, i) =>
                     <div key={i} className={ 
-                        (item.userName === user.userName)? 'message myMessage' :'message'}>
-                                {console.log(item)}
+                        (item.userName === user.userName)? 'message myMessage' :'message'}>    
+                        {console.log(item)}
                         <Avatar 
-                            src= {SERVER_URL + item.userAvatar}
+                      
+                           // src= {SERVER_URL + item.userAvatar}
                             sx={
                                 (item.userName == user.userName)
                                 ? 

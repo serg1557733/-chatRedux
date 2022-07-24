@@ -6,8 +6,8 @@ const User = new Schema({
     isAdmin: {type: Boolean, default: false},
     isBanned: {type: Boolean, default: false},
     isMutted: {type: Boolean, default: false},
-    avatar: {type: String, unique: true, required: false}
-
+    avatar: {type: String, unique: true, required: false},
+    messages: [{type: Schema.Types.ObjectId, ref: 'Message' }]
 })
 
 module.exports = model('User', User)

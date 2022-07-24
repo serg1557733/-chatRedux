@@ -6,7 +6,7 @@ import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { store } from '../../../store';
 
 
@@ -41,13 +41,17 @@ export const UserInfo = () => {
     const usersOnline = [...new Set(useSelector(state => state.getUserSocketReducer.usersOnline))];//Set?
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isTabletorMobile = (window.screen.width < 730);
-    let userAvatarUrl = SERVER_URL + user.avatar;
+    const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
+
+    let userAvatarUrl = SERVER_URL + (storeUserAvatar || user.avatar);
+
     const inputHandler = (e) => {
         const file = e.target.files[0]
         dispatch(getUserAvatar(file))
         setDisplayType('none')
-       
     }
+    //add delete avatar function later 
+
 
     return (
             <>  

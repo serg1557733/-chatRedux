@@ -84,7 +84,7 @@ const getUserDataSlice = createSlice({
                 state.userLoadingStatus = 'error';
             }
         })
-           .addCase(getUserData.rejected, (state, action) => {
+            .addCase(getUserData.rejected, (state, action) => {
                state.userLoadingStatus = 'error';
                if(action.payload?.message){
                 state.responseMessage = action.payload.message

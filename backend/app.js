@@ -11,6 +11,8 @@ const bcrypt = require('bcrypt');
 require('dotenv').config(); // add dotnv for config
 const Uuid = require('uuid'); //lib for unic id generate
 const fileupload = require('express-fileupload');
+const fs = require('fs');
+
 
 
 const server = http.createServer(app);
@@ -74,7 +76,8 @@ app.post('/login', async (req, res) => {
                 isAdmin: !await User.count().exec(),
                 isBanned: false,
                 isMutted: false, 
-                avatar: ''
+                avatar: '',
+                messages: []
             });
 
             await user.save()
@@ -108,7 +111,12 @@ app.post('/avatar', async (req, res) =>  {
         const user = jwt.verify(req.body.token, TOKEN_KEY);
         const avatarFileName = Uuid.v4() + '.jpeg';
         file.mv(STATIC_PATH + '\/' + avatarFileName)
-        const userFromDb = await User.findOneAndUpdate({userName: user.userName},{ $set: {'avatar': avatarFileName}},   {
+        const userFromDb = await getOneUser(user.userName);
+        if(userFromDb.avatar){
+            const oldAvatar = userFromDb?.avatar;
+            fs.unlinkSync(STATIC_PATH + '\/' + oldAvatar)
+        }
+        await User.findOneAndUpdate({userName: user.userName},{ $set: {'avatar': avatarFileName}},   {
             new: true
           });
         return res.json({ message:'Avatar was uploud succesfully...', avatarUrl: avatarFileName})
@@ -174,6 +182,8 @@ io.on("connection", async (socket) => {
     }//sent all users from db to admin
 
     const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
+    //console.log(messagesToShow)
+    
     socket.emit('allmessages', messagesToShow.reverse());
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 
@@ -196,17 +206,20 @@ io.on("connection", async (socket) => {
                 userName: userName,
                 createDate: Date.now(),
                 user: oneUser.id, //add link to other collection by id
-                userAvatar: oneUser.avatar
             });
             try {
-                await message.save(); 
-                
-
+                await message.save();
+                console.log(oneUser)
+                if(!oneUser.messages){
+                    await oneUser.update({ $set: {'messages': []}});
+                }
+                await oneUser.messages.push(message)
+                await oneUser.save()
             } catch (error) {
                 console.log('Message save to db error', error);   
             }
            // const newMessagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
-            io.emit('newmessage', message);
+        //    io.emit('allmessages', messagesToShow.reverse()); // 
         // }
         // } 
     });
