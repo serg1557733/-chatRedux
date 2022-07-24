@@ -92,7 +92,7 @@ const getUserDataSlice = createSlice({
             state.responseMessage = 'Something went wrong...'
         })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
-                state.avatar = action.payload.data.avatarUrl
+                state.avatar = action.payload.data?.avatarUrl
                 
         })
             .addCase(getUserAvatar.rejected, (state, action) => {

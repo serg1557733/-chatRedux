@@ -35,7 +35,7 @@ export const MessageForm = () => {
                         {console.log(item)}
                         <Avatar 
                       
-                           // src= {SERVER_URL + item.userAvatar}
+                            src= {SERVER_URL + item?.user?.avatar}
                             sx={
                                 (item.userName == user.userName)
                                 ? 

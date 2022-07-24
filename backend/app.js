@@ -113,7 +113,7 @@ app.post('/avatar', async (req, res) =>  {
         file.mv(STATIC_PATH + '\/' + avatarFileName)
         const userFromDb = await getOneUser(user.userName);
         if(userFromDb.avatar){
-            const oldAvatar = userFromDb?.avatar;
+            const oldAvatar = userFromDb.avatar;
             fs.unlinkSync(STATIC_PATH + '\/' + oldAvatar)
         }
         await User.findOneAndUpdate({userName: user.userName},{ $set: {'avatar': avatarFileName}},   {
@@ -181,9 +181,7 @@ io.on("connection", async (socket) => {
          getAllDbUsers(socket); 
     }//sent all users from db to admin
 
-    const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
-    //console.log(messagesToShow)
-    
+    const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
     socket.emit('allmessages', messagesToShow.reverse());
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 
@@ -209,7 +207,6 @@ io.on("connection", async (socket) => {
             });
             try {
                 await message.save();
-                console.log(oneUser)
                 if(!oneUser.messages){
                     await oneUser.update({ $set: {'messages': []}});
                 }
@@ -218,9 +215,9 @@ io.on("connection", async (socket) => {
             } catch (error) {
                 console.log('Message save to db error', error);   
             }
-           // const newMessagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20);
-        //    io.emit('allmessages', messagesToShow.reverse()); // 
-        // }
+            const newMessages = await message.populate( {path:'user'})   
+            io.emit('newmessage', newMessages);        
+            // }
         // } 
     });
     
