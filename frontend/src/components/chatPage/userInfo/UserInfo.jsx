@@ -1,13 +1,13 @@
 import {Button,Avatar} from '@mui/material';
 import { useSelector } from 'react-redux';
 import { banUser } from '../service/banUser';
-import Input from '@mui/material/Input';
 import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { store } from '../../../store';
+import { getSocket } from '../../../reducers/socketReducer';
 
 
 export const UserInfo = () => {
@@ -38,13 +38,17 @@ export const UserInfo = () => {
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
-    const usersOnline = [...new Set(useSelector(state => state.getUserSocketReducer.usersOnline))];//Set?
+    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline);
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isTabletorMobile = (window.screen.width < 730);
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
 
     let userAvatarUrl = SERVER_URL + (storeUserAvatar || user.avatar);
 
+
+    const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+    
+    
     const inputHandler = (e) => {
         const file = e.target.files[0]
         dispatch(getUserAvatar(file))
@@ -53,8 +57,12 @@ export const UserInfo = () => {
     //add delete avatar function later 
 
 
+  
+
+
     return (
             <>  
+                <h4> Hello, {user.userName} </h4>
                 <Avatar
                     sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
                     onClick={() => loadAvatarHandler()}
@@ -70,17 +78,12 @@ export const UserInfo = () => {
                         onChange = {e => inputHandler(e)}
                        />
                     {user.isAdmin ? 
-                        allUsers.map((item) =>
+                        allUsers.map((item, key) =>
                             <div 
                                 key={item._id}
                                 className='online'>
-                                <div style={{color: (usersOnline.map(current => {
-                                                if(item.userName === current.userName) {
-                                                    return current.color
-                                                }}))
-                                            }}>
-
-                                            {item.userName}
+                                <div>
+                                    {item.userName}
                                 </div>
 
                                 <div>
@@ -125,10 +128,11 @@ export const UserInfo = () => {
                                     </>}
                             
                                 </div>
-                                    {usersOnline.map((user, i) => {
-                                        if(item.userName === user.userName){
-                                            return <span key={i} style={{color: 'green'}}>online</span>
-                                        }})}
+                                    {
+                                    userNamesOnlineSet.has(item.userName)? 
+                                    <span key={key} style={{color: 'green'}}>online</span>
+                                    : ''
+                                    }
                             </div>) 
                     :
                     usersOnline.map((item, i) =>

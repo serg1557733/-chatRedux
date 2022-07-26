@@ -1,4 +1,4 @@
-import {Avatar, Box} from '@mui/material';
+import { Avatar, Box, StyledBadge } from '@mui/material';
 import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
 import { Fragment, useRef, useEffect, useMemo} from 'react';
@@ -6,21 +6,23 @@ import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
 import { TimeAgoMessage } from '../TimeAgoMessage';
+import { StyledAvatar } from './StyledAvatar';
+
+
+
 
 export const MessageForm = () => {
 
-    const randomColor = require('randomcolor');  
     const dispatch = useDispatch();
     const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
-    const userColor = useMemo(() => randomColor(),[]);
+    const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
 
     const endMessages = useRef(null);
 
-    
 
     useEffect(() => {
         scrollToBottom(endMessages)
@@ -31,30 +33,27 @@ export const MessageForm = () => {
                 {
                 startMessages.map((item, i) =>
                     <div key={i} className={ 
-                        (item.userName === user.userName)? 'message myMessage' :'message'}>    
-                        {console.log(item)}
-                        <Avatar 
-                      
-                            src= {SERVER_URL + item?.user?.avatar}
-                            sx={
-                                (item.userName == user.userName)
-                                ? 
-                                {
-                                    alignSelf: 'flex-end',
-                                    backgroundColor: userColor
-                                }
-                                :
-                                {
-                                    backgroundColor:  (usersOnline.map(current => {
-                                        if(item.userName === current.userName ) {
-                                            return current.color
-                                        }
-                                    } )),
-                                }
-                            }> 
-                            {item?.userName.slice(0, 1)}
-                        </Avatar>   
+                        (item.userName === user.userName)? 'message myMessage' :'message'}>   
+                        <StyledAvatar
+                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
+                             variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
+                                   
+                            >
+                            <Avatar 
 
+                                src= {SERVER_URL + item?.user?.avatar}
+                                sx={
+                                    (item.userName == user.userName)
+                                    ? 
+                                    {
+                                        alignSelf: 'flex-end',
+                                    }
+                                    :
+                                    {}
+                                }> 
+                                {item?.userName.slice(0, 1)}
+                            </Avatar>   
+                        </StyledAvatar>
                         <div 
                             key={item._id}
                             onClick = {(e) => {

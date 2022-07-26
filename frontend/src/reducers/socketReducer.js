@@ -30,11 +30,6 @@ const connectToSocket = (event) => {
                                     case 'allmessages':
                                         store.dispatch(getAllMessages(data));
                                         break;
-                            
-                                    case 'usersOnline':
-                                        store.dispatch(getUsersOnline(data));
-                                        break;
-
                                     case 'allDbUsers':
                                         store.dispatch(getAllUsers(data));
                                         break;
@@ -48,6 +43,9 @@ const connectToSocket = (event) => {
                             .on('ban', (data) => {
                                 store.dispatch(removeToken()); 
                                 localStorage.removeItem('token');
+                                })
+                            .on('usersOnline', (data) => {
+                                    store.dispatch(getUsersOnline(data))
                                 })
                             .on('disconnect', (data) => {
                                 if( data === 'io server disconnect') {
