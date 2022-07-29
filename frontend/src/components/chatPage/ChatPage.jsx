@@ -139,7 +139,6 @@ export const ChatPage = () => {
                     <UserInfo/>
 
                 </Box>
-
             </Box>
         </div>
     )
