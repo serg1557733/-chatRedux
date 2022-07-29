@@ -10,6 +10,7 @@ import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage } from '../../reducers/messageReducer';
 import { editMessage } from '../../reducers/messageReducer';
 import { SwitchButton } from './SwitchButton';
+import { MessageEditorMenu } from './MessageEditorMenu.jsx';
 import './chatPage.scss';
 
 

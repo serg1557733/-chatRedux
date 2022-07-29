@@ -1,11 +1,12 @@
 import { Avatar, Box, StyledBadge } from '@mui/material';
 import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
-import { useRef, useEffect} from 'react';
+import { useRef, useEffect, useState} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
 import { StyledAvatar } from './StyledAvatar';
+import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 
 export const MessageForm = () => {
 
@@ -22,16 +23,36 @@ export const MessageForm = () => {
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
+
+    const [isMessageClick, setIsMessageClick] = useState(false); // add to reducer
+
+
     useEffect(() => {
         scrollToBottom(endMessages)
       }, [startMessages, usersOnline]);
                   
     return (             
-            <Box className='messageBox'>                     
+            <Box className='messageBox'>  
                 {
                 startMessages.map((item, i) =>
                     <div key={i} className={ 
-                        (item.userName === user.userName)? 'message myMessage' :'message'}>   
+                        (item.userName === user.userName)? 'message myMessage' :'message'}
+                        onClick = {(e) => {
+                            if(e.target.className.includes('myMessage')){
+                                e.currentTarget.className += ' editMessage' 
+                                startMessages.map( item => {
+                                    if((item.userName === user.userName) && (item.text === e.target.textContent)){
+                                        console.log('edit message',e.target.textContent )
+                                        setIsMessageClick(true)
+                                        //dispatch(editMessage({editMessage: e.target.textContent}))   
+            
+                                    }
+                                    })}
+                        }}
+                        > 
+
+                        { isMessageClick ? <MessageEditorMenu/> : ""}
+
                         <StyledAvatar
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
                              variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
@@ -48,28 +69,22 @@ export const MessageForm = () => {
                                     }
                                     :
                                     {}
-                                }> 
+                                }
+                                
+                                > 
                                 {item?.userName.slice(0, 1)}
                             </Avatar>   
+
+                        
                         </StyledAvatar>
                         <div 
                             key={item._id}
-                            onClick = {(e) => {
-                                if(e.target.className.includes('myMessage')){
-                                    e.currentTarget.className += ' editMessage' 
-                                    startMessages.map( item => {
-                                        if((item.userName === user.userName) && (item.text === e.target.textContent)){
-                                            console.log('edit message',e.target.textContent )
-                                            dispatch(editMessage({editMessage: e.target.textContent}))                                        
-                                        }
-                                        })}
-                            }}
+                        
                             className={ 
                                 (item.userName === user.userName)? 'message myMessage' :'message'}>
                            
                            { 
                            item.text.match(regYoutube) ?
-
                            <iframe 
                                 width="350" 
                                 height="220" 
@@ -82,7 +97,9 @@ export const MessageForm = () => {
                             :
                             <p>{item.text}</p>  
                            }
+
                         </div>
+
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
                                 {dateFormat(item).time}
