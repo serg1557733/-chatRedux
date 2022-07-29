@@ -26,7 +26,6 @@ const io = require("socket.io")(server, {
         origin: "http://localhost:3000" //client endpoint and port
     }
 });
-const randomColor = require('randomcolor'); 
 
 const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
@@ -144,6 +143,7 @@ io.use( async (socket, next) => {
         usersOnline.push(sock.user);
     }) 
 
+
    
     try {
         const user = jwt.verify(token, TOKEN_KEY);
@@ -155,7 +155,6 @@ io.use( async (socket, next) => {
             return;
         }
         socket.user = user;
-        socket.user.color = randomColor();
         const exist = sockets.find((current) => current.user.userName == socket.user.userName)
 
         if(exist) {  //&& !user.isAdmin  - add for two or more admins 
@@ -173,10 +172,12 @@ io.on("connection", async (socket) => {
     const userName = socket.user.userName;
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
-    
-    io.emit('usersOnline', sockets.map((sock) => sock.user)); // send array online users  
+
+
+    io.emit('usersOnline', sockets.map(sock => sock.user)); // send array online users  
+
     socket.emit('connected', dbUser); //socket.user
-   
+  
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 
     }//sent all users from db to admin
@@ -224,11 +225,10 @@ io.on("connection", async (socket) => {
     try {
         socket.on("disconnect", async () => {
             const sockets = await io.fetchSockets();
-            io.emit('usersOnline', sockets.map((sock) => sock.user));
+            io.emit('usersOnline', sockets.map(sock => sock.user));
             console.log(`user :${socket.user.userName} , disconnected to socket`); 
         });
             console.log(`user :${socket.user.userName} , connected to socket`); 
-        
         socket.on("muteUser",async (data) => {
             if(!socket.user.isAdmin){
                 return;
@@ -265,6 +265,11 @@ io.on("connection", async (socket) => {
                 }
             // }
            });
+
+           socket.on('userWriting', async () => {
+                let isTyping = true;
+                io.emit('writing', {userName, isTyping})
+           })
     } catch (e) {
         console.log(e);
     }

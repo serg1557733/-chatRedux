@@ -45,7 +45,6 @@ export const UserInfo = () => {
 
     let userAvatarUrl = SERVER_URL + (storeUserAvatar || user.avatar);
 
-
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     
     
@@ -54,11 +53,6 @@ export const UserInfo = () => {
         dispatch(getUserAvatar(file))
         setDisplayType('none')
     }
-    //add delete avatar function later 
-
-
-  
-
 
     return (
             <>  

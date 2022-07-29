@@ -10,7 +10,9 @@ const initialState = {
     socketUserData: {},
     usersOnline: [],
     startMessages: [],
-    allUsers: []
+    allUsers: [],
+    writing: false,
+    usersWriting: []
 }
 
 const SOCKET_URL =  process.env.REACT_APP_SERVER_URL || 'http://localhost:5000'; 
@@ -19,11 +21,12 @@ const connectToSocket = (event) => {
         try {
             const token = localStorage.getItem('token');
             if(token){
-                const socket = io.connect( 
+                const socket = io.connect(    //need to add other function for connecting
                     SOCKET_URL, 
                     {auth: {token}})
                     socket.on('connected', data => {
                                 store.dispatch(getUser(data));
+                               // socketEventsDispatch(socket)
                             })
                             .on(event, (data) => {
                                    switch (event){
@@ -54,6 +57,7 @@ const connectToSocket = (event) => {
                                 }
                             })
                             .on('error', e => {console.log('On connected', e)}); 
+                            
                 return socket;       
             }   
         } catch (error) {
@@ -61,7 +65,15 @@ const connectToSocket = (event) => {
         } 
     };
 
-    
+// const socketEventsDispatch = (socket) => {
+//     socket
+//         .on('writing', (data) => {
+//                 console.log(data)
+//                 store.dispatch(writing(data));   
+//      })
+// }
+
+
 export const getUserSocketSlice = createSlice({
     name: 'userSocket',
     initialState,
@@ -77,7 +89,12 @@ export const getUserSocketSlice = createSlice({
         getAllMessages: (state, action) => {state.startMessages = action.payload},
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
-        addNewMessage: (state, action) => {state.startMessages.push(action.payload)}
+        addNewMessage: (state, action) => {state.startMessages.push(action.payload)}, 
+        // writing: (state, action) => {
+        //                             state.writing = true;
+        //                             state.usersWriting.push(action.payload)                  
+        //     }
+        
         }
     }
 );
@@ -94,5 +111,6 @@ export const {
     getAllMessages,
     getUsersOnline,
     addNewMessage,
-    getAllUsers
+    getAllUsers,
+    writing
 } = actions;

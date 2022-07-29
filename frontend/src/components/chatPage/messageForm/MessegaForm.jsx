@@ -1,19 +1,16 @@
 import { Avatar, Box, StyledBadge } from '@mui/material';
 import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
-import { Fragment, useRef, useEffect, useMemo} from 'react';
+import { useRef, useEffect} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
-import { TimeAgoMessage } from '../TimeAgoMessage';
 import { StyledAvatar } from './StyledAvatar';
-
-
-
 
 export const MessageForm = () => {
 
     const dispatch = useDispatch();
+
     const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
@@ -23,6 +20,7 @@ export const MessageForm = () => {
 
     const endMessages = useRef(null);
 
+    const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
     useEffect(() => {
         scrollToBottom(endMessages)

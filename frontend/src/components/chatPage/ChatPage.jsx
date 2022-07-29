@@ -26,20 +26,31 @@ export const ChatPage = () => {
     let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
 
     const [message, setMessage] = useState({message: ''});
+    const [isUserTyping, setUserTyping] = useState([]);
     
     const isTabletorMobile = (window.screen.width < 730);
 
     useEffect(() => {
-        if(token){
-            SOCKET_EVENTS.map(event => dispatch(getSocket(event)))       
+        if(socket) {
+            socket.on('writing', (data) => { 
+                    setUserTyping(data) 
+                    setTimeout(() => setUserTyping([]), 500 )
+                })  
         }
-    }, [token, editOldMessage, showUserInfoBox, ])
+   }, [socket])
+
+
+    useEffect(() => {
+   
+        if(token){
+            SOCKET_EVENTS.map(event => dispatch(getSocket(event)))   
+        }
+    }, [token, editOldMessage, showUserInfoBox])
  
     return (
         <div className='rootContainer'>
 
             <Box className = 'rootBox'>
-
 
                 { isTabletorMobile ? <SwitchButton/> : null}
                 
@@ -47,7 +58,10 @@ export const ChatPage = () => {
                     
                     <MessageForm/>
 
+                    {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
+
                     <Box 
+
                         component="form" 
                         onSubmit = {e  => {
                                         e.preventDefault()
@@ -64,7 +78,7 @@ export const ChatPage = () => {
                             margin: '20px 5px'}
                            
                         }>
-            
+
                         <TextareaAutosize
                             id="outlined-basic" 
                             label="Type a message..." 
@@ -85,6 +99,7 @@ export const ChatPage = () => {
                             }}
                             onChange={e => { 
                                 dispatch(storeMessage({message: e.target.value}))
+                                socket.emit('userWriting');
                                 setMessage({message: e.target.value})}
                             } 
                         
@@ -115,8 +130,8 @@ export const ChatPage = () => {
                         variant="outlined"
                         onClick={()=> {
                                 localStorage.removeItem('token');
-                                socket.disconnect(); 
                                 dispatch(removeToken());
+                                socket.disconnect(); 
                                 }}>
                         Logout
                     </Button>
