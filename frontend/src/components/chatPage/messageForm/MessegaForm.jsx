@@ -18,13 +18,12 @@ export const MessageForm = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+    const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
-    const endMessages = useRef(null);
+
+    const endMessages =useRef(null);
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
-
-
-    const [isMessageClick, setIsMessageClick] = useState(false); // add to reducer
 
 
     useEffect(() => {
@@ -35,23 +34,17 @@ export const MessageForm = () => {
             <Box className='messageBox'>  
                 {
                 startMessages.map((item, i) =>
-                    <div key={i} className={ 
+                    <div key={item.id} className={ 
                         (item.userName === user.userName)? 'message myMessage' :'message'}
                         onClick = {(e) => {
-                            if(e.target.className.includes('myMessage')){
-                                e.currentTarget.className += ' editMessage' 
-                                startMessages.map( item => {
-                                    if((item.userName === user.userName) && (item.text === e.target.textContent)){
-                                        console.log('edit message',e.target.textContent )
-                                        setIsMessageClick(true)
-                                        //dispatch(editMessage({editMessage: e.target.textContent}))   
-            
-                                    }
-                                    })}
+                            if(e.target.className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
+                                e.currentTarget.className += ' editMessage'  
+                                dispatch(editMessage({editMessage: e.target.textContent, messageId: item._id}))   
+                                }
                         }}
                         > 
 
-                        { isMessageClick ? <MessageEditorMenu/> : ""}
+                        {storeMessageId === item._id ? <MessageEditorMenu/> : ""} 
 
                         <StyledAvatar
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
@@ -78,7 +71,7 @@ export const MessageForm = () => {
                         
                         </StyledAvatar>
                         <div 
-                            key={item._id}
+                            key={item._id + 1}
                         
                             className={ 
                                 (item.userName === user.userName)? 'message myMessage' :'message'}>
@@ -86,13 +79,12 @@ export const MessageForm = () => {
                            { 
                            item.text.match(regYoutube) ?
                            <iframe 
-                                width="350" 
-                                height="220" 
+                                width="280" 
+                                height="160" 
                                 src={`https://www.youtube.com/embed/`+ (item.text.match(regYoutube)[1])}
                                 title="YouTube video player" 
-                                frameborder="0" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                allowfullscreen> 
+                                allowFullScreen> 
                             </iframe>
                             :
                             <p>{item.text}</p>  

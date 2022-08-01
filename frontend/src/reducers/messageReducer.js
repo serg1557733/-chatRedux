@@ -3,7 +3,8 @@ import { createSlice} from '@reduxjs/toolkit';
 const initialState = {
     startMessages: [],
     message:'',
-    editMessage: ''
+    editMessage: '',
+    messageId: '', 
 }
 
 export const sendMessageToSocket = (state, data) => {
@@ -28,7 +29,10 @@ const messageReducerSlice = createSlice({
     initialState,
     reducers: {
         storeMessage: (state, action) => {state.message = action.payload.message},
-        editMessage: (state, action) => {state.editMessage = action.payload.editMessage},
+        editMessage: (state, action) => {
+            state.editMessage = action.payload.editMessage;
+            state.messageId = action.payload.messageId;
+            },
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''}
         
