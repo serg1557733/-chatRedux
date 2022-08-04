@@ -43,11 +43,13 @@ export const UserInfo = () => {
     const isTabletorMobile = (window.screen.width < 730);
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
 
-    let userAvatarUrl = SERVER_URL + (storeUserAvatar || user.avatar);
 
+
+    let userAvatarUrl = storeUserAvatar || user.avatar;
+
+    
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
-    
-    
+
     const inputHandler = (e) => {
         const file = e.target.files[0]
         dispatch(getUserAvatar(file))
@@ -60,7 +62,8 @@ export const UserInfo = () => {
                 <Avatar
                     sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
                     onClick={() => loadAvatarHandler()}
-                    src={userAvatarUrl} >
+                    src={userAvatarUrl ? SERVER_URL + userAvatarUrl : ""}
+                    >
                 </Avatar>  
                 <input
                         type="file"

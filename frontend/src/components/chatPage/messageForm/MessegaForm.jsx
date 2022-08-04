@@ -34,7 +34,7 @@ export const MessageForm = () => {
             <Box className='messageBox'>  
                 {
                 startMessages.map((item, i) =>
-                    <div key={item.id} className={ 
+                    <div key={i + 1} className={ 
                         (item.userName === user.userName)? 'message myMessage' :'message'}
                         onClick = {(e) => {
                             if(e.target.className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
@@ -47,12 +47,13 @@ export const MessageForm = () => {
                         {storeMessageId === item._id ? <MessageEditorMenu/> : ""} 
 
                         <StyledAvatar
+
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
-                             variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
+                            variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
                                    
                             >
                             <Avatar 
-
+                                key={i} 
                                 src= {SERVER_URL + item?.user?.avatar}
                                 sx={
                                     (item.userName == user.userName)
@@ -71,7 +72,7 @@ export const MessageForm = () => {
                         
                         </StyledAvatar>
                         <div 
-                            key={item._id + 1}
+                            key={i/10}
                         
                             className={ 
                                 (item.userName === user.userName)? 'message myMessage' :'message'}>
@@ -85,6 +86,7 @@ export const MessageForm = () => {
                                 title="YouTube video player" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                                 allowFullScreen> 
+                                
                             </iframe>
                             :
                             <p>{item.text}</p>  
