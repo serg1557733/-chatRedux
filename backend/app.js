@@ -125,6 +125,73 @@ app.post('/avatar', async (req, res) =>  {
     }
 })
 
+app.post('/files', async (req, res) =>  {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json('No files were uploaded.');
+    }  
+    
+    const user = jwt.verify(req.body.token, TOKEN_KEY);
+    const oneUser = await getOneUser(user.userName);
+    if(oneUser.isMutted){  
+        return;
+     }
+    const files = req.files.files;
+    if (files.length) {
+        for (let i = 0; i < files.length; i++) {
+        let file = files[i]
+        file.mv(STATIC_PATH + '\/files/' + file.name) 
+
+        const message = new Message({
+            text: 'data.message',
+            userName: user.userName,
+            createDate: Date.now(),
+            user: oneUser.id, //add link to other collection by id
+            file: file.name
+        });
+
+        try {
+            await message.save();
+            if(!oneUser.messages){
+                await oneUser.update({ $set: {'messages': []}});
+            }
+            await oneUser.messages.push(message)
+            await oneUser.save()
+        } 
+        catch (error) {
+            console.log('Message save to db error', error);   
+        }
+        const newMessages = await message.populate( {path:'user'})   
+        io.emit('newmessage', newMessages);        
+
+   }}     
+    else {
+            files.mv(STATIC_PATH + '\/files/' + files.name);      //for one file       
+            const message = new Message({
+                text: 'File sent',
+                userName: user.userName,
+                createDate: Date.now(),
+                user: oneUser.id, //add link to other collection by id
+                file: files.name
+            });
+    
+            try {
+                await message.save();
+                if(!oneUser.messages){
+                    await oneUser.update({ $set: {'messages': []}});
+                }
+                await oneUser.messages.push(message)
+                await oneUser.save()
+            } 
+            catch (error) {
+                console.log('Message save to db error', error);   
+            }
+            const newMessages = await message.populate( {path:'user'})   
+            console.log(newMessages)
+            io.emit('newmessage', newMessages); 
+    } 
+
+    return res.json({ message:'File was uploud succesfully...'})
+  })
 
 
 

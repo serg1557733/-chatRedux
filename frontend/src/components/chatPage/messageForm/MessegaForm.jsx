@@ -21,14 +21,15 @@ export const MessageForm = () => {
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
 
-    const endMessages =useRef(null);
+    let endMessages =useRef(null);
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
 
     useEffect(() => {
         scrollToBottom(endMessages)
-      }, [startMessages, usersOnline]);
+        console.log('useEffect', endMessages)
+      }, [startMessages]);
                   
     return (             
             <Box className='messageBox'>  
@@ -39,7 +40,7 @@ export const MessageForm = () => {
                         onClick = {(e) => {
                             if(e.target.className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
                                 e.currentTarget.className += ' editMessage'  
-                                dispatch(editMessage({editMessage: e.target.textContent, messageId: item._id}))   
+                                dispatch(editMessage({editMessage: e.target.textContent, messageId: item._id}))  
                                 }
                         }}
                         > 
@@ -72,7 +73,7 @@ export const MessageForm = () => {
                         
                         </StyledAvatar>
                         <div 
-                            key={i/10}
+                            key={i}
                         
                             className={ 
                                 (item.userName === user.userName)? 'message myMessage' :'message'}>

@@ -7,10 +7,11 @@ import { store } from '../../store';
 import { removeToken} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
-import { sendMessage, storeMessage } from '../../reducers/messageReducer';
+import { sendMessage, storeMessage, fileMessage } from '../../reducers/messageReducer';
 import { editMessage } from '../../reducers/messageReducer';
 import { SwitchButton } from './SwitchButton';
 import { MessageEditorMenu } from './MessageEditorMenu.jsx';
+import imgBtn from '../../assets/img/gg.png'
 import './chatPage.scss';
 
 
@@ -47,9 +48,13 @@ export const ChatPage = () => {
             SOCKET_EVENTS.map(event => dispatch(getSocket(event)))   
         }
     }, [token, editOldMessage, showUserInfoBox])
+
+  
  
     return (
         <div className='rootContainer'>
+
+    
 
             <Box className = 'rootBox'>
 
@@ -79,6 +84,31 @@ export const ChatPage = () => {
                             margin: '20px 5px'}
                            
                         }>
+
+                        <Button
+                            variant="contained" 
+                            component="label"
+                            sx = {{
+                                minWidth: 'auto',
+                                backgroundImage:'url(' + imgBtn + ')' ,
+                                backgroundPosition: 'center', 
+                                backgroundRepeat: "no-repeat", 
+                                backgroundSize: '20px 40px'
+
+                            }}
+                        >
+                        <input
+                            onChange={e =>{
+                                dispatch(fileMessage(e.target.files))
+                            }}
+
+                            type="file"
+                            multiple
+                            hidden
+                        />
+
+                       
+                        </Button>            
 
                         <TextareaAutosize
                             id="outlined-basic" 
