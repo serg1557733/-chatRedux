@@ -1,12 +1,14 @@
-import { Avatar, Box, StyledBadge } from '@mui/material';
+import { Avatar, Box, Button} from '@mui/material';
 import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
-import { useRef, useEffect, useState} from 'react';
+import { useRef, useEffect} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
 import { StyledAvatar } from './StyledAvatar';
 import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
+import imgBtn from '../../../assets/img/gg.png';
+
 
 export const MessageForm = () => {
 
@@ -24,7 +26,6 @@ export const MessageForm = () => {
     let endMessages =useRef(null);
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
-
 
     useEffect(() => {
         scrollToBottom(endMessages)
@@ -93,7 +94,43 @@ export const MessageForm = () => {
                             <p>{item.text}</p>  
                            }
 
+                           {
+                            (item.file && item.file.split('.')[1] !== 'jpeg') ? 
+
+                                <a href={SERVER_URL + item.file} download> 
+                                    <Button
+                                        variant="contained" 
+                                        component="label"
+                                        sx = {{
+                                            minWidth: 'auto',
+                                            minHeight: '40px',
+                                            backgroundImage:'url(' + imgBtn + ')' ,
+                                            backgroundPosition: 'center', 
+                                            backgroundRepeat: "no-repeat", 
+                                            backgroundSize: '20px 40px'
+
+                                        }}
+
+                                    
+                                        
+                                    >
+                                    </Button>  
+                                </a>
+                        : 
+                            ''                            
+                        }
+
+                        {
+                            (item.file && item.file.split('.')[1] == 'jpeg' ) //need to fix for other type files
+                            ? 
+                                 <img width={150} height={150} src={ SERVER_URL + item.file} alt={'error load image'}/>
+                            :
+                            ''
+
+                        }
+
                         </div>
+
 
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>

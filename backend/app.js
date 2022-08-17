@@ -125,6 +125,10 @@ app.post('/avatar', async (req, res) =>  {
     }
 })
 
+
+
+
+
 app.post('/files', async (req, res) =>  {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json('No files were uploaded.');
@@ -139,10 +143,10 @@ app.post('/files', async (req, res) =>  {
     if (files.length) {
         for (let i = 0; i < files.length; i++) {
         let file = files[i]
-        file.mv(STATIC_PATH + '\/files/' + file.name) 
+        file.mv(STATIC_PATH + '\/' + file.name) 
 
         const message = new Message({
-            text: 'data.message',
+            text:  file.name,
             userName: user.userName,
             createDate: Date.now(),
             user: oneUser.id, //add link to other collection by id
@@ -165,9 +169,9 @@ app.post('/files', async (req, res) =>  {
 
    }}     
     else {
-            files.mv(STATIC_PATH + '\/files/' + files.name);      //for one file       
+            files.mv(STATIC_PATH + '\/' + files.name);      //for one file       
             const message = new Message({
-                text: 'File sent',
+                text: files.name,
                 userName: user.userName,
                 createDate: Date.now(),
                 user: oneUser.id, //add link to other collection by id
@@ -185,8 +189,7 @@ app.post('/files', async (req, res) =>  {
             catch (error) {
                 console.log('Message save to db error', error);   
             }
-            const newMessages = await message.populate( {path:'user'})   
-            console.log(newMessages)
+            const newMessages = await message.populate( {path:'user'})  
             io.emit('newmessage', newMessages); 
     } 
 
