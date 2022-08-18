@@ -150,7 +150,8 @@ app.post('/files', async (req, res) =>  {
             userName: user.userName,
             createDate: Date.now(),
             user: oneUser.id, //add link to other collection by id
-            file: file.name
+            file: file.name,
+            fileType: file.mimetype
         });
 
         try {
@@ -175,7 +176,8 @@ app.post('/files', async (req, res) =>  {
                 userName: user.userName,
                 createDate: Date.now(),
                 user: oneUser.id, //add link to other collection by id
-                file: files.name
+                file: files.name,
+                fileType: files.mimetype
             });
     
             try {
@@ -189,8 +191,8 @@ app.post('/files', async (req, res) =>  {
             catch (error) {
                 console.log('Message save to db error', error);   
             }
-            const newMessages = await message.populate( {path:'user'})  
-            io.emit('newmessage', newMessages); 
+           const newMessages = await message.populate( {path:'user'})  
+           io.emit('newmessage', newMessages); 
     } 
 
     return res.json({ message:'File was uploud succesfully...'})

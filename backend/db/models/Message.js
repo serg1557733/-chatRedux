@@ -5,7 +5,8 @@ const Message = new Schema({
     userName : {type: String, required: true},
     createDate: {type: Date, required: true},
     user: { type: Schema.Types.ObjectId, ref: 'User' },//not using 
-    file: {type: String} 
+    file: {type: String} ,
+    fileType: {type: String} 
 
 })
 

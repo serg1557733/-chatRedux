@@ -29,7 +29,6 @@ export const MessageForm = () => {
 
     useEffect(() => {
         scrollToBottom(endMessages)
-        console.log('useEffect', endMessages)
       }, [startMessages]);
                   
     return (             
@@ -91,46 +90,45 @@ export const MessageForm = () => {
                                 
                             </iframe>
                             :
-                            <p>{item.text}</p>  
-                           }
+                           
+                            (item.file && item.fileType && item.fileType.split('/')[0] !== 'image') ? 
 
-                           {
-                            (item.file && item.file.split('.')[1] !== 'jpeg') ? 
-
+                            <div style={{'display': 'flex', 'alignItems': 'center'}} >
+                          
                                 <a href={SERVER_URL + item.file} download> 
                                     <Button
                                         variant="contained" 
                                         component="label"
                                         sx = {{
                                             minWidth: 'auto',
-                                            minHeight: '40px',
+                                            minHeight: '25px',
                                             backgroundImage:'url(' + imgBtn + ')' ,
                                             backgroundPosition: 'center', 
                                             backgroundRepeat: "no-repeat", 
-                                            backgroundSize: '20px 40px'
+                                            backgroundSize: '15px 20px',
+                                            backgroundColor: '#d3d3d3'
 
-                                        }}
-
-                                    
-                                        
+                                        }}  
                                     >
                                     </Button>  
                                 </a>
+                                <p style={{'marginLeft': '15px'}}  >{item.text}</p>  
+                            </div>
                         : 
-                            ''                            
-                        }
+                                                       
+                            <p>{item.text}</p>  
+                           }
 
-                        {
-                            (item.file && item.file.split('.')[1] == 'jpeg' ) //need to fix for other type files
+                        { 
+                            (item.file && item.fileType && item.fileType.split('/')[0] == 'image' ) //need to fix for other type files
                             ? 
+
                                  <img width={150} height={150} src={ SERVER_URL + item.file} alt={'error load image'}/>
                             :
                             ''
-
                         }
 
                         </div>
-
 
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>

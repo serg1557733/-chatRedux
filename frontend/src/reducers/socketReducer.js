@@ -42,7 +42,6 @@ const connectToSocket = (event) => {
                                 })
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
-                                console.log(data)
                                 })
                             .on('ban', (data) => {
                                 store.dispatch(removeToken()); 
