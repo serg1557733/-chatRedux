@@ -4,6 +4,7 @@ import { store } from '../store';
 import { removeToken } from './userDataReducer';
 
 
+
 const initialState = {
     socketStatus: 'idle',
     socket: null,
@@ -14,6 +15,7 @@ const initialState = {
     writing: false,
     usersWriting: []
 }
+
 
 const SOCKET_URL =  process.env.REACT_APP_SERVER_URL || 'http://localhost:5000'; 
 

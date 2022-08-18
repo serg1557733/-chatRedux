@@ -11,8 +11,10 @@ import { sendMessage, storeMessage, fileMessage } from '../../reducers/messageRe
 import { editMessage } from '../../reducers/messageReducer';
 import { SwitchButton } from './SwitchButton';
 import { MessageEditorMenu } from './MessageEditorMenu.jsx';
-import imgBtn from '../../assets/img/gg.png'
+import imgBtn from '../../assets/img/gg.png';
+import imgBtnPhoto from '../../assets/img/photo.png'
 import './chatPage.scss';
+import WebcamCapture from './service/webCam/WebcamCapture';
 
 
 export const ChatPage = () => {
@@ -29,8 +31,15 @@ export const ChatPage = () => {
 
     const [message, setMessage] = useState({message: ''});
     const [isUserTyping, setUserTyping] = useState([]);
+    const [isCamActiv, setisCamActiv] = useState(false);
     
     const isTabletorMobile = (window.screen.width < 730);
+
+
+    const webcamEventHandler = () => {
+        setisCamActiv(!isCamActiv)
+
+    }
 
     useEffect(() => {
         if(socket) {
@@ -61,11 +70,13 @@ export const ChatPage = () => {
                 { isTabletorMobile ? <SwitchButton/> : null}
                 
                 <Box className ={isTabletorMobile ? 'rootMessageFormMobile':'rootMessageForm'} >
-                    
+                {isCamActiv ? <WebcamCapture />:""}
                     <MessageForm/>
 
                     {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
+                     
 
+                     
                     <Box 
 
                         component="form" 
@@ -84,7 +95,6 @@ export const ChatPage = () => {
                             margin: '20px 5px'}
                            
                         }>
-
                         <Button
                             variant="contained" 
                             component="label"
@@ -108,7 +118,22 @@ export const ChatPage = () => {
                         />
 
                        
-                        </Button>            
+                        </Button>    
+                        <Button
+                            variant="contained" 
+                            component="label"
+                            sx = {{
+                                minWidth: 'auto',
+                                backgroundImage:'url(' + imgBtnPhoto + ')' ,
+                                backgroundPosition: 'center', 
+                                backgroundRepeat: "no-repeat", 
+                                backgroundSize: '20px 20px'
+
+                            }}
+
+                            onClick = {() => webcamEventHandler()}
+                        >
+                        </Button>          
 
                         <TextareaAutosize
                             id="outlined-basic" 
