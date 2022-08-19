@@ -127,8 +127,6 @@ app.post('/avatar', async (req, res) =>  {
 
 
 
-
-
 app.post('/files', async (req, res) =>  {
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json('No files were uploaded.');
