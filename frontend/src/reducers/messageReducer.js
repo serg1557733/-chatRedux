@@ -35,6 +35,7 @@ export const fileMessage = createAsyncThunk(
         const token = localStorage.getItem('token')
         try {
             const formData = new FormData();
+            console.log(files)
             for (let i = 0; i < files.length; i++) {
                 formData.append('files', files[i])
             }

@@ -70,13 +70,23 @@ export const ChatPage = () => {
                 { isTabletorMobile ? <SwitchButton/> : null}
                 
                 <Box className ={isTabletorMobile ? 'rootMessageFormMobile':'rootMessageForm'} >
-                {isCamActiv ? <WebcamCapture />:""}
+                {isCamActiv ? 
+                <div>  
+                    <Button
+                        variant="contained" 
+                        component="label"
+                        onClick = {() => webcamEventHandler()}
+                    >
+                        close camera
+                    </Button> 
+                    <WebcamCapture />   
+                 </div> 
+                 :
+                 ""}
                     <MessageForm/>
 
                     {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
-                     
 
-                     
                     <Box 
 
                         component="form" 
