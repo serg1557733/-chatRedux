@@ -3,7 +3,7 @@ import Webcam from "react-webcam";
 import {Button} from '@mui/material';
 import { fileMessage } from '../../../../reducers/messageReducer';
 import { useDispatch } from 'react-redux';
-
+import { getUserAvatar } from '../../../../reducers/userDataReducer';
 
 
 const WebcamCapture = () => {
@@ -13,10 +13,19 @@ const WebcamCapture = () => {
     const webcamRef = useRef(null);
     const [imgSrc, setImgSrc] = useState(null);
 
-    const capture = useCallback(() => {
+    const sendPhotoToChat = async (imageStream) => {
+        const blob = await fetch(imageStream).then((res) => res.blob());
+        dispatch(fileMessage(blob)) 
+    }
+
+    const savePhotoToAvatar = async (imageStream) => {
+        const blob = await fetch(imageStream).then((res) => res.blob());
+        dispatch(getUserAvatar(blob)) 
+    }
+
+    const capture = useCallback(async () => {
       const imageSrc = webcamRef.current.getScreenshot();
       setImgSrc(imageSrc);
-     // dispatch(fileMessage( imageSrc))
     }, [webcamRef, setImgSrc]);
   
     return (
@@ -49,6 +58,7 @@ const WebcamCapture = () => {
           <Button
               variant="contained" 
               component="label"
+              onClick={() => sendPhotoToChat(imgSrc)}
             
           >
             Send
@@ -56,6 +66,8 @@ const WebcamCapture = () => {
           <Button
               variant="contained" 
               component="label" 
+              onClick={() => savePhotoToAvatar(imgSrc)}
+
           >
             Save avatar
           </Button>

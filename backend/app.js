@@ -170,6 +170,9 @@ app.post('/files', async (req, res) =>  {
 
    }}     
     else {
+            if (files.name == 'blob') {
+                files.name = Uuid.v4() + '.jpeg'
+            }
             files.mv(STATIC_PATH + '\/' + files.name);      //for one file       
             const message = new Message({
                 text: files.name,

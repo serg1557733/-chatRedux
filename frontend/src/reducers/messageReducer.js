@@ -22,7 +22,6 @@ export const sendMessageToSocket = (state, data) => {
             } 
     };
 
-
 export const editMessageToSocket = (state, data) => {
         if (state.message && state.message.length < 200) {    
            data.socket.emit('editmessage', {...data.user, message: state.message}); //add backend functional later find by id and edit   
@@ -35,9 +34,12 @@ export const fileMessage = createAsyncThunk(
         const token = localStorage.getItem('token')
         try {
             const formData = new FormData();
-            console.log(files)
-            for (let i = 0; i < files.length; i++) {
+            if(files.length) {
+                 for (let i = 0; i < files.length; i++) {
                 formData.append('files', files[i])
+                }
+            } else {
+                formData.append('files', files)
             }
             formData.append('token', token)
             const response = await axios.post(POST_FILES_URL, formData,
