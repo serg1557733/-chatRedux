@@ -123,6 +123,7 @@ app.post('/avatar', async (req, res) =>  {
     } catch (error) {
         res.status(500).json({message: `Error uppload file to serverp: ${error}`});
     }
+    
 })
 
 app.post('/files', async (req, res) =>  {
@@ -341,6 +342,27 @@ io.on("connection", async (socket) => {
                 let isTyping = true;
                 io.emit('writing', {userName, isTyping})
            })
+
+           socket.on('editmessage', async (data) => {
+                console.log(data)}) 
+
+           socket.on('deleteMessage', async (data) => {
+                const user = jwt.verify(data.token, TOKEN_KEY)
+                console.log(data.messageId)
+                if(!user){
+                    return
+                }
+                try {
+                    await Message.findByIdAndDelete(data.messageId)
+                
+                } catch (error) {
+                    console.log(error)
+                    
+                }
+            }) 
+
+
+
     } catch (e) {
         console.log(e);
     }

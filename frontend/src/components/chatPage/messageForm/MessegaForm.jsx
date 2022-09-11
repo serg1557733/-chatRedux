@@ -1,7 +1,7 @@
 import { Avatar, Box, Button} from '@mui/material';
 import { dateFormat } from '../utils/dateFormat';
 import { useSelector } from 'react-redux';   
-import { useRef, useEffect} from 'react';
+import { useRef, useEffect, useState} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
@@ -13,6 +13,7 @@ import imgBtn from '../../../assets/img/gg.png';
 export const MessageForm = () => {
 
     const dispatch = useDispatch();
+    const socket = useSelector(state => state.getUserSocketReducer.socket)
 
     const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
 
@@ -22,13 +23,15 @@ export const MessageForm = () => {
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
-
-    let endMessages =useRef(null);
+    let endMessages = useRef(null);
+    const [isEditing, setIsEditing] = useState(false)    
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
     useEffect(() => {
-        scrollToBottom(endMessages)
+        if (!isEditing) {
+            scrollToBottom((endMessages)) 
+        }
       }, [startMessages]);
                   
     return (             
@@ -40,12 +43,12 @@ export const MessageForm = () => {
                         onClick = {(e) => {
                             if(e.target.className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
                                 e.currentTarget.className += ' editMessage'  
-                                dispatch(editMessage({editMessage: e.target.textContent, messageId: item._id}))  
+                                dispatch(editMessage({socket, editMessage: e.target.textContent, messageId: item._id}))  
+                                setIsEditing(true)
                                 }
                         }}
                         > 
-
-                        {storeMessageId === item._id ? <MessageEditorMenu/> : ""} 
+                        {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
 
                         <StyledAvatar
 

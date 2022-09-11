@@ -22,11 +22,18 @@ export const sendMessageToSocket = (state, data) => {
             } 
     };
 
-export const editMessageToSocket = (state, data) => {
-        if (state.message && state.message.length < 200) {    
-           data.socket.emit('editmessage', {...data.user, message: state.message}); //add backend functional later find by id and edit   
-       } 
+export const deleteMessageHandler = (state, data) => {
+    data.socket.emit('deleteMessage', {messageId: data.messageId, token: data.socket.auth.token}); 
+              
+        
 };
+
+    
+// export const editMessageHandler = (state, data) => {
+//         data.socket.emit('editmessage', {messageNewText: data.editMessage, messageId: data.messageId}); //add backend functional later find by id and edit 
+// };
+
+
 
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessage',
@@ -65,10 +72,15 @@ const messageReducerSlice = createSlice({
     reducers: {
         storeMessage: (state, action) => {state.message = action.payload.message},
         editMessage: (state, action) => {
-            state.editMessage = action.payload.editMessage;
-            state.messageId = action.payload.messageId;
-            state.ref = action.payload.ref;
+           //  editMessageHandler(state, action.payload)
+             state.editMessage = action.payload.editMessage;
+             state.messageId = action.payload.messageId;
+             state.ref = action.payload.ref;
             },
+        deleteMessage: (state, action) => {
+            deleteMessageHandler(state, action.payload)
+           
+        },
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''},
         extraReducers: (bilder) => 
@@ -93,5 +105,6 @@ export const {
     storeMessage, 
     sendMessage,
     clearMessage,
-    editMessage
+    editMessage,
+    deleteMessage
     } = actions;

@@ -149,7 +149,7 @@ export const ChatPage = () => {
                             id="outlined-basic" 
                             label="Type a message..." 
                             variant="outlined" 
-                            value={message.message || editOldMessage}
+                            value={message.message}
                             placeholder='type you message...'
                             minRows={3}
                             maxRows={4}
