@@ -24,7 +24,8 @@ export const MessageForm = () => {
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
     let endMessages = useRef(null);
-    const [isEditing, setIsEditing] = useState(false)    
+    const [isEditing, setIsEditing] = useState(false)   
+    const [isEditiedMessage, setisEditiedMessage] = useState(false) 
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
@@ -49,6 +50,7 @@ export const MessageForm = () => {
                         }}
                         > 
                         {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
+                        
 
                         <StyledAvatar
 
@@ -132,7 +134,7 @@ export const MessageForm = () => {
                         }
 
                         </div>
-
+                        {isEditiedMessage && <i>Edited</i>}
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
                                 {dateFormat(item).time}

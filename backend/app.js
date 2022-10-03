@@ -344,7 +344,21 @@ io.on("connection", async (socket) => {
            })
 
            socket.on('editmessage', async (data) => {
-                console.log(data)}) 
+            console.log(data.messageNewText)
+            const user = jwt.verify(data.token, TOKEN_KEY)
+                if(!user){
+                    return
+                }
+                try {
+                    await Message.findByIdAndUpdate(data.messageId, {text:data.messageNewText})
+                    const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
+                    io.emit('allmessages', messagesToShow.reverse())
+
+                } catch (error) {
+                    console.log(error)
+                    
+                }
+               }) 
 
            socket.on('deleteMessage', async (data) => {
                 const user = jwt.verify(data.token, TOKEN_KEY)
@@ -354,7 +368,9 @@ io.on("connection", async (socket) => {
                 }
                 try {
                     await Message.findByIdAndDelete(data.messageId)
-                
+                    const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
+                    io.emit('allmessages', messagesToShow.reverse())
+
                 } catch (error) {
                     console.log(error)
                     

@@ -29,9 +29,12 @@ export const deleteMessageHandler = (state, data) => {
 };
 
     
-// export const editMessageHandler = (state, data) => {
-//         data.socket.emit('editmessage', {messageNewText: data.editMessage, messageId: data.messageId}); //add backend functional later find by id and edit 
-// };
+export const editMessageHandler = (state, data) => {
+    console.log( data.editMessage)
+    if(data.socket){
+         data.socket.emit('editmessage', {messageNewText: data.editMessage.message, messageId: data.messageId, token: data.socket.auth.token}); //add backend functional later find by id and edit 
+    }
+};
 
 
 
@@ -72,7 +75,7 @@ const messageReducerSlice = createSlice({
     reducers: {
         storeMessage: (state, action) => {state.message = action.payload.message},
         editMessage: (state, action) => {
-           //  editMessageHandler(state, action.payload)
+             editMessageHandler(state, action.payload)
              state.editMessage = action.payload.editMessage;
              state.messageId = action.payload.messageId;
              state.ref = action.payload.ref;

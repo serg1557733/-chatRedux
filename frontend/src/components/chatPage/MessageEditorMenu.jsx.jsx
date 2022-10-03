@@ -14,11 +14,18 @@ export const MessageEditorMenu = () => {
     const messageId = useSelector(state => state.messageReducer.messageId)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const [message, setMessage] = useState({message: editOldMessage});
+    console.log(message)
 
 
     return (
         <div>
-            <button> Edit</button>
+            <button
+             onClick={() => {
+                dispatch(editMessage({socket, editMessage: message, messageId }))
+                dispatch(editMessage({socket: null, editMessage: '', messageId: '' }))
+                
+            }}
+            > Edit</button>
             <button
              onClick={() => {
                 dispatch(deleteMessage({socket, messageId}))  
