@@ -91,7 +91,11 @@ export const getUserSocketSlice = createSlice({
         getAllMessages: (state, action) => {state.startMessages = action.payload},
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
-        addNewMessage: (state, action) => {state.startMessages.push(action.payload)}, 
+        addNewMessage: (state, action) => {
+            state.startMessages.push(action.payload)
+            
+        }, 
+
         // writing: (state, action) => {
         //                             state.writing = true;
         //                             state.usersWriting.push(action.payload)                  

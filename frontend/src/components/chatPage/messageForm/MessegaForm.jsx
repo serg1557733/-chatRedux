@@ -25,7 +25,7 @@ export const MessageForm = () => {
 
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
-    const [isEditiedMessage, setisEditiedMessage] = useState(false) 
+    const [isEditiedMessage, setisEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 

@@ -25,6 +25,7 @@
     "redux-thunk": "^2.4.1",
     "sass": "^1.53.0",
     "socket.io-client": "^4.4.1",
+    "use-sound": "^4.0.1",
     "uuid": "^8.3.2",
     "web-vitals": "^2.1.3"
   },

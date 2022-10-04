@@ -384,7 +384,6 @@ io.on("connection", async (socket) => {
     }
 });
 
-
 //server and database start
 const start = async () => {
     try {

@@ -15,7 +15,8 @@ import imgBtn from '../../assets/img/gg.png';
 import imgBtnPhoto from '../../assets/img/photo.png'
 import './chatPage.scss';
 import WebcamCapture from './service/webCam/WebcamCapture';
-
+import useSound from 'use-sound';
+import getNotif from '../../assets/get.mp3'
 
 export const ChatPage = () => {
 
@@ -34,6 +35,8 @@ export const ChatPage = () => {
     const [isCamActiv, setisCamActiv] = useState(false);
     
     const isTabletorMobile = (window.screen.width < 730);
+
+    const [play] = useSound(getNotif);
 
 
     const webcamEventHandler = () => {
@@ -96,6 +99,7 @@ export const ChatPage = () => {
                                         dispatch(getSocket('allmessages'))
                                         dispatch(editMessage({editMessage: ''}))
                                         setMessage({message: ''})
+                                        play()
                                     }}
                         sx={(isTabletorMobile)?{
                             display: 'flex',
