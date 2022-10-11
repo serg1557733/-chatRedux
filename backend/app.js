@@ -52,13 +52,17 @@ const getAllDbUsers = async (socket) => {
     socket.emit('allDbUsers', usersDb) 
 }
 
+
 const getOneUser = async (userName) => {
     const userInDb = await User.findOne({userName});
     return userInDb;
 }
 app.post('/login', async (req, res) => {
+    
+
     try {
         const {userName,password} = req.body;
+        console.log(userName,password)
         if (!isValidUserName(userName)){
             return res.status(400).json({message: 'Invalid username'})
         }

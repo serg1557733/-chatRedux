@@ -8,6 +8,8 @@ import { editMessage } from '../../../reducers/messageReducer';
 import { StyledAvatar } from './StyledAvatar';
 import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
+import useSound from 'use-sound';
+import notifSound from '../../../assets/sendSound.mp3'
 
 
 export const MessageForm = () => {
@@ -23,11 +25,15 @@ export const MessageForm = () => {
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
+  
+
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
-    const [isEditiedMessage, setisEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
+    const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
+    
+    const [play] = useSound(notifSound);
 
     useEffect(() => {
         if (!isEditing) {
@@ -50,8 +56,7 @@ export const MessageForm = () => {
                         }}
                         > 
                         {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
-                        
-
+                        {console.log(startMessages.length)}
                         <StyledAvatar
 
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
@@ -62,7 +67,7 @@ export const MessageForm = () => {
                                 key={i} 
                                 src= {SERVER_URL + item?.user?.avatar}
                                 sx={
-                                    (item.userName == user.userName)
+                                    (item.userName === user.userName)
                                     ? 
                                     {
                                         alignSelf: 'flex-end',

@@ -4,7 +4,6 @@ import { store } from '../store';
 import { removeToken } from './userDataReducer';
 
 
-
 const initialState = {
     socketStatus: 'idle',
     socket: null,
@@ -13,13 +12,15 @@ const initialState = {
     startMessages: [],
     allUsers: [],
     writing: false,
-    usersWriting: []
+    usersWriting: [],
+    newMessages : []
 }
 
 
 const SOCKET_URL =  process.env.REACT_APP_SERVER_URL || 'http://localhost:5000'; 
 
 const connectToSocket = (event) => {
+ 
         try {
             const token = localStorage.getItem('token');
             if(token){
@@ -44,6 +45,7 @@ const connectToSocket = (event) => {
                                 })
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
+
                                 })
                             .on('ban', (data) => {
                                 store.dispatch(removeToken()); 
@@ -92,8 +94,8 @@ export const getUserSocketSlice = createSlice({
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
         addNewMessage: (state, action) => {
-            state.startMessages.push(action.payload)
-            
+            state.newMessages.push(action.payload)
+
         }, 
 
         // writing: (state, action) => {

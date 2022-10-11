@@ -4,7 +4,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 
 const initialState = {
-    startMessages: [],
     message:'',
     editMessage: '',
     messageId: '', 
@@ -16,7 +15,7 @@ const POST_FILES_URL = 'http://localhost:5000/files';
 
 
 export const sendMessageToSocket = (state, data) => {
-             if (state.message && state.message.length < 200) {    //remove to other file
+             if (!!state.message && state.message.length < 200) {    //remove to other file
                 data.socket.emit('message', {...data.user, message: state.message}); 
                    
             } 
@@ -30,7 +29,7 @@ export const deleteMessageHandler = (state, data) => {
 
     
 export const editMessageHandler = (state, data) => {
-    console.log( data.editMessage)
+   
     if(data.socket){
          data.socket.emit('editmessage', {messageNewText: data.editMessage.message, messageId: data.messageId, token: data.socket.auth.token}); //add backend functional later find by id and edit 
     }

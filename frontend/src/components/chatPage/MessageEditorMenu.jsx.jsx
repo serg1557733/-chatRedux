@@ -14,7 +14,7 @@ export const MessageEditorMenu = () => {
     const messageId = useSelector(state => state.messageReducer.messageId)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const [message, setMessage] = useState({message: editOldMessage});
-    console.log(message)
+
 
 
     return (

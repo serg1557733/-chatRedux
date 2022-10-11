@@ -16,7 +16,7 @@ import imgBtnPhoto from '../../assets/img/photo.png'
 import './chatPage.scss';
 import WebcamCapture from './service/webCam/WebcamCapture';
 import useSound from 'use-sound';
-import getNotif from '../../assets/get.mp3'
+import getNotif from '../../assets/sendSound.mp3'
 
 export const ChatPage = () => {
 
@@ -95,11 +95,14 @@ export const ChatPage = () => {
                         component="form" 
                         onSubmit = {e  => {
                                         e.preventDefault()
-                                        dispatch(sendMessage({user, socket}))
-                                        dispatch(getSocket('allmessages'))
-                                        dispatch(editMessage({editMessage: ''}))
-                                        setMessage({message: ''})
-                                        play()
+                                        if (message.message.length){
+                                            dispatch(sendMessage({user, socket}))
+                                            dispatch(getSocket('allmessages'))
+                                            dispatch(editMessage({editMessage: ''}))
+                                            setMessage({message: ''})
+                                            play()
+                                        }
+                                      
                                     }}
                         sx={(isTabletorMobile)?{
                             display: 'flex',
@@ -178,7 +181,7 @@ export const ChatPage = () => {
                         <Button 
                             variant="contained" 
                             type='submit'
-                            disabled={user?.isMutted}
+                            disabled={user?.isMutted || !message.message.length}
                             style={{width: '20%'}}
                         >
                             Send
