@@ -43,6 +43,7 @@ const connectToSocket = (event) => {
                                         break;
                                     }
                                 })
+                                
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
 
