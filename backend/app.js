@@ -26,7 +26,6 @@ const io = require("socket.io")(server, {
         origin: "http://localhost:3000" //client endpoint and port
     }
 });
-
 const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
 const HASH_KEY = 7;
@@ -46,7 +45,6 @@ const isValidUserName = (userName) => {
     const nameRegex = /[^A-Za-z0-9]/ ;
     return (!nameRegex.test(userName) && userName.trim().length > 2);
 }
-
 const getAllDbUsers = async (socket) => {
     const usersDb = await User.find({})
     socket.emit('allDbUsers', usersDb) 
@@ -205,27 +203,15 @@ app.post('/files', async (req, res) =>  {
 
 io.use( async (socket, next) => {
     const token = socket.handshake.auth.token; 
-   
+    const sockets = await io.fetchSockets();
     if(!token) {
         console.log('socket disconnect')
         socket.disconnect();
         return;
     }
     
-    const sockets = await io.fetchSockets();
-    const socketUsers = [];
     const usersOnline = [];
-    sockets.map((sock) => {
-        console.log(sock.user.id)
-        socketUsers.map(item => {
-            if (item.id !== sock.user) {
-                usersOnline.push(sock.user);
-            }
-        })
-        
-    }) 
-    
-    console.log('fin arr', usersOnline)
+    sockets.map(sock => usersOnline.push(sock.user))
 
    
     try {
@@ -242,10 +228,9 @@ io.use( async (socket, next) => {
 
         // console.log('exist ' , exist)
 
-
         if(exist) {  //&& !user.isAdmin  - add for two or more admins 
-            console.log(exist.userName, 'exist twice entering...')   
-            exist.disconnect(); 
+            console.log(exist.user.userName, 'exist twice entering...')   
+            exist.disconnect();
         } 
     } catch(e) {
         console.log(e);
