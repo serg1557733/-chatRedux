@@ -46,7 +46,6 @@ const connectToSocket = (event) => {
                                 
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
-
                                 })
                             .on('ban', (data) => {
                                 store.dispatch(removeToken()); 
@@ -94,10 +93,7 @@ export const getUserSocketSlice = createSlice({
         getAllMessages: (state, action) => {state.startMessages = action.payload},
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
-        addNewMessage: (state, action) => {
-            state.newMessages.push(action.payload)
-
-        }, 
+        addNewMessage: (state, action) => {state.newMessages.push(action.payload)}, 
 
         // writing: (state, action) => {
         //                             state.writing = true;

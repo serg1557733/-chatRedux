@@ -17,7 +17,6 @@ const POST_FILES_URL = 'http://localhost:5000/files';
 export const sendMessageToSocket = (state, data) => {
              if (!!state.message && state.message.length < 200) {    //remove to other file
                 data.socket.emit('message', {...data.user, message: state.message}); 
-                   
             } 
     };
 

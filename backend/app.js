@@ -293,6 +293,7 @@ io.on("connection", async (socket) => {
                 console.log('Message save to db error', error);   
             }
             const newMessages = await message.populate( {path:'user'})   
+            console.log(newMessages)
             io.emit('newmessage', newMessages);        
             // }
         // } 

@@ -24,8 +24,7 @@ export const MessageForm = () => {
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
-
-  
+    const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
 
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
@@ -39,16 +38,19 @@ export const MessageForm = () => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         }
-      }, [startMessages]);
-                  
+      }, [startMessages, newMessages]);
+           
+    const messages = startMessages.concat(newMessages)  
+
     return (             
             <Box className='messageBox'>  
                 {
-                startMessages.map((item, i) =>
+                messages.map((item, i) =>
                     <div key={i + 1} className={ 
                         (item.userName === user.userName)? 'message myMessage' :'message'}
                         onClick = {(e) => {
-                            if(e.target.className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
+                            console.log(e.target)
+                            if(e.target.closest("div").className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
                                 e.currentTarget.className += ' editMessage'  
                                 dispatch(editMessage({socket, editMessage: e.target.textContent, messageId: item._id}))  
                                 setIsEditing(true)
@@ -56,7 +58,6 @@ export const MessageForm = () => {
                         }}
                         > 
                         {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
-                        {console.log(startMessages.length)}
                         <StyledAvatar
 
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
@@ -125,8 +126,9 @@ export const MessageForm = () => {
                                 <p style={{'marginLeft': '15px'}}  >{item.text}</p>  
                             </div>
                         : 
-                                                       
-                            <p>{item.text}</p>  
+                        <><p>{i}</p>  
+                            <p>{item.text}</p> </>
+                          
                            }
 
                         { 
