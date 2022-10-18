@@ -21,6 +21,9 @@ export const MessageEditorMenu = () => {
         <div>
             <button
              onClick={() => {
+                if (!message.message.length) {
+                    dispatch(deleteMessage({socket, messageId}))  
+                }
                 dispatch(editMessage({socket, editMessage: message, messageId }))
                 dispatch(editMessage({socket: null, editMessage: '', messageId: '' }))
                 

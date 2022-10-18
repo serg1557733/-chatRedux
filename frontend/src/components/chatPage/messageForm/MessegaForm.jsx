@@ -38,6 +38,9 @@ export const MessageForm = () => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         }
+        if(newMessages.length > 0){
+            newMessages.map(i => console.log(i.userName === user.userName))
+        }
       }, [startMessages, newMessages]);
            
     const messages = startMessages.concat(newMessages)  
@@ -126,8 +129,7 @@ export const MessageForm = () => {
                                 <p style={{'marginLeft': '15px'}}  >{item.text}</p>  
                             </div>
                         : 
-                        <><p>{i}</p>  
-                            <p>{item.text}</p> </>
+                            <p>{item.text}</p>
                           
                            }
 

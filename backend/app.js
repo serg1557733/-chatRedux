@@ -62,7 +62,6 @@ app.post('/login', async (req, res) => {
 
     try {
         const {userName,password} = req.body;
-        console.log(userName,password)
         if (!isValidUserName(userName)){
             return res.status(400).json({message: 'Invalid username'})
         }
@@ -206,19 +205,27 @@ app.post('/files', async (req, res) =>  {
 
 io.use( async (socket, next) => {
     const token = socket.handshake.auth.token; 
-    const sockets = await io.fetchSockets();
    
     if(!token) {
-        console.log('socket')
+        console.log('socket disconnect')
         socket.disconnect();
         return;
     }
-
+    
+    const sockets = await io.fetchSockets();
+    const socketUsers = [];
     const usersOnline = [];
     sockets.map((sock) => {
-        usersOnline.push(sock.user);
+        console.log(sock.user.id)
+        socketUsers.map(item => {
+            if (item.id !== sock.user) {
+                usersOnline.push(sock.user);
+            }
+        })
+        
     }) 
-
+    
+    console.log('fin arr', usersOnline)
 
    
     try {
@@ -231,7 +238,10 @@ io.use( async (socket, next) => {
             return;
         }
         socket.user = user;
-        const exist = sockets.find((current) => current.user.userName == socket.user.userName)
+        const exist = sockets.find(current => current.user.userName == socket.user.userName)
+
+        // console.log('exist ' , exist)
+
 
         if(exist) {  //&& !user.isAdmin  - add for two or more admins 
             console.log(exist.userName, 'exist twice entering...')   
@@ -293,7 +303,6 @@ io.on("connection", async (socket) => {
                 console.log('Message save to db error', error);   
             }
             const newMessages = await message.populate( {path:'user'})   
-            console.log(newMessages)
             io.emit('newmessage', newMessages);        
             // }
         // } 
@@ -378,7 +387,6 @@ io.on("connection", async (socket) => {
 
                 } catch (error) {
                     console.log(error)
-                    
                 }
             }) 
 

@@ -21,20 +21,15 @@ export const sendMessageToSocket = (state, data) => {
     };
 
 export const deleteMessageHandler = (state, data) => {
-    data.socket.emit('deleteMessage', {messageId: data.messageId, token: data.socket.auth.token}); 
-              
-        
+    data.socket.emit('deleteMessage', {messageId: data.messageId, token: data.socket.auth.token});  
 };
 
     
 export const editMessageHandler = (state, data) => {
-   
     if(data.socket){
          data.socket.emit('editmessage', {messageNewText: data.editMessage.message, messageId: data.messageId, token: data.socket.auth.token}); //add backend functional later find by id and edit 
     }
 };
-
-
 
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessage',
