@@ -203,6 +203,13 @@ export const ChatPage = () => {
                                 socket.emit('userWriting');
                                 setMessage({message: e.target.value})}
                             } 
+                            onFocus={ e => {
+                                e.target.className = 'focus'
+                            }}
+                            onBlur={e=> {
+                                e.target.className = 'blur'
+
+                            }}
                         
                         /> 
 
