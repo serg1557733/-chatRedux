@@ -12,12 +12,11 @@ export const SwitchButton = () => {
     }
 
     return (
-        <div style={{bottom: 5,
-                    position:'absolute'}}>  
+        <div>  
 
-            <label>Show users infobar</label>
+            <label>Infobar</label>
 
-            <Switch {...label} size="small" defaultChecked onChange={() => handleChange()} />
+            <Switch {...label} size="small"  onChange={() => handleChange()} />
         </div>
     )
 }

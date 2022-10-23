@@ -34,7 +34,7 @@ export const UserInfo = () => {
             setDisplayType('none')
         }, 4000)
     }
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://192.168.0.107:5000/';
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -59,12 +59,14 @@ export const UserInfo = () => {
     return (
             <>  
                 <h4> Hello, {user.userName} </h4>
+               
                 <Avatar
                     sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
                     onClick={() => loadAvatarHandler()}
                     src={userAvatarUrl ? SERVER_URL + userAvatarUrl : ""}
                     >
                 </Avatar>  
+                
                 <input
                         type="file"
                         accept="image/png, image/jpeg"
@@ -74,7 +76,7 @@ export const UserInfo = () => {
                         }}
                         onChange = {e => inputHandler(e)}
                        />
-                    {user.isAdmin ? 
+                    {user.isAdmin && !isTabletorMobile ? 
                         allUsers.map((item, key) =>
                             <div 
                                 key={item._id}
@@ -132,7 +134,7 @@ export const UserInfo = () => {
                                     }
                             </div>) 
                     :
-                    usersOnline.map((item, i) =>
+                     !isTabletorMobile && usersOnline.map((item, i) =>
                         <div 
                             key={i}
                             className='online'>  

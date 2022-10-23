@@ -17,7 +17,7 @@ export const MessageForm = () => {
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://192.168.0.107:5000/';
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -39,7 +39,7 @@ export const MessageForm = () => {
             scrollToBottom((endMessages)) 
         }
         if(newMessages.length > 0){
-            newMessages.map(i => console.log(i.userName === user.userName))
+            newMessages.map(i => console.log('newmessage', i.userName === user.userName))
         }
       }, [startMessages, newMessages]);
            

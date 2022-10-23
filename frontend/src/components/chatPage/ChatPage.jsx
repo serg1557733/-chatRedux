@@ -20,7 +20,7 @@ import getNotif from '../../assets/sendSound.mp3'
 
 export const ChatPage = () => {
 
-    const SOCKET_EVENTS = process.env.REACT_APP_SERVER_URL || ['allmessages', 'usersOnline', 'allDbUsers']
+    const SOCKET_EVENTS = ['allmessages', 'usersOnline', 'allDbUsers']
 
     const dispatch = useDispatch();
 
@@ -41,7 +41,6 @@ export const ChatPage = () => {
 
     const webcamEventHandler = () => {
         setisCamActiv(!isCamActiv)
-
     }
 
     useEffect(() => {
@@ -66,12 +65,41 @@ export const ChatPage = () => {
     return (
         <div className='rootContainer'>
 
-    
+           
 
-            <Box className = 'rootBox'>
+            <Box className = {isTabletorMobile?'mobileRootBox':'rootBox'}>
+           
 
-                { isTabletorMobile ? <SwitchButton/> : null}
-                
+            <Box className={isTabletorMobile?'usersBoxMobile':'usersBox'}
+                  sx = {showUserInfoBox ? {
+                        transform: "translateX(100%)",
+                        display: "none"
+                        }: { }}>      
+                    <UserInfo/> 
+                    { isTabletorMobile ? <SwitchButton/> : null}
+                    <Button 
+                        style={isTabletorMobile ? 
+                            {
+                                maxHeight:'20px', 
+                                maxWidth: '15px',
+                                fontSize: '10px',
+                                marginLeft: '25px',
+                                marginRight: '10px'} 
+                            :{margin:'10px 5px'}}
+                        variant="contained"
+                        onClick={()=> {
+                                localStorage.removeItem('token');
+                                dispatch(removeToken());
+                                socket.disconnect(); 
+                                }}>
+                        Logout
+                    </Button>
+                   
+                    
+                   
+                </Box>
+            
+               
                 <Box className ={isTabletorMobile ? 'rootMessageFormMobile':'rootMessageForm'} >
                 {isCamActiv ? 
                 <div>  
@@ -158,7 +186,7 @@ export const ChatPage = () => {
                             variant="outlined" 
                             value={message.message}
                             placeholder='type you message...'
-                            minRows={3}
+                            minRows={2}
                             maxRows={4}
                             className='textArea'
                             onKeyPress={(e) => {
@@ -189,29 +217,7 @@ export const ChatPage = () => {
 
                     </Box>            
                 </Box>
-                <Box className={isTabletorMobile?'usersBoxMobile':'usersBox'}
-                  sx = {showUserInfoBox ? {
-                        transform: "translateX(100%)",
-                        display: "none"
-                        }: {}}>
-                    <Button 
-                        sx={isTabletorMobile ? 
-                            {
-                                maxHeight:'25px', 
-                                maxWidth: '20px'} 
-                            :{margin:'10px 5px'}}
-                        variant="outlined"
-                        onClick={()=> {
-                                localStorage.removeItem('token');
-                                dispatch(removeToken());
-                                socket.disconnect(); 
-                                }}>
-                        Logout
-                    </Button>
-
-                    <UserInfo/>
-
-                </Box>
+                
             </Box>
         </div>
     )

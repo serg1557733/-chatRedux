@@ -12,12 +12,12 @@ const initialState = {
     token: '',
     socket: null, 
     responseMessage: '',
-    showUserInfoBox: true,
+    showUserInfoBox: false,
     avatar: ''
 }
 
-const POST_URL =  process.env.REACT_APP_POST_URL || 'http://localhost:5000/login';
-const GET_AVATAR_URL =  process.env.REACT_APP_GET_AVATAR_URL || 'http://localhost:5000/avatar';
+const POST_URL =  process.env.REACT_APP_POST_URL || 'http://192.168.0.107:5000/login';
+const GET_AVATAR_URL =  process.env.REACT_APP_GET_AVATAR_URL || 'http://192.168.0.107:5000/avatar';
 
 
 export const getUserData = createAsyncThunk(
@@ -89,7 +89,7 @@ const getUserDataSlice = createSlice({
                if(action.payload?.message){
                 state.responseMessage = action.payload.message
         }
-            state.responseMessage = 'Something went wrong...'
+            state.responseMessage = `Something went wrong...`
         })
             .addCase(getUserAvatar.fulfilled, (state, action) => {
                 state.avatar = action.payload.data?.avatarUrl

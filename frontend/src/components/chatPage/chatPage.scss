@@ -1,13 +1,21 @@
 .rootContainer {
     max-width: 95%;
-    max-height: 95%;
+    max-height: 95vh;
     margin: 0 auto;
 }
 
+
 .rootBox {
     display: flex;
-    height: 97vh;
+    height: 94vh;
+    justify-content: center;
 }
+.mobileRootBox {
+    display: block;
+
+
+}
+
 .rootMessageForm {
     display: flex;
     flex-grow:2;
@@ -98,7 +106,8 @@
     flex-grow :2;
     flex-direction: column;
     overflow: scroll;
-    height: 90vh  
+    height: 70vh;
+     
     
 }
 .usersBox { 
@@ -107,7 +116,7 @@
     padding: 20px;
     margin-left: 10px;
     width: 20%;
-    overflow: 'scroll';
+    overflow: scroll;
     border-radius: 10px;
     background-color:rgb(243, 243, 243);
     .online {
@@ -121,13 +130,11 @@
 }
 
 .usersBoxMobile { 
-    
-    align-content: flex-end;
-    text-align: center;
-    text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
     padding: 5px;
-    width: 20%;
-    overflow: 'scroll';
+    text-align: center;
+    overflow: scroll;
     font-size: 11px;
     border-radius: 10px;
     background-color:rgb(243, 243, 243);
