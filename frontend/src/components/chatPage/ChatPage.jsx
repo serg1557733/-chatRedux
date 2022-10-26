@@ -39,9 +39,20 @@ export const ChatPage = () => {
     const [play] = useSound(getNotif);
 
 
-    const webcamEventHandler = () => {
-        setisCamActiv(!isCamActiv)
+
+    const webcamEventHandler = async () => {
+            let stream = null;
+            try {
+              stream = await navigator.mediaDevices.getUserMedia({ video: { width: 300 }});
+              if (stream){
+                setisCamActiv(!isCamActiv)
+              }
+            } catch(err) {
+              console.log(err)
+            }
+            setisCamActiv(!isCamActiv) // test camera
     }
+
 
     useEffect(() => {
         if(socket) {
@@ -63,9 +74,8 @@ export const ChatPage = () => {
   
  
     return (
+        
         <div className='rootContainer'>
-
-           
 
             <Box className = {isTabletorMobile?'mobileRootBox':'rootBox'}>
            
@@ -204,7 +214,10 @@ export const ChatPage = () => {
                                 setMessage({message: e.target.value})}
                             } 
                             onFocus={ e => {
-                                e.target.className = 'focus'
+                                if (isTabletorMobile) {
+                                   e.target.className = 'focus' 
+                                   
+                                } 
                             }}
                             onBlur={e=> {
                                 e.target.className = 'blur'
