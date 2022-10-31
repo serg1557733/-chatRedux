@@ -44,7 +44,7 @@ const WebcamCapture = () => {
           screenshotFormat="image/jpeg"
           style={{
             'maxHeight': '350px',
-            'maxWidth': '350px'
+            'maxWidth': 'auto'
         }}
         />
         <Button

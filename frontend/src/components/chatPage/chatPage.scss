@@ -10,7 +10,6 @@
 }
 
 .focus {
-    max-width: 80%;
     position: absolute;
 }
 .blur {
@@ -22,11 +21,6 @@
     height: 90vh;
     justify-content: center;
 }
-.mobileRootBox {
-    display: block;
-    height: 90vh;
-
-}
 
 .rootMessageForm {
     display: flex;
@@ -35,8 +29,9 @@
     flex-direction: column;                 
 }
 .rootMessageFormMobile {
+    margin: 0 auto;
     display: flex;
-    flex-grow:2;
+    flex-grow:1;
     max-width: 100%;
     height: 80vh;
     flex-direction: column;                 
@@ -63,8 +58,7 @@
 
 .message {
     padding: 10px;
-    margin: 2px 30px;
-    max-width: 50%;
+    margin: 5px 0;
     align-self: flex-start;
     border-radius: 10px;
     background-color: rgb(182, 230, 176);
@@ -84,7 +78,6 @@
 .myMessage {
     align-self: flex-end;
     position: relative;
-    max-width: 50%;
     background-color: rgb(240, 231, 136);
     cursor: pointer;
 }

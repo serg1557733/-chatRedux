@@ -136,8 +136,7 @@ export const MessageForm = () => {
                         { 
                             (item.file && item.fileType && item.fileType.split('/')[0] == 'image' ) //need to fix for other type files
                             ? 
-
-                                 <img width={150} height={150} src={ SERVER_URL + item.file} alt={'error load image'}/>
+                                <img width={'auto'} height={350} src={ SERVER_URL + item.file} alt={'error load image'}/>
                             :
                             ''
                         }
