@@ -13,6 +13,17 @@
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+    <!-- <script>
+        console.log('service worker start..', navigator)
+        if('serviceWorker' in navigator){
+            console.log('service worker started,..')
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then( reg => console.log('Success', reg.scope))
+                    .catch(err => console.log('Fail',err))
+            })
+        }
+    </script> -->
 </body>
 
 </html>

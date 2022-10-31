@@ -213,16 +213,16 @@ export const ChatPage = () => {
                                 socket.emit('userWriting');
                                 setMessage({message: e.target.value})}
                             } 
-                            onFocus={ e => {
-                                if (isTabletorMobile) {
-                                   e.target.className = 'focus' 
+                            // onFocus={ e => {
+                            //     if (isTabletorMobile) {
+                            //        e.target.className = 'focus' 
                                    
-                                } 
-                            }}
-                            onBlur={e=> {
-                                e.target.className = 'blur'
+                            //     } 
+                            // }}
+                            // onBlur={e=> {
+                            //     e.target.className = 'blur'
 
-                            }}
+                            // }}
                         
                         /> 
 
