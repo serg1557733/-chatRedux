@@ -11,7 +11,7 @@ const initialState = {
     ref: null
 }
 
-const POST_FILES_URL = 'http://192.168.0.107:5000/files';
+const POST_FILES_URL = 'http://localhost:5000/files';
 
 
 export const sendMessageToSocket = (state, data) => {

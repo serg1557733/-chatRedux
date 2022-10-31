@@ -34,7 +34,7 @@ export const UserInfo = () => {
             setDisplayType('none')
         }, 4000)
     }
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://192.168.0.107:5000/';
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)

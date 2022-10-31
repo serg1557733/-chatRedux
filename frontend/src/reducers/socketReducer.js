@@ -17,7 +17,7 @@ const initialState = {
 }
 
 
-const SOCKET_URL = 'http://192.168.0.107:5000'; 
+const SOCKET_URL = 'http://localhost:5000'; 
 
 const connectToSocket = (event) => {
  

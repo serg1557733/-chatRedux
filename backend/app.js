@@ -23,7 +23,7 @@ app.use(express.static('avatars')); //folder for static files
 
 const io = require("socket.io")(server, {
     cors: {
-        origin: "http://192.168.0.107:3000" //client endpoint and port
+        origin: "http://localhost:3000" //client endpoint and port
     }
 });
 const PORT = process.env.PORT || 5000;

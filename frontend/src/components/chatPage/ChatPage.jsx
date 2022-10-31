@@ -225,7 +225,6 @@ export const ChatPage = () => {
                             // }}
                         
                         /> 
-
                         <Button 
                             variant="contained" 
                             type='submit'
