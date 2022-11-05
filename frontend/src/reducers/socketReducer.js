@@ -16,8 +16,8 @@ const initialState = {
     newMessages : []
 }
 
+const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
 
-const SOCKET_URL = 'http://localhost:5000'; 
 
 const connectToSocket = (event) => {
  

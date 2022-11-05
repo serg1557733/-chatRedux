@@ -17,7 +17,7 @@ export const MessageForm = () => {
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -69,7 +69,7 @@ export const MessageForm = () => {
                             >
                             <Avatar 
                                 key={i} 
-                                src= {SERVER_URL + item?.user?.avatar}
+                                src= {SERVER_URL + '/'+ item?.user?.avatar}
                                 sx={
                                     (item.userName === user.userName)
                                     ? 

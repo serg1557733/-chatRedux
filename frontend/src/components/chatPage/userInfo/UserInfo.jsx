@@ -34,7 +34,7 @@ export const UserInfo = () => {
             setDisplayType('none')
         }, 4000)
     }
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL|| 'http://localhost:5000/';
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -63,7 +63,7 @@ export const UserInfo = () => {
                 <Avatar
                     sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
                     onClick={() => loadAvatarHandler()}
-                    src={userAvatarUrl ? SERVER_URL + userAvatarUrl : ""}
+                    src={userAvatarUrl ? SERVER_URL +'/'+ userAvatarUrl : ""}
                     >
                 </Avatar>  
                 

@@ -15,10 +15,11 @@ const initialState = {
     showUserInfoBox: false,
     avatar: ''
 }
+const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-const POST_URL =  process.env.REACT_APP_POST_URL || 'http://localhost:5000/login';
-const GET_AVATAR_URL =  process.env.REACT_APP_GET_AVATAR_URL || 'http://localhost:5000/avatar';
-
+const POST_URL =  SERVER_URL + '/login';
+const GET_AVATAR_URL =  SERVER_URL + '/avatar';
+console.log(POST_URL)
 
 export const getUserData = createAsyncThunk(
     'userData/getUser',

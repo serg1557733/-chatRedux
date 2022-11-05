@@ -13,7 +13,7 @@ const Uuid = require('uuid'); //lib for unic id generate
 const fileupload = require('express-fileupload');
 const fs = require('fs');
 
-
+const ORIGIN_URL = process.env.REACT_APP_BASE_URL
 
 const server = http.createServer(app);
 app.use(cors());
@@ -22,9 +22,7 @@ app.use(fileupload())
 app.use(express.static('avatars')); //folder for static files
 
 const io = require("socket.io")(server, {
-    cors: {
-        origin: "http://localhost:3000" //client endpoint and port
-    }
+    cors: 'no-cors'
 });
 const PORT = process.env.PORT || 5000;
 const TOKEN_KEY = process.env.TOKEN_KEY || 'rGH4r@3DKOg06hgj'; 
@@ -56,7 +54,7 @@ const getOneUser = async (userName) => {
     return userInDb;
 }
 app.post('/login', async (req, res) => {
-    
+    console.log(req)
 
     try {
         const {userName,password} = req.body;
