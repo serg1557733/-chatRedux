@@ -9,7 +9,8 @@ import { StyledAvatar } from './StyledAvatar';
 import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
-import notifSound from '../../../assets/sendSound.mp3'
+import notifSound from '../../../assets/get.mp3'
+import { useMemo } from 'react';
 
 
 export const MessageForm = () => {
@@ -37,13 +38,16 @@ export const MessageForm = () => {
     useEffect(() => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
-        }
-        if(newMessages.length > 0){
-            newMessages.map(i => console.log('newmessage', i.userName === user.userName))
-        }
-      }, [startMessages, newMessages]);
+        } 
+      }, [startMessages]);
            
     const messages = startMessages.concat(newMessages)  
+
+    useEffect(()=> {
+        if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
+            play()                 
+        }
+    }, [newMessages])
 
     return (             
             <Box className='messageBox'>  
