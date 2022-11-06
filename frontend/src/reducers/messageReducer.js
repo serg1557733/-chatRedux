@@ -8,14 +8,13 @@ const initialState = {
     editMessage: '',
     messageId: '', 
     files: [],
+    percentage: 0,
     ref: null
 }
 
 const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
-
 const POST_FILES_URL = SERVER_URL + '/files';
-
 
 export const sendMessageToSocket = (state, data) => {
              if (!!state.message && state.message.length < 200) {    //remove to other file
@@ -48,12 +47,16 @@ export const fileMessage = createAsyncThunk(
                 formData.append('files', files)
             }
             formData.append('token', token)
-            const response = await axios.post(POST_FILES_URL, formData,
-                {
+            const response = await axios.post(POST_FILES_URL, formData,{
+                onUploadProgress: (progress) => {
+                    const {loaded, total} = progress;
+                    const persentage = Math.floor(loaded * 100 / total);
+                },
                     headers: {
                       "Content-type": "multipart/form-data",
                     }
                   });
+                  
             return await response;
             
         } catch (err) {

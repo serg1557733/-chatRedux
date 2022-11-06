@@ -36,9 +36,7 @@ export const ChatPage = () => {
     
     const isTabletorMobile = (window.screen.width < 730);
 
-    const [play] = useSound(getNotif);
-
-
+    const [play] = useSound(getNotif, {volume: 0.2});
 
     const webcamEventHandler = async () => {
             let stream = null;

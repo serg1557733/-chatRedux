@@ -39,7 +39,7 @@ export const MessageForm = () => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         } 
-      }, [startMessages]);
+      }, [startMessages, newMessages]);
            
     const messages = startMessages.concat(newMessages)  
 
@@ -88,8 +88,16 @@ export const MessageForm = () => {
                                 {item?.userName.slice(0, 1)}
                             </Avatar>   
 
-                        
+
                         </StyledAvatar>
+                        <span
+                            style={{'alignItems': 'center',
+                                    marginLeft: 5, 
+                                    fontStyle: 'italic', 
+                                    fontWeight: 800
+                                }}
+
+                        > {item.userName}</span>
                         <div 
                             key={i}
                         
@@ -108,11 +116,10 @@ export const MessageForm = () => {
                                 
                             </iframe>
                             :
-                           
                             (item.file && item.fileType && item.fileType.split('/')[0] !== 'image') ? 
 
                             <div style={{'display': 'flex', 'alignItems': 'center'}} >
-                          
+
                                 <a href={SERVER_URL + item.file} download> 
                                     <Button
                                         variant="contained" 
