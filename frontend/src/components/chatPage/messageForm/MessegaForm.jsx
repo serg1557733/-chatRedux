@@ -121,7 +121,6 @@ export const MessageForm = () => {
                             <div style={{'display': 'flex', 'alignItems': 'center'}} >
 
                                 <a href={SERVER_URL + '/' +item.file} download> 
-                                {console.log(SERVER_URL + '/' +item.file)}
                                     <Button
                                         variant="contained" 
                                         component="label"

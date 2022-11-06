@@ -34,7 +34,7 @@ export const editMessageHandler = (state, data) => {
 };
 
 export const fileMessage = createAsyncThunk(
-    'messageReducer/fileMessage',
+    'messageReducer/fileMessageStatus',
     async (files) => {
         const token = localStorage.getItem('token')
         try {
@@ -48,24 +48,23 @@ export const fileMessage = createAsyncThunk(
             }
             formData.append('token', token)
             const response = await axios.post(POST_FILES_URL, formData,{
-                // onUploadProgress: (progress) => {
-                //     const {loaded, total} = progress;
-                //     const persentage = Math.floor(loaded * 100 / total);
-                // },
+                onUploadProgress: (progress) => {
+                    const {loaded, total} = progress;
+                    const loadStatus = Math.floor(loaded * 100 / total);
+                },
                     headers: {
                       "Content-type": "multipart/form-data",
                     }
-                  });
-                  
+                  })
+                  ;
             return await response;
             
         } catch (err) {
-            console.log('error messageReducer thunk', err)
+            console.log('Error messageReducer thunk', err)
                 return err?.message
             
             }
         })
-
 
         
 const messageReducerSlice = createSlice({
@@ -84,18 +83,23 @@ const messageReducerSlice = createSlice({
            
         },
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
-        clearMessage: (state) => {state.message = ''},
-        extraReducers: (bilder) => 
-            bilder
-            .addCase(fileMessage.fulfilled, (state, action) => {
-                state.files = action.payload.data?.files
-                
-        })
-            .addCase(fileMessage.rejected, (state, action) => {
-                console.log('post file rejected', action.payload)
-        })
-        
+        clearMessage: (state) => {state.message = ''}
+
     },
+    extraReducers: (bilder) => {
+    bilder
+    .addCase(fileMessage.fulfilled, (state, action) => {
+        console.log('send', action)
+        state.files = action.payload.data?.files
+            
+    })  
+    .addCase(fileMessage.pending, (state, action) => {
+        state.persentage = action.percentage;
+        console.log('pending', action)
+    })
+    .addCase(fileMessage.rejected, (state, action) => {
+            console.log('post file rejected', action.payload)
+    })}
 });
 
 const {actions, reducer} = messageReducerSlice;
