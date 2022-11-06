@@ -54,7 +54,6 @@ const getOneUser = async (userName) => {
     return userInDb;
 }
 app.post('/login', async (req, res) => {
-
     try {
         const {userName,password} = req.body;
         if (!isValidUserName(userName)){
@@ -125,6 +124,8 @@ app.post('/avatar', async (req, res) =>  {
 })
 
 app.post('/files', async (req, res) =>  {
+    console.log(req)
+
     if (!req.files || Object.keys(req.files).length === 0) {
         return res.status(400).json('No files were uploaded.');
     }  

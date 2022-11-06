@@ -120,7 +120,8 @@ export const MessageForm = () => {
 
                             <div style={{'display': 'flex', 'alignItems': 'center'}} >
 
-                                <a href={SERVER_URL + item.file} download> 
+                                <a href={SERVER_URL + '/' +item.file} download> 
+                                {console.log(SERVER_URL + '/' +item.file)}
                                     <Button
                                         variant="contained" 
                                         component="label"
@@ -147,7 +148,7 @@ export const MessageForm = () => {
                         { 
                             (item.file && item.fileType && item.fileType.split('/')[0] == 'image' ) //need to fix for other type files
                             ? 
-                                <img width={'auto'} height={350} src={ SERVER_URL + item.file} alt={'error load image'}/>
+                                <img width={'auto'} height={350} src={ SERVER_URL + '/' + item.file} alt={'error load image'}/>
                             :
                             ''
                         }

@@ -48,10 +48,10 @@ export const fileMessage = createAsyncThunk(
             }
             formData.append('token', token)
             const response = await axios.post(POST_FILES_URL, formData,{
-                onUploadProgress: (progress) => {
-                    const {loaded, total} = progress;
-                    const persentage = Math.floor(loaded * 100 / total);
-                },
+                // onUploadProgress: (progress) => {
+                //     const {loaded, total} = progress;
+                //     const persentage = Math.floor(loaded * 100 / total);
+                // },
                     headers: {
                       "Content-type": "multipart/form-data",
                     }
