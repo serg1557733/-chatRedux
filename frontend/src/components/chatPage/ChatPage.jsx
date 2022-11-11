@@ -33,10 +33,26 @@ export const ChatPage = () => {
     const [message, setMessage] = useState({message: ''});
     const [isUserTyping, setUserTyping] = useState([]);
     const [isCamActiv, setisCamActiv] = useState(false);
+    const [showSpinner, setshowSpinner] = useState(false);
+    const [loadingPercentage, setLoadPercentage] = useState(0)
     
     const isTabletorMobile = (window.screen.width < 730);
 
     const [play] = useSound(getNotif, {volume: 0.2});
+
+
+    const axiosConfig =   {
+        headers: {
+            "Content-type": "multipart/form-data"
+          },
+        onUploadProgress: (progress) => {
+        const {loaded, total} = progress;
+        const loadStatus = Math.floor(loaded * 100 / total); 
+        setLoadPercentage(loadStatus)   
+        if(loadStatus == 100) {
+            setshowSpinner(false)
+        }
+    }}
 
     const webcamEventHandler = async () => {
             let stream = null;
@@ -162,7 +178,8 @@ export const ChatPage = () => {
                         >
                         <input
                             onChange={e =>{
-                                dispatch(fileMessage(e.target.files))
+                                setshowSpinner(true)
+                                dispatch(fileMessage({files: e.target.files, axiosConfig}))
                             }}
 
                             type="file"

@@ -8,7 +8,8 @@ const initialState = {
     editMessage: '',
     messageId: '', 
     files: [],
-    percentage: 0,
+    isLoading: false,
+    loadingPercentage: 0,
     ref: null
 }
 
@@ -35,7 +36,8 @@ export const editMessageHandler = (state, data) => {
 
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessageStatus',
-    async (files) => {
+    async (payload) => {
+        const {files, axiosConfig} = payload;
         const token = localStorage.getItem('token')
         try {
             const formData = new FormData();
@@ -47,16 +49,7 @@ export const fileMessage = createAsyncThunk(
                 formData.append('files', files)
             }
             formData.append('token', token)
-            const response = await axios.post(POST_FILES_URL, formData,{
-                onUploadProgress: (progress) => {
-                    const {loaded, total} = progress;
-                    const loadStatus = Math.floor(loaded * 100 / total);
-                },
-                    headers: {
-                      "Content-type": "multipart/form-data",
-                    }
-                  })
-                  ;
+            const response = await axios.post(POST_FILES_URL, formData,axiosConfig);
             return await response;
             
         } catch (err) {
@@ -94,8 +87,7 @@ const messageReducerSlice = createSlice({
             
     })  
     .addCase(fileMessage.pending, (state, action) => {
-        state.persentage = action.percentage;
-        console.log('pending', action)
+        console.log('pending', fileMessage.pending())
     })
     .addCase(fileMessage.rejected, (state, action) => {
             console.log('post file rejected', action.payload)
