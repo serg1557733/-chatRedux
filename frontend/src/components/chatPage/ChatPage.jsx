@@ -165,9 +165,14 @@ export const ChatPage = () => {
                            
                         }>
                         <Button
+                            disabled={showSpinner}
                             variant="contained" 
                             component="label"
-                            sx = {{
+                            sx = {showSpinner? 
+                                {
+                                minWidth: 'auto'}
+                                :
+                                {
                                 minWidth: 'auto',
                                 backgroundImage:'url(' + imgBtn + ')' ,
                                 backgroundPosition: 'center', 
@@ -175,6 +180,7 @@ export const ChatPage = () => {
                                 backgroundSize: '20px 40px'
 
                             }}
+                            style = {{color: 'green'}}
                         >
                         <input
                             onChange={e =>{
@@ -187,7 +193,7 @@ export const ChatPage = () => {
                             hidden
                         />
 
-                       
+                       {showSpinner? loadingPercentage : ""}
                         </Button>    
                         <Button
                             variant="contained" 
@@ -203,6 +209,7 @@ export const ChatPage = () => {
 
                             onClick = {() => webcamEventHandler()}
                         >
+                            
                         </Button>          
 
                         <TextareaAutosize
