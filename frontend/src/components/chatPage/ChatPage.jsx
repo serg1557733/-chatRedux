@@ -38,7 +38,7 @@ export const ChatPage = () => {
     
     const isTabletorMobile = (window.screen.width < 730);
 
-    const [play] = useSound(getNotif, {volume: 0.2});
+    const [play] = useSound(getNotif, {volume: 0.005});
 
 
     const axiosConfig =   {

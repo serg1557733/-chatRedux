@@ -118,4 +118,4 @@ export const {
     addNewMessage,
     getAllUsers,
     writing
-} = actions;
+    } = actions;

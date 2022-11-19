@@ -32,16 +32,16 @@ export const MessageForm = () => {
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
-    
+    const messages = startMessages.concat(newMessages)  
+
     const [play] = useSound(notifSound);
 
     useEffect(() => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         } 
-      }, [startMessages, newMessages]);
+      }, [startMessages, messages]);
            
-    const messages = startMessages.concat(newMessages)  
 
     useEffect(()=> {
         if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
@@ -109,6 +109,7 @@ export const MessageForm = () => {
                            <iframe 
                                 width="280" 
                                 height="160" 
+                                style={{'maxWidth': "90%"}}
                                 src={`https://www.youtube.com/embed/`+ (item.text.match(regYoutube)[1])}
                                 title="YouTube video player" 
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -147,7 +148,7 @@ export const MessageForm = () => {
                         { 
                             (item.file && item.fileType && item.fileType.split('/')[0] == 'image' ) //need to fix for other type files
                             ? 
-                                <img width={'auto'} height={350} src={ SERVER_URL + '/' + item.file} alt={'error load image'}/>
+                                <img width={'auto'} style={{'maxWidth': "90%"}} src={ SERVER_URL + '/' + item.file} alt={'error load image'}/>
                             :
                             ''
                         }

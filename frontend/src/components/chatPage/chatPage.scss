@@ -1,10 +1,10 @@
-#root {
-    max-height: 90vh;
+// #root {
+//     max-height: 90vh;
 
 
-}
+// }
 .rootContainer {
-    max-height: 90vh;
+    min-height: 90vh;
     max-width: 95%;
     margin: 0 auto;
 }
@@ -59,6 +59,7 @@
 .message {
     padding: 10px;
     margin: 5px 0;
+    max-width: 80%;
     align-self: flex-start;
     border-radius: 10px;
     background-color: rgb(182, 230, 176);
@@ -78,6 +79,7 @@
 .myMessage {
     align-self: flex-end;
     position: relative;
+    max-width: 80%;
     background-color: rgb(240, 231, 136);
     cursor: pointer;
 }
