@@ -4,7 +4,7 @@ import { banUser } from '../service/banUser';
 import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
-import { getUserAvatar } from '../../../reducers/userDataReducer';
+import { getUserAvatar, privateMessage } from '../../../reducers/userDataReducer';
 import { useState, useEffect } from 'react';
 import { store } from '../../../store';
 import { getSocket } from '../../../reducers/socketReducer';
@@ -43,6 +43,9 @@ export const UserInfo = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isTabletorMobile = (window.screen.width < 730);
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
+    const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
+    const chatId = useSelector(state => state.userDataReducer.chatId)
+
 
 
 
@@ -158,8 +161,13 @@ export const UserInfo = () => {
                      (user.userName !== item.userName) &&
                       <div 
                             key={i}
-                            className='online'                        
-                            onClick={() => console.log(item)}
+                            className={isPrivatChat&&(chatId==user._id)? 'online active' :'online' }                       
+                            onClick={() => {
+                                console.log(item.userName)
+                                store.dispatch(privateMessage(user._id))
+                                socket.emit('private message', user )
+                            }
+                            }
                             >  
                             
                                 <div style={{color: item.color}}>

@@ -4,7 +4,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { MessageForm } from './messageForm/MessegaForm';
 import { UserInfo } from './userInfo/UserInfo';
 import { store } from '../../store';
-import { removeToken} from '../../reducers/userDataReducer'
+import { removeToken, isPrivatChat} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage, fileMessage } from '../../reducers/messageReducer';
@@ -17,6 +17,7 @@ import './chatPage.scss';
 import WebcamCapture from './service/webCam/WebcamCapture';
 import useSound from 'use-sound';
 import getNotif from '../../assets/sendSound.mp3'
+import { PrivateChat } from './privateChat/PrivateChat';
 
 export const ChatPage = () => {
 
@@ -29,6 +30,8 @@ export const ChatPage = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const editOldMessage = useSelector(state => state.messageReducer.editMessage)
     let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
+
+    const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
 
     const [message, setMessage] = useState({message: ''});
     const [isUserTyping, setUserTyping] = useState([]);
@@ -138,8 +141,8 @@ export const ChatPage = () => {
                  </div> 
                  :
                  ""}
-                    <MessageForm/>
-
+                    {isPrivatChat?<PrivateChat/> : <MessageForm/>}
+                    
                     {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
 
                     <Box 

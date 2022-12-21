@@ -333,8 +333,8 @@ const onUser = []
                 // }
            });
 
-        socket.on('privat', (data) => {
-            console.log(data)
+        socket.on('private message', (user) => {
+            console.log(user)
         
         })
 

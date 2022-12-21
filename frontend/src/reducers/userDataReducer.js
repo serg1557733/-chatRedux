@@ -13,6 +13,8 @@ const initialState = {
     socket: null, 
     responseMessage: '',
     showUserInfoBox: false,
+    isPrivatChat: false,
+    chatId: '',
     avatar: ''
 }
 const SERVER_URL =  process.env.REACT_APP_SERVER_URL
@@ -59,6 +61,10 @@ const getUserDataSlice = createSlice({
     name: 'userData',
     initialState,
     reducers: {
+        privateMessage: (state, action)=> {
+            state.isPrivatChat = true;
+            state.chatId = action.payload.chatId
+        },
         setUserName: (state, action) => {state.userName = action.payload.userName},
         setUserPassword: (state, action) => {state.password = action.payload.password},
             
@@ -111,5 +117,6 @@ export const {
     setUserPassword,
     removeToken,
     deleteResponseMessage,
-    showUserInfoBox
+    showUserInfoBox,
+    privateMessage
 } = actions;

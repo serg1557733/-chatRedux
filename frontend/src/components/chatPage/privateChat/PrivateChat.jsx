@@ -5,15 +5,13 @@ import { useRef, useEffect, useState} from 'react';
 import { scrollToBottom } from '../utils/scrollToBottom';
 import { useDispatch } from 'react-redux';
 import { editMessage } from '../../../reducers/messageReducer';
-import { StyledAvatar } from './StyledAvatar';
 import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
 import notifSound from '../../../assets/get.mp3'
-import { useMemo } from 'react';
 
 
-export const MessageForm = () => {
+export const PrivateChat = () => {
 
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
@@ -64,36 +62,6 @@ export const MessageForm = () => {
                         }}
                         > 
                         {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
-                        <StyledAvatar
-
-                            onClick={() => {
-                                socket.emit('privat', {data: item._id})
-                               
-                            }}
-
-                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
-                            variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
-                                   
-                            >
-                            <Avatar 
-                                key={i} 
-                                src= {SERVER_URL + '/'+ item?.user?.avatar}
-                                sx={
-                                    (item.userName === user.userName)
-                                    ? 
-                                    {
-                                        alignSelf: 'flex-end',
-                                    }
-                                    :
-                                    {}
-                                }
-                                
-                                > 
-                                {item?.userName.slice(0, 1)}
-                            </Avatar>   
-
-
-                        </StyledAvatar>
                         <span
                             style={{'alignItems': 'center',
                                     marginLeft: 5, 
