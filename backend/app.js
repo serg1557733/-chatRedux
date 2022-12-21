@@ -215,7 +215,7 @@ io.use( async (socket, next) => {
         const userName = user.userName;
         const dbUser = await getOneUser(userName);
 
-        if(dbUser.isBanned){
+        if(dbUser && dbUser.isBanned){
             socket.disconnect();
             return;
         }
@@ -239,9 +239,17 @@ io.on("connection", async (socket) => {
     const userName = socket.user.userName;
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
+    const exist = sockets.find(current => current.user.userName == socket.user.userName)
+    const usersOnline = sockets.map(sock => sock.user)
 
 
-    io.emit('usersOnline', sockets.map(sock => sock.user)); // send array online users  
+    const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
+    const userSet = new Set(usersOnlineID)
+
+    console.log(userSet)
+
+
+    io.emit('usersOnline', usersOnline); // send array online users  
 
     socket.emit('connected', dbUser); //socket.user
   
@@ -251,6 +259,7 @@ io.on("connection", async (socket) => {
 
     const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
     socket.emit('allmessages', messagesToShow.reverse());
+
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 
         const post = await Message.findOne({userName}).sort({ 'createDate': -1 })
@@ -291,9 +300,19 @@ io.on("connection", async (socket) => {
     
     try {
         socket.on("disconnect", async () => {
-            const sockets = await io.fetchSockets();
-            io.emit('usersOnline', sockets.map(sock => sock.user));
-            console.log(`user :${socket.user.userName} , disconnected to socket`); 
+
+            const exist = sockets.find(current => current.user.userName == socket.user.userName)
+            const usersOnline = sockets.map(sock => sock.user)
+        
+            const filteredUsersOnline = usersOnline.filter(user => exist.user.id !== user.id)
+        
+           
+           socket.emit('usersOnline', filteredUsersOnline);
+
+            // const sockets = await io.fetchSockets();
+            // io.emit('usersOnline', sockets.map(sock => sock.user));
+             console.log(`user :${socket.user.userName} , disconnected to socket`); 
+
         });
             console.log(`user :${socket.user.userName} , connected to socket`); 
         socket.on("muteUser",async (data) => {
@@ -313,6 +332,13 @@ io.on("connection", async (socket) => {
                     } 
                 // }
            });
+
+        socket.on('privat', (data) => {
+            console.log(data)
+        
+        })
+
+
     
         socket.on("banUser",async (data) => {
             if(!socket.user.isAdmin){
@@ -383,6 +409,12 @@ const start = async () => {
     try {
         await mongoose.connect('mongodb://localhost:27017/chat')
             .then(() => console.log(`DB started`))
+        
+
+        // await mongoose
+        //     .connect('mongodb+srv://serg1557733:1557733@cluster0.p9ltitx.mongodb.net/?retryWrites=true&w=majority')
+        //     .then(() => console.log(`DB started`))
+
         server.listen(PORT, () => {
             console.log(`Server started. Port: ${PORT}`);
         })
@@ -390,5 +422,4 @@ const start = async () => {
         console.log(e);
     }
 }
-
 start();

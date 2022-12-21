@@ -17,12 +17,32 @@ self.addEventListener('install', (e) => {
     )
 })
 
-self.addEventListener('fetch', () => {
-  
+self.addEventListener('fetch', (e) => {
+    e.respondWith(
+        caches.match(e.request)
+            .then(() => {
+                return fetch(e.request)
+                    .catch(() => caches.match('offline.html'))
+            })
+    )
 })
 
 
-self.addEventListener('activate', () => {
+self.addEventListener('activate', (e) => {
+    const cacheWersions = [];
+    cacheWersions.push(CASH);
+
+    e.waitUntil(
+        caches.keys().then(cachNames => Promise.all(
+            cachNames.map(cacheName => {
+                    if(!cacheWersions.includes(cacheName)){
+                        return caches.delete(cacheName);
+                    }
+                }
+            )
+        ))
+    )
+
   
 })
 // /* eslint-disable no-restricted-globals */

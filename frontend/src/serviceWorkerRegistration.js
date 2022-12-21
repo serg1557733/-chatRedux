@@ -19,7 +19,7 @@ const isLocalhost = true
 //       // 127.0.0.0/8 are considered localhost for IPv4.
 //       window.location.hostname.match(/^127(?:\.(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)){3}$/)
 //   );
-
+console.log('start sw...')
   export function register(config) {
     if ('serviceWorker' in navigator) {
       console.log('registering..')

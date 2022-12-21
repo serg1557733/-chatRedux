@@ -24,15 +24,20 @@
 
 .rootMessageForm {
     display: flex;
+    border-radius: 5px;
     flex-grow:2;
+    border: 2px solid grey; 
     max-width: 75%;
     flex-direction: column;                 
 }
 .rootMessageFormMobile {
     margin: 0 auto;
     display: flex;
+    border-radius: 5px;
+
     flex-grow:1;
     max-width: 100%;
+    border: 2px solid grey; 
     height: 90vh;
     flex-direction: column;                 
 }
@@ -120,16 +125,18 @@
 .usersBox { 
     align-content: flex-end;
     text-align: center;
-    padding: 20px;
     margin-left: 10px;
     width: 20%;
     overflow: scroll;
     border-radius: 10px;
+    border: 2px solid grey; 
     background-color:rgb(243, 243, 243);
     .online {
         border-radius: 5px;
         padding: 5px;
+        border: 2px solid grey; 
         margin-bottom: 5px;
+        cursor: pointer;
         background-color:rgb(247, 233, 233);
         font-weight: 700;
 
@@ -144,12 +151,14 @@
     overflow: scroll;
     font-size: 11px;
     border-radius: 10px;
+    border: 2px solid grey; 
     background-color:rgb(243, 243, 243);
     transition: all 3s ease-in-out;    
     .online {
         border-radius: 5px;
         text-overflow: ellipsis;
         padding: 5px;
+        border: 2px solid grey;
         margin-bottom: 5px;
         background-color:rgb(247, 233, 233);
         font-weight: 500;

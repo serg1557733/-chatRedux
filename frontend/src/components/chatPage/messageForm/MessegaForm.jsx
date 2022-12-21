@@ -18,7 +18,7 @@ export const MessageForm = () => {
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+    const SERVER_URL =process.env.REACT_APP_SERVER_URL
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -40,12 +40,13 @@ export const MessageForm = () => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         } 
-      }, [startMessages, messages]);
+      }, [startMessages, messages, newMessages]);
            
+    console.log(usersOnline)
 
     useEffect(()=> {
         if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
-            play()                 
+           // play()                 
         }
     }, [newMessages])
 
@@ -66,6 +67,11 @@ export const MessageForm = () => {
                         > 
                         {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
                         <StyledAvatar
+
+                            onClick={() => {
+                                socket.emit('privat', {data: item._id})
+                               
+                            }}
 
                             anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
                             variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}

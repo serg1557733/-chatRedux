@@ -20,7 +20,6 @@ const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
 
 
 const connectToSocket = (event) => {
- 
         try {
             const token = localStorage.getItem('token');
             if(token){

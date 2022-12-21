@@ -34,7 +34,7 @@ export const UserInfo = () => {
             setDisplayType('none')
         }, 4000)
     }
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+    const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -80,7 +80,9 @@ export const UserInfo = () => {
                         allUsers.map((item, key) =>
                             <div 
                                 key={item._id}
-                                className='online'>
+                                className='online'
+                                onClick={() => console.log(item.id)}
+                                >
                                 <div>
                                     {item.userName}
                                 </div>
@@ -137,7 +139,9 @@ export const UserInfo = () => {
                      !isTabletorMobile && usersOnline.map((item, i) =>
                         <div 
                             key={i}
-                            className='online'>  
+                            className='online'                        
+                            onClick={() => console.log(item.id)}
+>  
                                 <div style={{color: item.color}}>
                                     {item.userName}
                                 </div>

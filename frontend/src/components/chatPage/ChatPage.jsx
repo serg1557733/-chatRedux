@@ -177,7 +177,7 @@ export const ChatPage = () => {
                                 backgroundImage:'url(' + imgBtn + ')' ,
                                 backgroundPosition: 'center', 
                                 backgroundRepeat: "no-repeat", 
-                                backgroundSize: '20px 40px'
+                                backgroundSize: '20px 20px'
 
                             }}
                             style = {{color: 'green'}}

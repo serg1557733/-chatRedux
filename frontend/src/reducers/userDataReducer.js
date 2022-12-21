@@ -15,15 +15,16 @@ const initialState = {
     showUserInfoBox: false,
     avatar: ''
 }
-const SERVER_URL = process.env.REACT_APP_SERVER_URL;
+const SERVER_URL =  process.env.REACT_APP_SERVER_URL
 
-const POST_URL =  SERVER_URL + '/login';
-const GET_AVATAR_URL =  SERVER_URL + '/avatar';
+const POST_URL =  process.env.REACT_APP_SERVER_URL + '/login';
+const GET_AVATAR_URL = process.env.REACT_APP_SERVER_URL +  '/avatar';
 
 export const getUserData = createAsyncThunk(
     'userData/getUser',
      ( t , thunkAPI) => {
       const userData = thunkAPI.getState().userDataReducer;
+      console.log(POST_URL)
         if(userData.userName){
             if(isValidPayload({...userData}) && isValidUserName({...userData}))
                 try {
