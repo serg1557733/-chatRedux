@@ -130,15 +130,15 @@
     overflow: scroll;
     border-radius: 10px;
     border: 2px solid grey; 
-    background-color:rgb(243, 243, 243);
+    background-color:rgb(30, 45, 52);
     .online {
-        border-radius: 5px;
+        border-radius: 3px;
         padding: 5px;
-        border: 2px solid grey; 
+        border:2px solid rgb(255, 255, 255); 
         margin-bottom: 5px;
         cursor: pointer;
-        background-color:rgb(247, 233, 233);
         font-weight: 700;
+        color:aliceblue;
 
     }
 }

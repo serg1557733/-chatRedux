@@ -8,6 +8,7 @@ import { getUserAvatar } from '../../../reducers/userDataReducer';
 import { useState, useEffect } from 'react';
 import { store } from '../../../store';
 import { getSocket } from '../../../reducers/socketReducer';
+import { StyledAvatar } from '../messageForm/StyledAvatar';
 
 
 export const UserInfo = () => {
@@ -58,7 +59,7 @@ export const UserInfo = () => {
 
     return (
             <>  
-                <h4> Hello, {user.userName} </h4>
+                <h4 style={{color:'white'}}> Hello, {user.userName} </h4>
                
                 <Avatar
                     sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
@@ -78,11 +79,28 @@ export const UserInfo = () => {
                        />
                     {user.isAdmin && !isTabletorMobile ? 
                         allUsers.map((item, key) =>
-                            <div 
+                        (user.userName !== item.userName) && <div 
                                 key={item._id}
                                 className='online'
-                                onClick={() => console.log(item.id)}
+                                onClick={() => console.log(item._id)}
                                 >
+                                {/* <StyledAvatar
+
+                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
+                                    variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
+                                        
+                                    >
+                                    <Avatar 
+                                       
+                                        src= {SERVER_URL + '/'+ item?.user?.avatar}
+                                        sx={ {alignSelf: 'flex-end'}}
+                                        
+                                        > 
+                                        {item?.userName.slice(0, 1)}
+                                    </Avatar>   
+
+
+                                    </StyledAvatar> */}
                                 <div>
                                     {item.userName}
                                 </div>
@@ -137,13 +155,29 @@ export const UserInfo = () => {
                             </div>) 
                     :
                      !isTabletorMobile && usersOnline.map((item, i) =>
-                        <div 
+                     (user.userName !== item.userName) &&
+                      <div 
                             key={i}
                             className='online'                        
-                            onClick={() => console.log(item.id)}
->  
+                            onClick={() => console.log(item)}
+                            >  
+                            
                                 <div style={{color: item.color}}>
+                                <StyledAvatar    sx={{ marginRight:2}}
+>
+                                    <Avatar 
+                                        key={i} 
+                                        src= {SERVER_URL + '/'+ item?.avatar}
+                                        sx={{ alignSelf: 'flex-end'}}
+                                        
+                                        > 
+                                        {item?.userName.slice(0, 1)}
+                                    </Avatar>   
+
+
+                                    </StyledAvatar>
                                     {item.userName}
+                                    
                                 </div>
                                 <span style={{color: 'green'}}>
                                     online

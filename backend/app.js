@@ -208,7 +208,7 @@ io.use( async (socket, next) => {
     
     const usersOnline = [];
     sockets.map(sock => usersOnline.push(sock.user))
-
+   
    
     try {
         const user = jwt.verify(token, TOKEN_KEY);
@@ -239,17 +239,17 @@ io.on("connection", async (socket) => {
     const userName = socket.user.userName;
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
-    const exist = sockets.find(current => current.user.userName == socket.user.userName)
     const usersOnline = sockets.map(sock => sock.user)
 
-
+const onUser = []
     const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
     const userSet = new Set(usersOnlineID)
+    for (let id of userSet) {
+        const userFromDb = await User.findById(id)
+        onUser.push(userFromDb)
+    }
 
-    console.log(userSet)
-
-
-    io.emit('usersOnline', usersOnline); // send array online users  
+    io.emit('usersOnline', onUser); // send array online users  
 
     socket.emit('connected', dbUser); //socket.user
   
@@ -307,7 +307,7 @@ io.on("connection", async (socket) => {
             const filteredUsersOnline = usersOnline.filter(user => exist.user.id !== user.id)
         
            
-           socket.emit('usersOnline', filteredUsersOnline);
+           io.emit('usersOnline', filteredUsersOnline);
 
             // const sockets = await io.fetchSockets();
             // io.emit('usersOnline', sockets.map(sock => sock.user));
