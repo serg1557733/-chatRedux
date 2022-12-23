@@ -65,6 +65,9 @@ const getUserDataSlice = createSlice({
             state.isPrivatChat = true;
             state.chatId = action.payload.chatId
         },
+        generalMessage: (state, action)=> {
+            state.isPrivatChat = false;
+        },
         setUserName: (state, action) => {state.userName = action.payload.userName},
         setUserPassword: (state, action) => {state.password = action.payload.password},
             
@@ -118,5 +121,6 @@ export const {
     removeToken,
     deleteResponseMessage,
     showUserInfoBox,
-    privateMessage
+    privateMessage,
+    generalMessage
 } = actions;

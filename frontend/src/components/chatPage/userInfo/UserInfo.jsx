@@ -1,13 +1,12 @@
-import {Button,Avatar} from '@mui/material';
+import {Avatar} from '@mui/material';
 import { useSelector } from 'react-redux';
-import { banUser } from '../service/banUser';
-import { muteUser } from '../service/muteUser';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar, privateMessage } from '../../../reducers/userDataReducer';
 import { useState, useEffect } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
+import { MainChatButtton } from '../generalChat/MainChatButtton';
 import './userInfo.scss';
 
 
@@ -47,8 +46,6 @@ export const UserInfo = () => {
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
-    const arrUsersOnline = usersOnline.map( i => i?.userName)
-    const userNamesOnlineSet =  new Set(arrUsersOnline)
 
     const inputHandler = (e) => {
         const file = e.target.files[0]
@@ -76,7 +73,10 @@ export const UserInfo = () => {
                         }}
                     onChange = {e => inputHandler(e)}/>
 
+                   
+                <MainChatButtton/>     
 
+                
                     {user.isAdmin && !isTabletorMobile ? 
                             allUsers.map((item, i) =>
                             (user.userName !== item?.userName) 

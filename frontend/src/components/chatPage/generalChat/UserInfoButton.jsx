@@ -6,7 +6,6 @@ import { Avatar } from "@mui/material";
 
 export const UserInfoButton = ({item, i}) => {
 
-    console.log(item, i)
 
     const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -14,6 +13,9 @@ export const UserInfoButton = ({item, i}) => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
     const chatId = useSelector(state => state.userDataReducer.chatId)
+    const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
+
+    let userAvatarUrl = storeUserAvatar || user.avatar;
 
 
     return (
