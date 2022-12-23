@@ -27,7 +27,7 @@ export const AdminUserInfiButton = ({item, i}) => {
             onClick={() => {
                 console.log(item._id, user._id)
                 store.dispatch(privateMessage({chatId: item._id}))
-                socket.emit('private message', {
+                socket.emit('privat chat', {
                     user,
                     to: item._id,
                     })

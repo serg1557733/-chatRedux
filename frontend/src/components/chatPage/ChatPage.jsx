@@ -4,7 +4,7 @@ import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { MessageForm } from './messageForm/MessegaForm';
 import { UserInfo } from './userInfo/UserInfo';
 import { store } from '../../store';
-import { removeToken, isPrivatChat} from '../../reducers/userDataReducer'
+import { removeToken, isPrivatChat, privateMessage} from '../../reducers/userDataReducer'
 import { useDispatch, useSelector } from 'react-redux';
 import {getSocket} from'../../reducers/socketReducer';
 import { sendMessage, storeMessage, fileMessage } from '../../reducers/messageReducer';
@@ -30,7 +30,7 @@ export const ChatPage = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const editOldMessage = useSelector(state => state.messageReducer.editMessage)
     let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
-
+    const chatId = useSelector(state => state.userDataReducer.chatId)
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
 
     const [message, setMessage] = useState({message: ''});
@@ -71,14 +71,33 @@ export const ChatPage = () => {
     }
 
 
+
+    const sendPrivateMessage = () => {
+        console.log(message, chatId, socket.id)
+        socket.emit("private message", {
+            user,
+            message: chatId,
+            to: socket.id,
+          })
+    }
+
+
+    
+
+
+
     useEffect(() => {
         if(socket) {
             socket.on('writing', (data) => { 
                     setUserTyping(data) 
                     setTimeout(() => setUserTyping([]), 500 )
                 })  
+            socket.on("private message", ({ content, from }) => {
+                    console.log(content, from)
+                
+                  });
         }
-   }, [socket])
+   }, [])
 
 
     useEffect(() => {
@@ -151,7 +170,7 @@ export const ChatPage = () => {
                         onSubmit = {e  => {
                                         e.preventDefault()
                                         if (message.message.length){
-                                            dispatch(sendMessage({user, socket}))
+                                            isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}))
                                             dispatch(getSocket('allmessages'))
                                             dispatch(editMessage({editMessage: ''}))
                                             setMessage({message: ''})

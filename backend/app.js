@@ -236,18 +236,42 @@ io.use( async (socket, next) => {
 });
 
 io.on("connection", async (socket) => {
+
+
+    //need to use this ID to socket privat messges
+
+    const users = [];
+    for (let [id, socket] of io.of("/").sockets) {
+      users.push({
+        userID: id,
+        username: socket.user.userName
+      });
+    }
+
+    
+    socket.emit("usersID", users);
+
+
     const userName = socket.user.userName;
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
     const usersOnline = sockets.map(sock => sock.user)
+
 
 const onUser = []
     const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
     const userSet = new Set(usersOnlineID)
     for (let id of userSet) {
         const userFromDb = await User.findById(id)
+
         onUser.push(userFromDb)
     }
+
+
+
+
+
+    console.log(users)
 
     io.emit('usersOnline', onUser); // send array online users  
 
@@ -333,10 +357,14 @@ const onUser = []
                 // }
            });
 
-        socket.on('private message', (user) => {
-            console.log(user)
-        
-        })
+        socket.on("private message", ({ user, message, to }) => {
+            console.log(to, user._id, message)
+            socket.to(to).emit("private message", {
+              user,
+              message,
+              from: user.id,
+            });
+          });
 
 
     

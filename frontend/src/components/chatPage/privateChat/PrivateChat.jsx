@@ -25,6 +25,24 @@ export const PrivateChat = () => {
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
 
+    // socket.on("private message", ({ content, from }) => {
+    //     console.log(content, from)
+    //     for (let i = 0; i < this.users.length; i++) {
+    //       const user = this.users[i];
+    //       if (user.userID === from) {
+    //         user.messages.push({
+    //           content,
+    //           fromSelf: false,
+    //         });
+    //         if (user !== this.selectedUser) {
+    //           user.hasNewMessages = true;
+    //         }
+    //         break;
+    //       }
+    //     }
+    //   });
+
+
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
