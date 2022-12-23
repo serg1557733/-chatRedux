@@ -6,9 +6,9 @@ import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar, privateMessage } from '../../../reducers/userDataReducer';
 import { useState, useEffect } from 'react';
-import { store } from '../../../store';
-import { getSocket } from '../../../reducers/socketReducer';
-import { StyledAvatar } from '../messageForm/StyledAvatar';
+import { UserInfoButton } from '../generalChat/UserInfoButton';
+import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
+import './userInfo.scss';
 
 
 export const UserInfo = () => {
@@ -43,16 +43,12 @@ export const UserInfo = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isTabletorMobile = (window.screen.width < 730);
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
-    const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
     const chatId = useSelector(state => state.userDataReducer.chatId)
-
-
-
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
-    
-    const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+    const arrUsersOnline = usersOnline.map( i => i?.userName)
+    const userNamesOnlineSet =  new Set(arrUsersOnline)
 
     const inputHandler = (e) => {
         const file = e.target.files[0]
@@ -72,126 +68,25 @@ export const UserInfo = () => {
                 </Avatar>  
                 
                 <input
-                        type="file"
-                        accept="image/png, image/jpeg"
-                        name='file'
-                        style = {{
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    name='file'
+                    style = {{
                             display: displayType
                         }}
-                        onChange = {e => inputHandler(e)}
-                       />
+                    onChange = {e => inputHandler(e)}/>
+
+
                     {user.isAdmin && !isTabletorMobile ? 
-                        allUsers.map((item, key) =>
-                        (user.userName !== item.userName) && <div 
-                                key={item._id}
-                                className='online'
-                                onClick={() => console.log(item._id)}
-                                >
-                                {/* <StyledAvatar
-
-                                    anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
-                                    variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
-                                        
-                                    >
-                                    <Avatar 
-                                       
-                                        src= {SERVER_URL + '/'+ item?.user?.avatar}
-                                        sx={ {alignSelf: 'flex-end'}}
-                                        
-                                        > 
-                                        {item?.userName.slice(0, 1)}
-                                    </Avatar>   
-
-
-                                    </StyledAvatar> */}
-                                <div>
-                                    {item.userName}
-                                </div>
-
-                                <div>
-                                    {(user.userName === item.userName )?   
-                                        "admin"
-                                    :   
-                                    <>      
-                                        <Button
-                                            variant="contained"
-                                            onClick={()=>{
-                                                muteUser(item.userName, item?.isMutted, socket)
-                                            }}
-                                            sx={(isTabletorMobile) 
-                                                ? 
-                                                {height: '15px',
-                                                 maxWidth:'20px'}: 
-                                                {
-                                                margin:'3px',
-                                                height: '25px'}}>
-
-                                                {item.isMutted
-                                                ? 
-                                                'unmute'
-                                                : 'mute'}
-                                        </Button>
-
-                                        <Button
-                                            variant="contained"
-                                            onClick={()=>{ 
-                                                banUser(item.userName, item.isBanned, socket)
-                                            }}
-                                            sx={(isTabletorMobile) 
-                                                ? 
-                                                {height: '15px',
-                                                margin:'2px'} : 
-                                                {
-                                                margin:'3px',
-                                                height: '25px'}}
-                                       >
-                                                {item?.isBanned ? 'unban' : 'ban'}
-                                        </Button> 
-                                    </>}
-                            
-                                </div>
-                                    {
-                                    userNamesOnlineSet.has(item.userName)? 
-                                    <span key={key} style={{color: 'green'}}>online</span>
-                                    : ''
-                                    }
-                            </div>) 
-                    :
-                     !isTabletorMobile && usersOnline.map((item, i) =>
-                     (user.userName !== item.userName) &&
-                      <div 
-                            key={i}
-                            className={isPrivatChat&&(chatId==user._id)? 'online active' :'online' }                       
-                            onClick={() => {
-                                console.log(item.userName)
-                                store.dispatch(privateMessage(user._id))
-                                socket.emit('private message', user )
-                            }
-                            }
-                            >  
-                            
-                                <div style={{color: item.color}}>
-                                <StyledAvatar    sx={{ marginRight:2}}
->
-                                    <Avatar 
-                                        key={i} 
-                                        src= {SERVER_URL + '/'+ item?.avatar}
-                                        sx={{ alignSelf: 'flex-end'}}
-                                        
-                                        > 
-                                        {item?.userName.slice(0, 1)}
-                                    </Avatar>   
-
-
-                                    </StyledAvatar>
-                                    {item.userName}
-                                    
-                                </div>
-                                <span style={{color: 'green'}}>
-                                    online
-                                </span>
-                        </div>)
-                }
+                            allUsers.map((item, i) =>
+                            (user.userName !== item?.userName) 
+                                && <AdminUserInfiButton item={item} i={i} key={i}/>) 
+                        :
+                            !isTabletorMobile 
+                            && usersOnline.map((item, i) =>
+                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                   
+                            )
+                    }
             </>
         )
 }
