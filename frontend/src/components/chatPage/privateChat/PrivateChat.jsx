@@ -18,21 +18,24 @@ export const PrivateChat = () => {
 
     const SERVER_URL =process.env.REACT_APP_SERVER_URL
 
-    const startMessages = []
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
 
-    socket.on("private message", ({privateMessage, fromUser}) => {
-        console.log(privateMessage , fromUser)
+    socket.on('send privat messages', (messages)=> {
+        setStartMessages(messages)
       });
 
 
+
+    const [startMessages, setStartMessages] = useState([])   
+    const [startMessagesFrom, setStartMessagesFrom] = useState([])   
+    let endMessages = useRef(null);
+
 console.log(startMessages)
 
-    let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
@@ -58,7 +61,7 @@ console.log(startMessages)
                 {
                 startMessages.map((item, i) =>
                     <div key={i + 1} className={ 
-                        (item.userName === user.userName)? 'message myMessage' :'message'}
+                        (item.fromUser === user._id)? 'message myMessage' :'message'}
                         onClick = {(e) => {
                             console.log(e.target)
                             if(e.target.closest("div").className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
@@ -76,12 +79,12 @@ console.log(startMessages)
                                     fontWeight: 800
                                 }}
 
-                        > {item.userName}</span>
+                        > {item.fromUser}</span>
                         <div 
                             key={i}
                         
                             className={ 
-                                (item.userName === user.userName)? 'message myMessage' :'message'}>
+                                (item.fromUser === user._id)? 'message myMessage' :'message'}>
                            
                            { 
                            item.text.match(regYoutube) ?
@@ -135,7 +138,7 @@ console.log(startMessages)
                         </div>
                         {isEditiedMessage && <i>Edited</i>}
                         <div className={ 
-                                (item.userName === user.userName)? 'myDate' :'date'}>
+                                 (item.fromUser === user._id)? 'myDate' :'date'}>
                                 {dateFormat(item).time}
                         </div>
                     </div>

@@ -361,7 +361,21 @@ io.on("connection", async (socket) => {
           });
 
 
+          socket.on('privat chat', async (data) => {
+            //find user to in Db
+            const privateMessagesToUser = await PrivateMessage.find({toUser: data.user._id})
+            const privateMessagesFromUser = await PrivateMessage.find({fromUser: data.toUser._id})
+
+            const messages = [...privateMessagesFromUser ]
+//need to send all messages
+            //find user from in db
+            //compare users and if messages is - send 
+            socket.emit('send privat messages', messages)
+          })
+
     
+
+
         socket.on("banUser",async (data) => {
             if(!socket.user.isAdmin){
                 return;
