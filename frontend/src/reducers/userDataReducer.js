@@ -14,7 +14,7 @@ const initialState = {
     responseMessage: '',
     showUserInfoBox: false,
     isPrivatChat: false,
-    chatId: '',
+    toUser: {},
     avatar: ''
 }
 const SERVER_URL =  process.env.REACT_APP_SERVER_URL
@@ -62,7 +62,7 @@ const getUserDataSlice = createSlice({
     reducers: {
         privateMessage: (state, action)=> {
             state.isPrivatChat = true;
-            state.chatId = action.payload.chatId
+            state.toUser = action.payload.toUser
         },
         generalMessage: (state, action)=> {
             state.isPrivatChat = false;

@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const socket = require("socket.io");
 const User = require('./db/models/User');
 const Message = require('./db/models/Message');
+const PrivateMessage = require('./db/models/PrivateMessage')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 require('dotenv').config(); // add dotnv for config
@@ -325,6 +326,7 @@ io.on("connection", async (socket) => {
 
         });
             console.log(`user :${socket.user.userName} , connected to socket`); 
+
         socket.on("muteUser",async (data) => {
             if(!socket.user.isAdmin){
                 return;
@@ -343,13 +345,19 @@ io.on("connection", async (socket) => {
                 // }
            });
 
-        socket.on("private message", ({ from, message, to }) => {
-            console.log(from,  to)
-            socket.to(to).emit("private message", {
-              message,
-              from,
-              createDate: Date.now(),
+        socket.on("private message", async ({ fromUser, from, message, toUser , to}) => {
+            console.log(fromUser)
+            
+            const privateMessage = new PrivateMessage({
+                text:  message,
+                createDate: Date.now(),
+                fromUser,
+                toUser
             });
+            await privateMessage.save()
+
+          
+            socket.to(to).emit("private message", {privateMessage, fromUser});
           });
 
 

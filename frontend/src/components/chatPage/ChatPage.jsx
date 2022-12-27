@@ -30,7 +30,8 @@ export const ChatPage = () => {
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const editOldMessage = useSelector(state => state.messageReducer.editMessage)
     let showUserInfoBox = useSelector(state => state.messageReducer.showUserInfoBox)// || localStorage.getItem('showBox');
-    const chatId = useSelector(state => state.userDataReducer.chatId)
+    const toUser = useSelector(state => state.userDataReducer.toUser)
+    const chatId = useSelector(state => state.userDataReducer.toUser.socketId)
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
 
     const [message, setMessage] = useState({message: ''});
@@ -74,9 +75,10 @@ export const ChatPage = () => {
 
     const sendPrivateMessage = () => {
         socket.emit("private message", {
-            from: socket.id,
-            message,
+            fromUser: user,
+            message: message.message,
             to: chatId,
+            toUser
           })
     }
 

@@ -25,14 +25,8 @@ export const PrivateChat = () => {
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
 
-    socket.on("private message", ({ message,createDate, from }) => {
-        console.log(message, from, createDate )
-        const newPrivatMessage = {
-            text: message,
-            from,
-            createDate:createDate
-        }
-        startMessages.push(newPrivatMessage)
+    socket.on("private message", ({privateMessage, fromUser}) => {
+        console.log(privateMessage , fromUser)
       });
 
 

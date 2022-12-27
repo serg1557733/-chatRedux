@@ -12,7 +12,7 @@ export const UserInfoButton = ({item, i}) => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
-    const chatId = useSelector(state => state.userDataReducer.chatId)
+    const chatId = useSelector(state => state.userDataReducer.toUser.socketId)
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
@@ -23,10 +23,11 @@ export const UserInfoButton = ({item, i}) => {
         className={isPrivatChat&&(chatId === item.socketId)? 'online active' :'online' }                       
         onClick={() => {
             console.log(item.socketId, chatId)
-            store.dispatch(privateMessage({chatId: item.socketId}))
+            store.dispatch(privateMessage({toUser: item}))
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,
+                toUser: item
               })
         }
         }
