@@ -18,30 +18,25 @@ export const PrivateChat = () => {
 
     const SERVER_URL =process.env.REACT_APP_SERVER_URL
 
-    const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
+    const startMessages = []
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
 
-    // socket.on("private message", ({ content, from }) => {
-    //     console.log(content, from)
-    //     for (let i = 0; i < this.users.length; i++) {
-    //       const user = this.users[i];
-    //       if (user.userID === from) {
-    //         user.messages.push({
-    //           content,
-    //           fromSelf: false,
-    //         });
-    //         if (user !== this.selectedUser) {
-    //           user.hasNewMessages = true;
-    //         }
-    //         break;
-    //       }
-    //     }
-    //   });
+    socket.on("private message", ({ message,createDate, from }) => {
+        console.log(message, from, createDate )
+        const newPrivatMessage = {
+            text: message,
+            from,
+            createDate:createDate
+        }
+        startMessages.push(newPrivatMessage)
+      });
 
+
+console.log(startMessages)
 
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
@@ -67,7 +62,7 @@ export const PrivateChat = () => {
     return (             
             <Box className='messageBox'>  
                 {
-                messages.map((item, i) =>
+                startMessages.map((item, i) =>
                     <div key={i + 1} className={ 
                         (item.userName === user.userName)? 'message myMessage' :'message'}
                         onClick = {(e) => {

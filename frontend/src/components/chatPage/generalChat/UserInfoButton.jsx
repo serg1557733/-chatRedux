@@ -20,13 +20,13 @@ export const UserInfoButton = ({item, i}) => {
 
     return (
         <div 
-        className={isPrivatChat&&(chatId === item._id)? 'online active' :'online' }                       
+        className={isPrivatChat&&(chatId === item.socketId)? 'online active' :'online' }                       
         onClick={() => {
-            console.log(item._id, user._id)
-            store.dispatch(privateMessage({chatId: item._id}))
+            console.log(item.socketId, chatId)
+            store.dispatch(privateMessage({chatId: item.socketId}))
             socket.emit('privat chat', {
                 user,
-                to: item._id,
+                to: item.socketId,
               })
         }
         }

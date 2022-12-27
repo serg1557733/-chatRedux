@@ -26,7 +26,6 @@ export const getUserData = createAsyncThunk(
     'userData/getUser',
      ( t , thunkAPI) => {
       const userData = thunkAPI.getState().userDataReducer;
-      console.log(POST_URL)
         if(userData.userName){
             if(isValidPayload({...userData}) && isValidUserName({...userData}))
                 try {

@@ -73,11 +73,10 @@ export const ChatPage = () => {
 
 
     const sendPrivateMessage = () => {
-        console.log(message, chatId, socket.id)
         socket.emit("private message", {
-            user,
-            message: chatId,
-            to: socket.id,
+            from: socket.id,
+            message,
+            to: chatId,
           })
     }
 

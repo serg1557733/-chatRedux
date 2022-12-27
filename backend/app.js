@@ -236,44 +236,30 @@ io.use( async (socket, next) => {
 });
 
 io.on("connection", async (socket) => {
-
+    const userName = socket.user.userName;
+    const sockets = await io.fetchSockets();
+    const dbUser = await getOneUser(userName);
 
     //need to use this ID to socket privat messges
 
     const users = [];
-    for (let [id, socket] of io.of("/").sockets) {
-      users.push({
-        userID: id,
-        username: socket.user.userName
-      });
-    }
-
+        for (let [id, socket] of io.of("/").sockets) {
+            
+            const dbUser = await getOneUser(socket.user.userName)
+            users.push({...dbUser._doc,socketId: id });
+        }
+       
     
-    socket.emit("usersID", users);
 
+// const onUser = []
+//     const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
+//     const userSet = new Set(usersOnlineID)
+//     for (let id of userSet) {
+//         const userFromDb = await User.findById(id)
+//         onUser.push(userFromDb)
+//     }
 
-    const userName = socket.user.userName;
-    const sockets = await io.fetchSockets();
-    const dbUser = await getOneUser(userName);
-    const usersOnline = sockets.map(sock => sock.user)
-
-
-const onUser = []
-    const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
-    const userSet = new Set(usersOnlineID)
-    for (let id of userSet) {
-        const userFromDb = await User.findById(id)
-
-        onUser.push(userFromDb)
-    }
-
-
-
-
-
-    console.log(users)
-
-    io.emit('usersOnline', onUser); // send array online users  
+    io.emit('usersOnline', users); // send array online users  
 
     socket.emit('connected', dbUser); //socket.user
   
@@ -357,12 +343,12 @@ const onUser = []
                 // }
            });
 
-        socket.on("private message", ({ user, message, to }) => {
-            console.log(to, user._id, message)
+        socket.on("private message", ({ from, message, to }) => {
+            console.log(from,  to)
             socket.to(to).emit("private message", {
-              user,
               message,
-              from: user.id,
+              from,
+              createDate: Date.now(),
             });
           });
 
