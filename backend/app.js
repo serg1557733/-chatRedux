@@ -363,10 +363,10 @@ io.on("connection", async (socket) => {
 
           socket.on('privat chat', async (data) => {
             //find user to in Db
-            const privateMessagesToUser = await PrivateMessage.find({toUser: data.user._id})
-            const privateMessagesFromUser = await PrivateMessage.find({fromUser: data.toUser._id})
+            const privateMessagesToUser = await PrivateMessage.find({toUser: data.user._id}).sort({ 'createDate': -1 })
+            const privateMessagesFromUser = await PrivateMessage.find({toUser: data.toUser._id}).sort({ 'createDate': -1 })
 
-            const messages = [...privateMessagesFromUser ]
+            const messages = [...privateMessagesFromUser, ...privateMessagesToUser]
 //need to send all messages
             //find user from in db
             //compare users and if messages is - send 
