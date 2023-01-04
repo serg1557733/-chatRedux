@@ -20,13 +20,13 @@ export const PrivateChat = () => {
 
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
+
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
 
 
     const [startMessages, setStartMessages] = useState([])   
-    const [startMessagesFrom, setStartMessagesFrom] = useState([])   
-
     let endMessages = useRef(null);
 
 socket.on('send privat messages', (messages)=> {
@@ -35,11 +35,11 @@ socket.on('send privat messages', (messages)=> {
 
   const newMessages = [];
 
-socket.on("private message", (message)=> {
-    console.log(message)
+  ///need to test not working
+socket.on("private message", (message, from)=> {
     newMessages.push(message)
+    console.log(newMessages)
   });  
-console.log(newMessages)
   
 
     const [isEditing, setIsEditing] = useState(false)   
@@ -50,19 +50,18 @@ console.log(newMessages)
 
     const [play] = useSound(notifSound);
 
-console.log(messages)
 
     useEffect(() => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
         } 
-      }, [startMessages, messages, newMessages]);
+      }, [newMessages]);
            
-    useEffect(()=> {
-        if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
-           // play()                 
-        }
-    }, [newMessages])
+    // useEffect(()=> {
+    //     if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
+    //        // play()                 
+    //     }
+    // }, [newMessages])
 
     return (             
             <Box className='messageBox'>  

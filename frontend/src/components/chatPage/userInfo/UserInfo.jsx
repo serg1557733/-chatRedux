@@ -46,8 +46,6 @@ export const UserInfo = () => {
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
-    console.log(usersOnline)
-
     const inputHandler = (e) => {
         const file = e.target.files[0]
         dispatch(getUserAvatar(file))

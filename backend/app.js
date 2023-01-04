@@ -353,8 +353,7 @@ io.on("connection", async (socket) => {
            });
 
         socket.on("private message", async ({ fromUser, from, message, toUser , to}) => {
-            console.log(fromUser)
-            
+//create message and save to DB            
             const privateMessage = new PrivateMessage({
                 text:  message,
                 createDate: Date.now(),
@@ -363,13 +362,12 @@ io.on("connection", async (socket) => {
             });
             await privateMessage.save()
 
-          
+          //emit event 
             socket.to(to).emit("private message", {privateMessage, fromUser});
           });
 
 
           socket.on('privat chat', async (data) => {
-            console.log(data)
             //find user to in Db
             const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[data.user._id, data.toUser._id]}, fromUser: {$in:[data.user._id, data.toUser._id]}}).sort({ 'createDate': 1 })
           
