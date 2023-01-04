@@ -249,8 +249,6 @@ io.on("connection", async (socket) => {
             const dbUser = await getOneUser(socket.user.userName)
             users.push({...dbUser._doc,socketId: id });
         }
-       
-    
 
 // const onUser = []
 //     const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
@@ -264,7 +262,10 @@ io.on("connection", async (socket) => {
 //tasks 
 // find private chats and send to users
 
-
+// if(socket.user){
+//      const siPrivate = await PrivateMessage.find({toUser: socket.user.id})
+//      console.log(!!siPrivate)
+// }
 
     io.emit('usersOnline', users); // send array online users  
 
@@ -368,15 +369,13 @@ io.on("connection", async (socket) => {
 
 
           socket.on('privat chat', async (data) => {
+            console.log(data)
             //find user to in Db
-            const privateMessagesToUser = await PrivateMessage.find({toUser: data.user._id}).sort({ 'createDate': -1 })
-            const privateMessagesFromUser = await PrivateMessage.find({toUser: data.toUser._id}).sort({ 'createDate': -1 })
-
-            const messages = [...privateMessagesFromUser, ...privateMessagesToUser]
-//need to send all messages
+            const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[data.user._id, data.toUser._id]}, fromUser: {$in:[data.user._id, data.toUser._id]}}).sort({ 'createDate': 1 })
+          
             //find user from in db
             //compare users and if messages is - send 
-            socket.emit('send privat messages', messages)
+            socket.emit('send privat messages', privateMessagesToUser)
           })
 
     

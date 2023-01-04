@@ -39,7 +39,7 @@ socket.on("private message", (message)=> {
     console.log(message)
     newMessages.push(message)
   });  
-
+console.log(newMessages)
   
 
     const [isEditing, setIsEditing] = useState(false)   
