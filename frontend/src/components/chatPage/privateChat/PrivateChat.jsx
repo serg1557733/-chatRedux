@@ -22,19 +22,25 @@ export const PrivateChat = () => {
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
-    const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
-
-    socket.on('send privat messages', (messages)=> {
-        setStartMessages(messages)
-      });
-
 
 
     const [startMessages, setStartMessages] = useState([])   
     const [startMessagesFrom, setStartMessagesFrom] = useState([])   
+
     let endMessages = useRef(null);
 
-console.log(startMessages)
+socket.on('send privat messages', (messages)=> {
+    setStartMessages(messages)
+  });
+
+  const newMessages = [];
+
+socket.on("private message", (message)=> {
+    console.log(message)
+    newMessages.push(message)
+  });  
+
+  
 
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
@@ -43,6 +49,8 @@ console.log(startMessages)
     const messages = startMessages.concat(newMessages)  
 
     const [play] = useSound(notifSound);
+
+console.log(messages)
 
     useEffect(() => {
         if (!isEditing) {
@@ -59,7 +67,7 @@ console.log(startMessages)
     return (             
             <Box className='messageBox'>  
                 {
-                startMessages.map((item, i) =>
+                messages.map((item, i) =>
                     <div key={i + 1} className={ 
                         (item.fromUser === user._id)? 'message myMessage' :'message'}
                         onClick = {(e) => {

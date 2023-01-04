@@ -260,6 +260,12 @@ io.on("connection", async (socket) => {
 //         onUser.push(userFromDb)
 //     }
 
+
+//tasks 
+// find private chats and send to users
+
+
+
     io.emit('usersOnline', users); // send array online users  
 
     socket.emit('connected', dbUser); //socket.user
