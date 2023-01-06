@@ -52,6 +52,11 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
+if(socket){
+    socket.on('my chats', (data)=> console.log(data))
+}
+    
+
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>

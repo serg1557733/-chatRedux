@@ -104,7 +104,8 @@ export const ChatPage = () => {
     useEffect(() => {
    
         if(token){
-            SOCKET_EVENTS.map(event => dispatch(getSocket(event)))   
+            ['allmessages', 'usersOnline', 'allDbUsers'].map(event => dispatch(getSocket(event)))  //use const SOCKETS EVENT
+            console.log('socket events') 
         }
     }, [token, editOldMessage, showUserInfoBox])
 
@@ -171,9 +172,9 @@ export const ChatPage = () => {
                         onSubmit = {e  => {
                                         e.preventDefault()
                                         if (message.message.length){
-                                            isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}))
-                                            dispatch(getSocket('allmessages'))
-                                            dispatch(editMessage({editMessage: ''}))
+                                            isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}));
+                                            isPrivatChat && dispatch(getSocket('allmessages'))
+                                            isPrivatChat &&dispatch(editMessage({editMessage: ''}))
                                             setMessage({message: ''})
                                             play()
                                         }

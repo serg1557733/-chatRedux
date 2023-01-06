@@ -19,26 +19,20 @@ export const PrivateChat = () => {
     const SERVER_URL =process.env.REACT_APP_SERVER_URL
 
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
-    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
-
-    const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
-
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
-
 
     const [startMessages, setStartMessages] = useState([])   
     let endMessages = useRef(null);
 
 socket.on('send privat messages', (messages)=> {
+    console.log(messages)
     setStartMessages(messages)
   });
 
-  const newMessages = [];
 
   ///need to test not working
-socket.on("private message", (message, from)=> {
-    newMessages.push(message)
-    console.log(newMessages)
+socket.on("private message", (message)=> {
+    startMessages.push(message)
   });  
   
 
@@ -46,27 +40,20 @@ socket.on("private message", (message, from)=> {
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
-    const messages = startMessages.concat(newMessages)  
 
     const [play] = useSound(notifSound);
-
 
     useEffect(() => {
         if (!isEditing) {
             scrollToBottom((endMessages)) 
-        } 
-      }, [newMessages]);
+        }
+      }, [startMessages]);
            
-    // useEffect(()=> {
-    //     if(newMessages.length > 0 && newMessages[newMessages.length-1].userName !== user.userName){
-    //        // play()                 
-    //     }
-    // }, [newMessages])
 
     return (             
             <Box className='messageBox'>  
                 {
-                messages.map((item, i) =>
+                startMessages.map((item, i) =>
                     <div key={i + 1} className={ 
                         (item.fromUser === user._id)? 'message myMessage' :'message'}
                         onClick = {(e) => {
@@ -155,4 +142,6 @@ socket.on("private message", (message, from)=> {
 
             </Box>
     )
+
+    
 } 

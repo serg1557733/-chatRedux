@@ -269,6 +269,22 @@ io.on("connection", async (socket) => {
 
     io.emit('usersOnline', users); // send array online users  
 
+    //send private chats for user
+
+    const privateChats = await PrivateMessage.find( {$or:[ {toUser: dbUser._id}, {fromUser: dbUser._id }],foreignField: '_id'}).populate( ['fromUser','toUser'])//need to optimal way found
+
+    const myChats = []
+privateChats.map((item, i) => {
+    console.log(item.fromUser.userName, i)
+    
+})
+///
+
+// console.log(myChats)
+// console.log(users)
+
+socket.emit('my chats', myChats)
+
     socket.emit('connected', dbUser); //socket.user
   
     if(socket.user.isAdmin){
@@ -277,6 +293,10 @@ io.on("connection", async (socket) => {
 
     const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
     socket.emit('allmessages', messagesToShow.reverse());
+
+
+
+    
 
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 
@@ -361,9 +381,15 @@ io.on("connection", async (socket) => {
                 toUser
             });
             await privateMessage.save()
-
           //emit event 
-            socket.to(to).emit("private message", {privateMessage, fromUser});
+            socket.to(to).emit("private message", privateMessage);
+            
+            // //send new messages arrey to user
+
+            // const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id, toUser._id]}}).sort({ 'createDate': 1 })
+
+            // socket.emit('send privat messages', {privateMessagesToUser, fromUser})
+
           });
 
 
@@ -374,6 +400,7 @@ io.on("connection", async (socket) => {
             //find user from in db
             //compare users and if messages is - send 
             socket.emit('send privat messages', privateMessagesToUser)
+            
           })
 
     
