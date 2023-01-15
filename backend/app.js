@@ -240,6 +240,7 @@ io.on("connection", async (socket) => {
     const userName = socket.user.userName;
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
+    const allUsers = await getAllDbUsers(socket) // send allUsers from DB to socket user
 
     //need to use this ID to socket privat messges
 
@@ -274,12 +275,11 @@ io.on("connection", async (socket) => {
     const privateChats = await PrivateMessage.find( {$or:[ {toUser: dbUser._id}, {fromUser: dbUser._id }],foreignField: '_id'}).populate( ['fromUser','toUser'])//need to optimal way found
 
     const myChats = []
-privateChats.map((item, i) => {
-    console.log(item.fromUser.userName, i)
+// privateChats.map((item, i) => {
+//     console.log(item.fromUser.userName, i)
     
-})
+// })
 ///
-
 // console.log(myChats)
 // console.log(users)
 

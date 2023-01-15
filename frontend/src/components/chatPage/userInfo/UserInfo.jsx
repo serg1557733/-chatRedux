@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
 import { MainChatButtton } from '../generalChat/MainChatButtton';
+import { FindUserBox } from '../generalChat/FindUserBox';
 import './userInfo.scss';
 
 
@@ -52,6 +53,9 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
+console.log(allUsers)
+
+
 if(socket){
     socket.on('my chats', (data)=> console.log(data))
 }
@@ -80,6 +84,7 @@ if(socket){
                    
                 <MainChatButtton/>     
 
+                <FindUserBox/>        
                 
                     {user.isAdmin && !isTabletorMobile ? 
                             allUsers.map((item, i) =>
