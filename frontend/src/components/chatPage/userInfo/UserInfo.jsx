@@ -57,7 +57,7 @@ console.log(allUsers)
 
 
 if(socket){
-    socket.on('my chats', (data)=> console.log(data))
+    socket.on('my chats', (data)=> console.log('my chats', data))
 }
     
 

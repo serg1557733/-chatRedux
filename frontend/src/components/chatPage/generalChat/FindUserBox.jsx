@@ -7,7 +7,6 @@ export const FindUserBox = () => {
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const [findUser, setfindUser] = useState('');
-    const [filteredUsers, setFilteredUsers] = useState([])
     const [showUsers, setShowUsers] = useState(false)
     const res = allUsers.filter(user =>  user.userName.toLowerCase().includes(findUser.toLowerCase()))
     
@@ -27,7 +26,7 @@ export const FindUserBox = () => {
                 
             </input>
 
-{ showUsers && findUser  && res.map(( item, i) => <UserInfoButton item = {item} i = {i}  key={i}/>  )}
+            { showUsers && findUser.length > 0  && res.map(( item, i) => <UserInfoButton item = {item} i = {i}  key={i}/>  )}
 
         </div>
     )

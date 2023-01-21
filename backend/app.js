@@ -276,7 +276,7 @@ io.on("connection", async (socket) => {
 
     const myChats = []
 // privateChats.map((item, i) => {
-//     console.log(item.fromUser.userName, i)
+//     console.log(item)
     
 // })
 ///
@@ -384,7 +384,7 @@ socket.emit('my chats', myChats)
           //emit event 
             socket.to(to).emit("private message", privateMessage);
             
-            // //send new messages arrey to user
+            // //send new messages array to user
 
             // const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id, toUser._id]}}).sort({ 'createDate': 1 })
 
