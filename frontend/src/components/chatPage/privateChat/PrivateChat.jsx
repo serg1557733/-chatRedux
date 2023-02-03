@@ -9,6 +9,7 @@ import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
 import notifSound from '../../../assets/get.mp3'
+import { PrivatChatHeader } from './PrivatChatHeader';
 
 
 export const PrivateChat = () => {
@@ -25,10 +26,8 @@ export const PrivateChat = () => {
     let endMessages = useRef(null);
 
 socket.on('send privat messages', (messages)=> {
-    console.log(messages)
     setStartMessages(messages)
   });
-
 
   ///need to test not working
 socket.on("private message", (message)=> {
@@ -50,8 +49,10 @@ socket.on("private message", (message)=> {
       }, [startMessages]);
            
 
-    return (             
+    return (  
+        
             <Box className='messageBox'>  
+                
                 {
                 startMessages.map((item, i) =>
                     <div key={i + 1} className={ 
@@ -141,6 +142,7 @@ socket.on("private message", (message)=> {
                 <div ref={endMessages}></div>
 
             </Box>
+        
     )
 
     

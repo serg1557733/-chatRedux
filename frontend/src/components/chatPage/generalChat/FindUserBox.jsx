@@ -12,9 +12,9 @@ export const FindUserBox = () => {
     
  
     return (
+        <>
         <div 
             className={'online'}                       
-            onClick={() => {console.log(allUsers, "find user in array - allUsers")}}
         >  
             <div>Find users to write</div>
             <input style={{width:'80%'}}
@@ -26,8 +26,11 @@ export const FindUserBox = () => {
                 
             </input>
 
-            { showUsers && findUser.length > 0  && res.map(( item, i) => <UserInfoButton item = {item} i = {i}  key={i}/>  )}
+           
 
         </div>
+        { showUsers && findUser.length > 0  && res.map((item, i) => <UserInfoButton item = {item} i = {i}  key={i}/>  )}
+
+    </>
     )
 }

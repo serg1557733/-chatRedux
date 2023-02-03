@@ -3,6 +3,7 @@ import { privateMessage } from "../../../reducers/userDataReducer";
 import { useSelector } from "react-redux";
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
+import { useState } from "react";
 
 export const UserInfoButton = ({item, i}) => {
 
@@ -14,27 +15,36 @@ export const UserInfoButton = ({item, i}) => {
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
     const chatId = useSelector(state => state.userDataReducer.toUser.socketId)
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
-
+    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
+    const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
 
     return (
         <div 
-        className={isPrivatChat&&(chatId === item.socketId)? 'online active' :'online' }                       
-        onClick={() => {
-            console.log(item.socketId, chatId)
+        className={(item.socketId&&isPrivatChat&&(chatId === item.socketId))? 'online active' :'online' }                       
+        onClick={(e) => {
+            console.log(e.target.lastChild.textContent)
+            // if (item.userName == e.target.lastChild.textContent){
+            //     e.target.lastChild.textContent.add('arrow')}
+            //     else {
+            //         e.target.classList.remove('arrow')
+            //     };
             store.dispatch(privateMessage({toUser: item}))
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,
                 toUser: item
               })
-        }
+            }
         }
         >  
         
             <div style={{color: item.color}}>
-            <StyledAvatar  key={i}  sx={{ marginRight:2}}
+            <StyledAvatar  key={i}  sx={{ marginRight:2}} 
+                           anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
+                           variant = {userNamesOnlineSet.has(item.userName)? 'dot' : ''}
+
 >
                 <Avatar 
                     src= {SERVER_URL + '/'+ item?.avatar}
@@ -48,9 +58,6 @@ export const UserInfoButton = ({item, i}) => {
             </StyledAvatar>
                 {item.userName}  
             </div>
-            <span style={{color: 'green'}}>
-                online
-            </span>
     </div>
     )
 }

@@ -18,6 +18,7 @@ import WebcamCapture from './service/webCam/WebcamCapture';
 import useSound from 'use-sound';
 import getNotif from '../../assets/sendSound.mp3'
 import { PrivateChat } from './privateChat/PrivateChat';
+import { PrivatChatHeader } from './privateChat/PrivatChatHeader';
 
 export const ChatPage = () => {
 
@@ -162,8 +163,10 @@ export const ChatPage = () => {
                  </div> 
                  :
                  ""}
-                    {isPrivatChat?<PrivateChat/> : <MessageForm/>}
-                    
+                    {isPrivatChat? <PrivateChat/>   : <MessageForm/>}
+                   
+
+
                     {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
 
                     <Box 

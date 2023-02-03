@@ -1,4 +1,5 @@
 import {Avatar} from '@mui/material';
+import { StyledAvatar } from '../messageForm/StyledAvatar';
 import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
@@ -52,8 +53,6 @@ export const UserInfo = () => {
         dispatch(getUserAvatar(file))
         setDisplayType('none')
     }
-
-console.log(allUsers)
 
 
 if(socket){

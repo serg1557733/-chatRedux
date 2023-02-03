@@ -281,9 +281,9 @@ io.on("connection", async (socket) => {
 // })
 ///
 // console.log(myChats)
-// console.log(users)
+ //console.log(privateChats)
 
-socket.emit('my chats', myChats)
+socket.emit('my chats', privateChats)
 
     socket.emit('connected', dbUser); //socket.user
   
