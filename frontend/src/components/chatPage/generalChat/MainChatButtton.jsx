@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { generalMessage } from '../../../reducers/userDataReducer';
 import './userInfo.scss';
 import { store } from '../../../store';
+import { getSocket } from '../../../reducers/socketReducer';
 
 export const MainChatButtton = () => {
 
@@ -10,7 +11,10 @@ export const MainChatButtton = () => {
     return (
         <div 
             className={!isPrivatChat? 'online active' :'online' }                       
-            onClick={() => {store.dispatch(generalMessage())}}
+            onClick={() => {
+                store.dispatch(getSocket('allmessages'))
+                store.dispatch(generalMessage())
+            }}
         >  
             <div>Main Chat</div>
             <span style={{color: 'green'}}> for all </span>

@@ -3,7 +3,7 @@ import { StyledAvatar } from '../messageForm/StyledAvatar';
 import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
-import { getUserAvatar, privateMessage } from '../../../reducers/userDataReducer';
+import { getUserAvatar } from '../../../reducers/userDataReducer';
 import { useState, useEffect } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
@@ -59,7 +59,6 @@ if(socket){
     socket.on('my chats', (data)=> console.log('my chats', data))
 }
     
-
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>
@@ -85,7 +84,7 @@ if(socket){
 
                 <FindUserBox/>        
                 
-                    {user.isAdmin && !isTabletorMobile ? 
+                    { user.isAdmin && !isTabletorMobile ? 
                             allUsers.map((item, i) =>
                             (user.userName !== item?.userName) 
                                 && <AdminUserInfiButton item={item} i={i} key={i}/>) 

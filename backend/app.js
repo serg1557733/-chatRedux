@@ -202,7 +202,7 @@ io.use( async (socket, next) => {
     const token = socket.handshake.auth.token; 
     const sockets = await io.fetchSockets();
     if(!token) {
-        console.log('socket disconnect')
+        console.log('token error - socket disconnect')
         socket.disconnect();
         return;
     }
@@ -244,11 +244,11 @@ io.on("connection", async (socket) => {
 
     //need to use this ID to socket privat messges
 
-    const users = [];
+    const usersInSocket = [];
         for (let [id, socket] of io.of("/").sockets) {
             
             const dbUser = await getOneUser(socket.user.userName)
-            users.push({...dbUser._doc,socketId: id });
+            usersInSocket.push({...dbUser._doc,socketId: id });
         }
 
 // const onUser = []
@@ -267,8 +267,9 @@ io.on("connection", async (socket) => {
 //      const siPrivate = await PrivateMessage.find({toUser: socket.user.id})
 //      console.log(!!siPrivate)
 // }
+console.log(usersInSocket.userName)
 
-    io.emit('usersOnline', users); // send array online users  
+    io.emit('usersOnline', usersInSocket); // send array online users  
 
     //send private chats for user
 
@@ -293,10 +294,6 @@ socket.emit('my chats', privateChats)
 
     const messagesToShow = await Message.find({}).sort({ 'createDate': -1 }).limit(20).populate( {path:'user'});   
     socket.emit('allmessages', messagesToShow.reverse());
-
-
-
-    
 
     socket.on("message", async (data) => {
         const dateNow = Date.now(); // for correct working latest post 

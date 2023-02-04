@@ -105,13 +105,14 @@ export const ChatPage = () => {
     useEffect(() => {
    
         if(token){
-            ['allmessages', 'usersOnline', 'allDbUsers'].map(event => dispatch(getSocket(event)))  //use const SOCKETS EVENT
-            console.log('socket events') 
+          //  const events = ['allmessages', 'usersOnline', 'allDbUsers'] // if start page dont get users or add dispatch for this events
+            dispatch(getSocket('allmessages')) //use const SOCKETS EVENT
+            dispatch(getSocket('allDbUsers'))
         }
     }, [token, editOldMessage, showUserInfoBox])
 
-  
- 
+
+
     return (
         
         <div className='rootContainer'>
