@@ -4,6 +4,8 @@ import { useSelector } from "react-redux";
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from 'react-redux';
+import {selectedUser} from "../../../reducers/dataReducers";
 
 export const UserInfoButton = ({item, i}) => {
 
@@ -24,12 +26,7 @@ export const UserInfoButton = ({item, i}) => {
         <div 
         className={(item.socketId&&isPrivatChat&&(chatId === item.socketId))? 'online active' :'online' }                       
         onClick={(e) => {
-            console.log(e.target.lastChild.textContent)
-            // if (item.userName == e.target.lastChild.textContent){
-            //     e.target.lastChild.textContent.add('arrow')}
-            //     else {
-            //         e.target.classList.remove('arrow')
-            //     };
+            store.dispatch(selectedUser(item.userName))
             store.dispatch(privateMessage({toUser: item}))
             socket.emit('privat chat', {
                 user,

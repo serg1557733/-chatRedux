@@ -1,8 +1,9 @@
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import './userInfo.scss';
-import { store } from '../../../store';
 import {UserInfoButton} from './UserInfoButton';
+
+
 export const FindUserBox = () => {
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
@@ -13,24 +14,18 @@ export const FindUserBox = () => {
  
     return (
         <>
-        <div 
-            className={'online'}                       
-        >  
-            <div>Find users to write</div>
-            <input style={{width:'80%'}}
-                    value = {findUser} 
-                    onChange={(e) => {
-                        setfindUser(e.target.value)
-                        setShowUsers(true)
-                        }} >
-                
-            </input>
-
-           
-
-        </div>
-        { showUsers && findUser.length > 0  && res.map((item, i) => <UserInfoButton item = {item} i = {i}  key={i}/>  )}
-
-    </>
+            <div className='online'>  
+                <div>Find users to write</div>
+                <input style={{width:'80%'}}
+                        value = {findUser} 
+                        onChange={(e) => {
+                            setfindUser(e.target.value)
+                            setShowUsers(true)
+                            }} >
+                    
+                </input>
+            </div>
+            {showUsers && findUser.length > 0  && res.map((item, i) => <UserInfoButton item = {item} i = {i}  key={i}/> )}
+        </>
     )
 }
