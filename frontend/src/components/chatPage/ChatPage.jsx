@@ -252,7 +252,7 @@ export const ChatPage = () => {
                             onKeyPress={(e) => {
                                 if (e.key === "Enter")   {
                                     e.preventDefault();
-                                    dispatch(sendMessage({user, socket}))
+                                    isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}));
                                     dispatch(getSocket('allmessages'))
                                     dispatch(editMessage({editMessage: ''}))
                                     setMessage({message: ''})

@@ -10,6 +10,7 @@ import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
 import { PrivatChatHeader } from './PrivatChatHeader';
 import notifSound from '../../../assets/get.mp3'
+import { UserInfoButton } from '../generalChat/UserInfoButton';
 
 //need to fix update wenn message sendet and icon for new private messages
 
@@ -53,11 +54,13 @@ socket.on("private message", (message)=> {
     return (  
 
         <>
+       
             <PrivatChatHeader/>
                 <Box className='messageBox'>  
                 
                     {
                     startMessages.map((item, i) =>
+                    
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
                             onClick = {(e) => {
@@ -70,6 +73,7 @@ socket.on("private message", (message)=> {
                             }}
                             > 
                             {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
+                 
                             <span
                                 style={{'alignItems': 'center',
                                         marginLeft: 5, 
