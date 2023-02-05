@@ -9,6 +9,7 @@ import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
 import { PrivatChatHeader } from './PrivatChatHeader';
+import { privateMessage } from '../../../reducers/userDataReducer';
 import notifSound from '../../../assets/get.mp3'
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 
@@ -24,8 +25,11 @@ export const PrivateChat = () => {
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const selectedUser = useSelector(state => state.dataReducer.selectedUser)
+    const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
+
 
     const [startMessages, setStartMessages] = useState([])   
+
     let endMessages = useRef(null);
 
 socket.on('send privat messages', (messages)=> {
@@ -33,10 +37,7 @@ socket.on('send privat messages', (messages)=> {
   });
 
   ///need to test not working
-socket.on("private message", (message)=> {
-    startMessages.push(message)
-  });  
-  
+const allMessages = startMessages.concat(newPrivateMessages)
 
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
@@ -47,9 +48,11 @@ socket.on("private message", (message)=> {
 
     useEffect(() => {
         if (!isEditing) {
+            
             scrollToBottom((endMessages)) 
         }
-      }, [startMessages]);
+      }, [startMessages,allMessages]);
+
            
     return (  
 
@@ -59,7 +62,7 @@ socket.on("private message", (message)=> {
                 <Box className='messageBox'>  
                 
                     {
-                    startMessages.map((item, i) =>
+                    allMessages.map((item, i) =>
                     
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
@@ -139,10 +142,10 @@ socket.on("private message", (message)=> {
 
                             </div>
                             {isEditiedMessage && <i>Edited</i>}
-                            <div className={ 
+                            {/* <div className={ 
                                     (item.fromUser === user._id)? 'myDate' :'date'}>
                                     {dateFormat(item).time}
-                            </div>
+                            </div> */}
                         </div>
                     )}
 

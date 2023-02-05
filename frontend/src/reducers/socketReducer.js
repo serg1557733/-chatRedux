@@ -2,6 +2,7 @@ import {createSlice } from '@reduxjs/toolkit';
 import {io} from 'socket.io-client';
 import { store } from '../store';
 import { removeToken } from './userDataReducer';
+import { privateMessage } from './userDataReducer';
 
 
 const initialState = {
@@ -13,7 +14,8 @@ const initialState = {
     allUsers: [],
     writing: false,
     usersWriting: [],
-    newMessages : []
+    newMessages : [],
+    newPrivateMessages: []
 }
 
 const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
@@ -46,6 +48,9 @@ const connectToSocket = (event) => {
                             .on('newmessage', (data) => {
                                 store.dispatch(addNewMessage(data))
                                 })
+                            .on('private', (data) => {
+                               store.dispatch(addNewPrivateMessage(data))
+                                   })
                             .on('ban', (data) => {
                                 store.dispatch(removeToken()); 
                                 localStorage.removeItem('token');
@@ -93,6 +98,7 @@ export const getUserSocketSlice = createSlice({
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
         addNewMessage: (state, action) => {state.newMessages.push(action.payload)}, 
+        addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
         }
     }
 );
@@ -109,6 +115,7 @@ export const {
     getAllMessages,
     getUsersOnline,
     addNewMessage,
+    addNewPrivateMessage,
     getAllUsers,
     writing
     } = actions;

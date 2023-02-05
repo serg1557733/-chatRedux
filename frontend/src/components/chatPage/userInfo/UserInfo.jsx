@@ -55,10 +55,10 @@ export const UserInfo = () => {
     }
 
 
-if(socket){
-    socket.on('my chats', (data)=> console.log('my chats', data))
-}
-    
+    // if(socket){
+    //     socket.on('my chats', (data)=> console.log('my chats', data))
+    // }
+        
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>

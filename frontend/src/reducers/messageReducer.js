@@ -21,6 +21,22 @@ export const sendMessageToSocket = (state, data) => {
             } 
     };
 
+export const sendPrivateMessageToSocket = (state, data) => {
+        if (!!state.message && state.message.length < 200) {    //remove to other file
+
+            //need to check and fix data from dispatch
+            
+        // data.socket.emit("private message", {
+        //     fromUser: data.user,
+        //     message: data.message.message,
+        //     to: data.chatId,
+        //     toUser:data.toUser
+        //   })
+    
+          // data.socket.emit('message', {...data.user, message: state.message}); 
+       } 
+};
+
 export const deleteMessageHandler = (state, data) => {
     data.socket.emit('deleteMessage', {messageId: data.messageId, token: data.socket.auth.token});  
 };
@@ -74,6 +90,7 @@ const messageReducerSlice = createSlice({
            
         },
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
+        sendPrivateMessage:(state, action) => sendPrivateMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''}
 
     },
@@ -100,6 +117,7 @@ export default messageReducer;
 export const {
     storeMessage, 
     sendMessage,
+    sendPrivateMessage,
     clearMessage,
     editMessage,
     deleteMessage
