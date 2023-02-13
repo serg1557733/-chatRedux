@@ -15,7 +15,7 @@ const initialState = {
     writing: false,
     usersWriting: [],
     newMessages : [],
-    newPrivateMessages: []
+    newPrivateMessages: {}
 }
 
 const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
@@ -49,6 +49,7 @@ const connectToSocket = (event) => {
                                 store.dispatch(addNewMessage(data))
                                 })
                             .on('private', (data) => {
+                                console.log(data)
                                store.dispatch(addNewPrivateMessage(data))
                                    })
                             .on('ban', (data) => {

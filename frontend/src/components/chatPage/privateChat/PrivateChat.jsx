@@ -27,7 +27,7 @@ export const PrivateChat = () => {
     const selectedUser = useSelector(state => state.dataReducer.selectedUser)
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
-
+    const isNewMessage = newPrivateMessages.length > 0
     const [startMessages, setStartMessages] = useState([])   
 
     let endMessages = useRef(null);
@@ -35,9 +35,10 @@ export const PrivateChat = () => {
 socket.on('send privat messages', (messages)=> {
     setStartMessages(messages)
   });
+  
 
-  ///need to test not working
-const allMessages = startMessages.concat(newPrivateMessages)
+// bug need to fix
+
 
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
@@ -51,7 +52,7 @@ const allMessages = startMessages.concat(newPrivateMessages)
             
             scrollToBottom((endMessages)) 
         }
-      }, [startMessages,allMessages]);
+      }, [startMessages, newPrivateMessages]);
 
            
     return (  
@@ -62,7 +63,7 @@ const allMessages = startMessages.concat(newPrivateMessages)
                 <Box className='messageBox'>  
                 
                     {
-                    allMessages.map((item, i) =>
+                    startMessages.map((item, i) =>
                     
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
@@ -77,14 +78,6 @@ const allMessages = startMessages.concat(newPrivateMessages)
                             > 
                             {storeMessageId === item._id ? <MessageEditorMenu />: ""} 
                  
-                            <span
-                                style={{'alignItems': 'center',
-                                        marginLeft: 5, 
-                                        fontStyle: 'italic', 
-                                        fontWeight: 800
-                                    }}
-
-                            > {item.fromUser}</span>
                             <div 
                                 key={i}
                             
@@ -140,6 +133,11 @@ const allMessages = startMessages.concat(newPrivateMessages)
                                 ''
                             }
 
+                            </div>
+
+                            <div className={ 
+                                (item.userName === user.userName)? 'myDate' :'date'}>
+                                {dateFormat(item).time}
                             </div>
                             {isEditiedMessage && <i>Edited</i>}
                             {/* <div className={ 

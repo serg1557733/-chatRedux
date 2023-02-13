@@ -391,12 +391,10 @@ socket.emit('my chats', privateChats)
             await privateMessage.save()
           //emit event 
           
-        
-          const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
+        const privateMessageSentUser = await User.find({_id: fromUser }) // send from user what messaged
+        //const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
 
-            socket.to(to).emit("private", privateMessagesToUser);
-
-
+            socket.to(to).emit("private", {...privateMessage._doc, sender: privateMessageSentUser });
 
 // fix time start and messages after private 
 

@@ -3,7 +3,7 @@ import './userInfo.scss';
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
 
-export const PrivatChatHeader = ({userName}) => {
+export const PrivatChatHeader = () => {
 
     const SERVER_URL = process.env.REACT_APP_SERVER_URL
 
@@ -23,7 +23,7 @@ export const PrivatChatHeader = ({userName}) => {
                     {selectedUser.userName.slice(0, 1)}
                 </Avatar>   
             </StyledAvatar>
-              Private Chat with {selectedUser.userName.toUpperCase()}  
+              Private Chat with {selectedUser.userName}  
            
         </div>
     )

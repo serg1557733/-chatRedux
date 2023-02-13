@@ -34,6 +34,7 @@ export const ChatPage = () => {
     const toUser = useSelector(state => state.userDataReducer.toUser)
     const chatId = useSelector(state => state.userDataReducer.toUser.socketId)
     const isPrivatChat = useSelector(state => state.userDataReducer.isPrivatChat)
+    const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
     const [message, setMessage] = useState({message: ''});
     const [isUserTyping, setUserTyping] = useState([]);
@@ -42,10 +43,11 @@ export const ChatPage = () => {
     const [loadingPercentage, setLoadPercentage] = useState(0)
     
     const isTabletorMobile = (window.screen.width < 730);
+    const isNewMessage = newPrivateMessages.length > 0
 
     const [play] = useSound(getNotif, {volume: 0.005});
 
-
+console.log(newPrivateMessages)
     const axiosConfig =   {
         headers: {
             "Content-type": "multipart/form-data"
@@ -100,6 +102,7 @@ export const ChatPage = () => {
                   });
         }
    }, [])
+
 
 
     useEffect(() => {

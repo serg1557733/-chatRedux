@@ -46,6 +46,9 @@ export const UserInfo = () => {
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
     const chatId = useSelector(state => state.userDataReducer.chatId)
 
+    const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
+
+
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
     const inputHandler = (e) => {
@@ -54,6 +57,7 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
+    console.log(newPrivateMessages)
 
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
@@ -93,6 +97,15 @@ export const UserInfo = () => {
                             && usersOnline.map((item, i) =>
                                     (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                   
                             )
+                    }
+
+                    {
+                    newPrivateMessages.length > 0 
+                        && newPrivateMessages.map((item, i) => 
+                       // <UserInfoButton item = {item} i = {i}  key={i} />
+                       console.log(item)
+                        )
+
                     }
             </>
         )
