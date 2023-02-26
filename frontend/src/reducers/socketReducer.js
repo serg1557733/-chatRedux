@@ -15,7 +15,8 @@ const initialState = {
     writing: false,
     usersWriting: [],
     newMessages : [],
-    newPrivateMessages: {}
+    newPrivateMessages: {},
+    newPrivateMessagesArray: []
 }
 
 const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
@@ -49,7 +50,6 @@ const connectToSocket = (event) => {
                                 store.dispatch(addNewMessage(data))
                                 })
                             .on('private', (data) => {
-                                console.log(data)
                                store.dispatch(addNewPrivateMessage(data))
                                    })
                             .on('ban', (data) => {
@@ -99,7 +99,10 @@ export const getUserSocketSlice = createSlice({
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
         addNewMessage: (state, action) => {state.newMessages.push(action.payload)}, 
-        addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
+        addNewPrivateMessage: (state, action) => {
+            state.newPrivateMessages = action.payload
+            state.newPrivateMessagesArray.push(action.payload)
+        }, 
         }
     }
 );

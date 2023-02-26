@@ -13,18 +13,10 @@ export const dateFormat = (item) => {
 
     const divisor = indexTime ? secondTimeMarkers[indexTime - 1] : 1 //for seconds if index 0 then seconds 
 
-    const test = rtf.format(Math.floor(dateSecDelta/divisor),literalTimeMarkers[indexTime])
+    const time = rtf.format(Math.floor(dateSecDelta/divisor),literalTimeMarkers[indexTime])
 
-
-// //need to change on  Moment js
-//     const res = item.createDate.split('T');
-//     const date = {
-//         year : res[0],
-//         time : res[1].slice(-13, -5)
-//     }
-    return test;
+    return time;
 }  
 
-        //date formating
 
    

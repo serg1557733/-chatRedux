@@ -267,7 +267,8 @@ io.on("connection", async (socket) => {
 //      const siPrivate = await PrivateMessage.find({toUser: socket.user.id})
 //      console.log(!!siPrivate)
 // }
-console.log(usersInSocket.userName)
+console.log(usersInSocket)
+
 
     io.emit('usersOnline', usersInSocket); // send array online users  
 
@@ -286,7 +287,7 @@ console.log(usersInSocket.userName)
 
 socket.emit('my chats', privateChats)
 
-    socket.emit('connected', dbUser); //socket.user
+    //socket.emit('connected', dbUser); //socket.user
   
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 

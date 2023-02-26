@@ -3,9 +3,9 @@ import { privateMessage } from "../../../reducers/userDataReducer";
 import { useSelector } from "react-redux";
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from 'react-redux';
+import { useEffect,useState } from "react";
 import {selectedUser} from "../../../reducers/dataReducers";
+import {isNewPrivateMessages} from "../../../reducers/dataReducers";
 
 export const UserInfoButton = ({item, i}) => {
 
@@ -18,8 +18,23 @@ export const UserInfoButton = ({item, i}) => {
     const chatId = useSelector(state => state.userDataReducer.toUser.socketId)
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
+
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+
     let userAvatarUrl = storeUserAvatar || user.avatar;
+
+    
+    const newPrivateMessagesArray = useSelector(state => state.getUserSocketReducer.newPrivateMessagesArray)
+    const isNewPrivate = useSelector(state => state.dataReducer.isNewPrivateMessages)
+
+
+const [counter, setCounter] = useState(newPrivateMessagesArray.length)
+
+useEffect(() => {
+    store.dispatch(isNewPrivateMessages(true))
+    console.log('true')
+ } , [newPrivateMessagesArray]);
+
 
 
     return (
@@ -28,6 +43,8 @@ export const UserInfoButton = ({item, i}) => {
         onClick={(e) => {
             store.dispatch(selectedUser(item))
             store.dispatch(privateMessage({toUser: item}))
+            store.dispatch(isNewPrivateMessages(false))
+            setCounter(0) 
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,
@@ -51,10 +68,12 @@ export const UserInfoButton = ({item, i}) => {
                     {item?.userName.slice(0, 1)}
                 </Avatar>   
 
-
+  
             </StyledAvatar>
-                {item.userName}  
+                <span> {item.userName}  </span>
+               {isNewPrivate && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
+          
     </div>
     )
 }

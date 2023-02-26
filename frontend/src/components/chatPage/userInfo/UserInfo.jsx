@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
 import { MainChatButtton } from '../generalChat/MainChatButtton';
@@ -57,11 +57,14 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
-    console.log(newPrivateMessages)
+   console.log('render userinfo component')
+
 
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
+
+
         
     return (
             <>  
@@ -86,7 +89,7 @@ export const UserInfo = () => {
                    
                 <MainChatButtton/>     
 
-                <FindUserBox/>        
+                <FindUserBox/>     
                 
                     { user.isAdmin && !isTabletorMobile ? 
                             allUsers.map((item, i) =>
@@ -95,18 +98,10 @@ export const UserInfo = () => {
                         :
                             !isTabletorMobile 
                             && usersOnline.map((item, i) =>
-                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                   
+                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                
                             )
                     }
-
-                    {
-                    newPrivateMessages.length > 0 
-                        && newPrivateMessages.map((item, i) => 
-                       // <UserInfoButton item = {item} i = {i}  key={i} />
-                       console.log(item)
-                        )
-
-                    }
+               
             </>
         )
 }

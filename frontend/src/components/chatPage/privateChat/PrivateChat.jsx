@@ -11,6 +11,7 @@ import useSound from 'use-sound';
 import { PrivatChatHeader } from './PrivatChatHeader';
 import { privateMessage } from '../../../reducers/userDataReducer';
 import notifSound from '../../../assets/get.mp3'
+import {isNewPrivateMessages} from "../../../reducers/dataReducers";
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 
 //need to fix update wenn message sendet and icon for new private messages
@@ -32,9 +33,9 @@ export const PrivateChat = () => {
 
     let endMessages = useRef(null);
 
-socket.on('send privat messages', (messages)=> {
-    setStartMessages(messages)
-  });
+    socket.on('send privat messages', (messages)=> {
+        setStartMessages(messages)
+    });
   
 
 // bug need to fix
@@ -137,7 +138,7 @@ socket.on('send privat messages', (messages)=> {
 
                             <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
-                                {dateFormat(item).time}
+                                {dateFormat(item)}
                             </div>
                             {isEditiedMessage && <i>Edited</i>}
                             {/* <div className={ 

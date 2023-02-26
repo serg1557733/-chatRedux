@@ -1,7 +1,8 @@
 import {createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    selectedUser: {}
+    selectedUser: {},
+    isNewPrivateMessages: true
 }
 
 export const dataReducersSlice = createSlice({
@@ -10,7 +11,10 @@ export const dataReducersSlice = createSlice({
     reducers: {
         selectedUser: (state, action) => {
                 state.selectedUser = action.payload  
-      }
+      },
+        isNewPrivateMessages: (state, action) => {
+                state.isNewPrivateMessages = action.payload  
+      },
     },
   })
   
@@ -22,5 +26,6 @@ const dataReducer = reducer;
 export default dataReducer;
 
 export const {
-        selectedUser
+        selectedUser,
+        isNewPrivateMessages
         } = actions;
