@@ -47,7 +47,6 @@ export const ChatPage = () => {
 
     const [play] = useSound(getNotif, {volume: 0.005});
 
-console.log(newPrivateMessages)
     const axiosConfig =   {
         headers: {
             "Content-type": "multipart/form-data"

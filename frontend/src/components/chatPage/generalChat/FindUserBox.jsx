@@ -14,7 +14,7 @@ export const FindUserBox = () => {
     return (
         <>
             <div className='online'>  
-                <div>Find users to write</div>
+                <div>Find users for chat</div>
                 <input style={{width:'80%'}}
                         value = {findUser} 
                         onChange={(e) => {

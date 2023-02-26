@@ -10,7 +10,6 @@ import { MessageEditorMenu } from '../MessageEditorMenu.jsx';
 import imgBtn from '../../../assets/img/gg.png';
 import useSound from 'use-sound';
 import notifSound from '../../../assets/get.mp3'
-import { useMemo } from 'react';
 
 
 export const MessageForm = () => {
@@ -35,6 +34,8 @@ export const MessageForm = () => {
     const messages = startMessages.concat(newMessages)  
 
     const [play] = useSound(notifSound);
+
+
 
     useEffect(() => {
         if (!isEditing) {
@@ -161,7 +162,7 @@ export const MessageForm = () => {
                         {isEditiedMessage && <i>Edited</i>}
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
-                                {dateFormat(item).time}
+                                {dateFormat(item)}
                         </div>
                     </div>
                 )}
