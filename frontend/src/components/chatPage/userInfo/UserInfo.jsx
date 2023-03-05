@@ -57,14 +57,11 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
-   console.log('render userinfo component')
-
-
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
 
-
+console.log(user)
         
     return (
             <>  

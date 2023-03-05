@@ -244,6 +244,7 @@ io.on("connection", async (socket) => {
 
     //need to use this ID to socket privat messges
 
+    
     const usersInSocket = [];
         for (let [id, socket] of io.of("/").sockets) {
             
@@ -267,8 +268,6 @@ io.on("connection", async (socket) => {
 //      const siPrivate = await PrivateMessage.find({toUser: socket.user.id})
 //      console.log(!!siPrivate)
 // }
-console.log(usersInSocket)
-
 
     io.emit('usersOnline', usersInSocket); // send array online users  
 
