@@ -25,7 +25,7 @@ export const MessageForm = () => {
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
     const newMessages = useSelector(state => state.getUserSocketReducer.newMessages)
-
+    
     let endMessages = useRef(null);
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
@@ -34,7 +34,6 @@ export const MessageForm = () => {
     const messages = startMessages.concat(newMessages)  
 
     const [play] = useSound(notifSound);
-
 
 
     useEffect(() => {

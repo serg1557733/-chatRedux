@@ -49,7 +49,6 @@ const connectToSocket = (event) => {
                                 store.dispatch(addNewMessage(data))
                                 })
                             .on('private', (data) => {
-                                console.log(data)
                                store.dispatch(addNewPrivateMessage(data))
                                    })
                             .on('ban', (data) => {

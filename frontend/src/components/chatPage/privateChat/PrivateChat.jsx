@@ -64,7 +64,6 @@ socket.on('send privat messages', (messages)=> {
                 
                     {
                     startMessages.map((item, i) =>
-                    
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
                             onClick = {(e) => {
@@ -137,7 +136,7 @@ socket.on('send privat messages', (messages)=> {
 
                             <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
-                                {dateFormat(item).time}
+                                {dateFormat(item)}
                             </div>
                             {isEditiedMessage && <i>Edited</i>}
                             {/* <div className={ 
