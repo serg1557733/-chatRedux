@@ -125,7 +125,7 @@ export const ChatPage = () => {
             <Box className={isTabletorMobile?'usersBoxMobile':'usersBox'}
                   sx = {showUserInfoBox ? {
                         transform: "translateX(100%)",
-                        display: "none"
+                        display: "block"
                         }: { }}>      
                     <UserInfo/> 
                     { isTabletorMobile ? <SwitchButton/> : null}

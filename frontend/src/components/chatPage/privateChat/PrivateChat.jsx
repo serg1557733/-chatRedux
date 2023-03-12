@@ -65,7 +65,6 @@ export const PrivateChat = () => {
                 
                     {
                     startMessages.map((item, i) =>
-                    
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
                             onClick = {(e) => {

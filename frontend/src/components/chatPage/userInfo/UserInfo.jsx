@@ -14,17 +14,6 @@ import './userInfo.scss';
 
 export const UserInfo = () => {
 
-    const PC_AVATAR_STYLE =    {
-        bgcolor: 'grey',
-        width: '100px',
-        height: '100px',
-        fontSize: 14,
-        margin: '20px auto',
-        cursor: 'pointer'
-        };
-
-
-    const MOBILE_AVATAR_STYLE =  { margin: '5px auto'};
  
     const [displayType, setDisplayType] = useState('none');
 
@@ -45,6 +34,8 @@ export const UserInfo = () => {
     const isTabletorMobile = (window.screen.width < 730);
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
     const chatId = useSelector(state => state.userDataReducer.chatId)
+    const showUserInfoBox = useSelector(state => state.userDataReducer.showUserInfoBox)
+
 
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
@@ -57,10 +48,6 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
-    // if(socket){
-    //     socket.on('my chats', (data)=> console.log('my chats', data))
-    // }
-
 console.log(user)
         
     return (
@@ -68,12 +55,18 @@ console.log(user)
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>
                
                 <Avatar
-                    sx={isTabletorMobile ? MOBILE_AVATAR_STYLE : PC_AVATAR_STYLE} //add deleting function after update avatar
+                    className={isTabletorMobile ? 'mobileAvatar' : 'pcUsersAvatar'} //add deleting function after update avatar
                     onClick={() => loadAvatarHandler()}
                     src={userAvatarUrl ? SERVER_URL +'/'+ userAvatarUrl : ""}
                     >
                 </Avatar>  
                 
+               <div
+                    className={isTabletorMobile ? 'mobileUsersInfoBox' : 'pcUsersInfoBox'} 
+                    style={showUserInfoBox && isTabletorMobile ? {'transform':'translate(-100%)'}:{ 'transform':'translate(0)'}}
+                    
+                    
+                >
                 <input
                     type="file"
                     accept="image/png, image/jpeg"
@@ -93,12 +86,25 @@ console.log(user)
                             (user.userName !== item?.userName) 
                                 && <AdminUserInfiButton item={item} i={i} key={i}/>) 
                         :
-                            !isTabletorMobile 
-                            && usersOnline.map((item, i) =>
-                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                
+
+                            usersOnline.map((item, i) =>
+                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                   
                             )
                     }
-               
+
+                    {
+                    newPrivateMessages.length > 0 
+                        && newPrivateMessages.map((item, i) => 
+                       // <UserInfoButton item = {item} i = {i}  key={i} />
+                       console.log(item)
+                        )
+
+                    }
+
+                </div>
+
+            
+
             </>
         )
 }

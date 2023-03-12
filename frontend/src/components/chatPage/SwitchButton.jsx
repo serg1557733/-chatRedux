@@ -14,7 +14,7 @@ export const SwitchButton = () => {
     return (
         <div>  
 
-            <label>Infobar</label>
+            <label>Hide users</label>
 
             <Switch {...label} size="small"  onChange={() => handleChange()} />
         </div>

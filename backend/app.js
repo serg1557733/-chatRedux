@@ -210,7 +210,6 @@ io.use( async (socket, next) => {
     const usersOnline = [];
     sockets.map(sock => usersOnline.push(sock.user))
    
-   
     try {
         const user = jwt.verify(token, TOKEN_KEY);
         const userName = user.userName;
