@@ -24,9 +24,8 @@
 }
 .pcUsersAvatar {
     background-color: grey;
-    width: 100px;
-    height: 100px;
-    font-size: 14;
+    width: 80px !important;
+    height: 80px !important; //need to change in classlist styles
     margin: 20px auto;
     cursor: pointer;
 }

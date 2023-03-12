@@ -13,7 +13,8 @@ const initialState = {
     ref: null
 }
 
-const POST_FILES_URL = process.env.REACT_APP_SERVER_URL+`/files`;
+const POST_FILES_URL = `http://localhost:5000/files`;
+
 
 export const sendMessageToSocket = (state, data) => {
              if (!!state.message && state.message.length < 200) {    //remove to other file
@@ -55,8 +56,8 @@ export const fileMessage = createAsyncThunk(
         const token = localStorage.getItem('token')
         try {
             const formData = new FormData();
-            if(files.length) {
-                 for (let i = 0; i < files.length; i++) {
+            if(files?.length) {
+                 for (let i = 0; i < files?.length; i++) {
                 formData.append('files', files[i])
                 }
             } else {
@@ -97,7 +98,7 @@ const messageReducerSlice = createSlice({
     extraReducers: (bilder) => {
     bilder
     .addCase(fileMessage.fulfilled, (state, action) => {
-        console.log('send', action)
+        console.log(action.payload)
         state.files = action.payload.data?.files
             
     })  

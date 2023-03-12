@@ -35,8 +35,6 @@ export const UserInfo = () => {
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
     const chatId = useSelector(state => state.userDataReducer.chatId)
     const showUserInfoBox = useSelector(state => state.userDataReducer.showUserInfoBox)
-
-
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
 
@@ -47,8 +45,6 @@ export const UserInfo = () => {
         dispatch(getUserAvatar(file))
         setDisplayType('none')
     }
-
-    console.log(showUserInfoBox)
 
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
