@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
 import {selectedUser} from "../../../reducers/dataReducers";
+import { AddToFriends } from "./AddToFriends";
 
 export const UserInfoButton = ({item, i}) => {
 
@@ -68,7 +68,7 @@ export const UserInfoButton = ({item, i}) => {
             </StyledAvatar>
                 {item.userName}  
             </div>
-            
+            <AddToFriends/>
     </div>
     )
 }

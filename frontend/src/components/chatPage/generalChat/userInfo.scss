@@ -10,3 +10,39 @@
     background-color:rgb(30, 8, 62);
 }
 
+.addToFriendsButton {
+        width: 15px; 
+        height: 15px;
+        top: 8px;
+        background-color: #1976d3;
+        transform: rotate(45deg);
+        position: absolute; 
+        left: 8px;
+        cursor:pointer;
+      
+}  
+.mobileButton {   
+            width: 15px; 
+            height: 15px;
+            top: 0px;
+            left: -5px; 
+        }
+.addToFriendsButton::before,
+    .addToFriendsButton::after {
+        content : ''; 
+        display: block;
+        width: 15px;
+        height: 15px;
+        background-color:inherit;
+        border-radius: 50%; 
+        position: absolute;
+    }
+    .addToFriendsButton::before {
+        top: -8px;
+        left: 0;
+    }
+    .addToFriendsButton::after {
+        top: 0;
+        left: -8px;
+    }  
+
