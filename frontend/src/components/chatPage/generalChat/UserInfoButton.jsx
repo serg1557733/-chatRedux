@@ -68,7 +68,7 @@ export const UserInfoButton = ({item, i}) => {
             </StyledAvatar>
                 {item.userName}  
             </div>
-            <AddToFriends/>
+            <AddToFriends user = {item}/>
     </div>
     )
 }

@@ -266,7 +266,6 @@ io.on("connection", async (socket) => {
 //      const siPrivate = await PrivateMessage.find({toUser: socket.user.id})
 //      console.log(!!siPrivate)
 // }
-console.log(usersInSocket.userName)
 
     io.emit('usersOnline', usersInSocket); // send array online users  
 
@@ -412,10 +411,37 @@ socket.emit('my chats', privateChats)
 
           });
 
+          socket.on('addToFriends', async (data) => {
 
-    
+//need to fix finding created user in db and delet if its true
 
-    
+
+            // const isFriend  = await User.find({userName: dbUser.userName}, {'friends': data.user._id})
+            // console.log('isfriend', isFriend)
+            if(dbUser.friends){
+                await User.findOneAndUpdate({userName: dbUser.userName},{ $set: {'friends':  []}},   {
+                    new: true
+                  })
+               console.log('adddedd')
+               
+            }
+            
+            // if(isFriend){
+
+            // }
+            await dbUser.friends.push(data.user._id)
+            await dbUser.save()
+
+
+            
+            
+            const newFriends = await dbUser.populate({path:'friends'})
+
+            socket.emit('friends',newFriends.friends )
+        
+        }) 
+          
+        socket.on('removeFromFriends', (user) => console.log('rem')) 
 
 
         socket.on("banUser",async (data) => {

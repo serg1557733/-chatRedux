@@ -58,6 +58,9 @@ const connectToSocket = (event) => {
                             .on('usersOnline', (data) => {
                                     store.dispatch(getUsersOnline(data))
                                 })
+                            .on('friends', data => {
+                                    console.log('friends from server', data)
+                                })
                             .on('disconnect', (data) => {
                                 if( data === 'io server disconnect') {
                                     socket.disconnect();
