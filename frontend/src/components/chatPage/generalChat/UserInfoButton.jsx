@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
 import {selectedUser} from "../../../reducers/dataReducers";
+
 import {isNewPrivateMessages} from "../../../reducers/dataReducers";
+
+import { AddToFriends } from "./AddToFriends";
 
 export const UserInfoButton = ({item, i}) => {
 
@@ -85,6 +87,8 @@ useEffect(() => {
                 <span> {item.userName}  </span>
                {isNewPrivate && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
+            <AddToFriends user = {item}/>
+
     </div>
     )
 }

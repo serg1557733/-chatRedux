@@ -132,6 +132,7 @@
     border: 2px solid grey; 
     background-color:rgb(30, 45, 52);
     .online {
+        position: relative;
         border-radius: 3px;
         padding: 5px;
         border:2px solid rgb(255, 255, 255); 
@@ -156,6 +157,7 @@
     color:rgb(239, 239, 233);
     transition: all 3s ease-in-out;    
     .online {
+        position: relative;
         border-radius: 5px;
         text-overflow: ellipsis;
         padding: 5px;

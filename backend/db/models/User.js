@@ -7,7 +7,8 @@ const User = new Schema({
     isBanned: {type: Boolean, default: false},
     isMutted: {type: Boolean, default: false},
     avatar: {type: String, unique: true, required: false},
-    messages: [{type: Schema.Types.ObjectId, ref: 'Message' }]
+    messages: [{type: Schema.Types.ObjectId, ref: 'Message' }],
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 })
 
 module.exports = model('User', User)
