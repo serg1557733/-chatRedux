@@ -268,7 +268,7 @@ io.on("connection", async (socket) => {
 // }
 
     io.emit('usersOnline', usersInSocket); // send array online users  
-
+    dbUser.populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
     //send private chats for user
 
     const privateChats = await PrivateMessage.find( {$or:[ {toUser: dbUser._id}, {fromUser: dbUser._id }],foreignField: '_id'}).populate( ['fromUser','toUser'])//need to optimal way found
@@ -423,6 +423,8 @@ socket.emit('my chats', privateChats)
             await User.findOne({userName}).populate({path:'friends'}).then(res => socket.emit('friends',res.friends) )
             
         }) 
+
+        //need to fix - removed all users from frend only clicked not removed
           
         socket.on('removeFromFriends', async(user) => {
             const res = await User.updateOne({ userName}, {

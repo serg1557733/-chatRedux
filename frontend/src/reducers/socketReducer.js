@@ -15,7 +15,8 @@ const initialState = {
     writing: false,
     usersWriting: [],
     newMessages : [],
-    newPrivateMessages: {}
+    newPrivateMessages: {},
+    friends: []
 }
 
 const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
@@ -59,7 +60,7 @@ const connectToSocket = (event) => {
                                     store.dispatch(getUsersOnline(data))
                                 })
                             .on('friends', data => {
-                                    console.log('friends from server', data)
+                                    store.dispatch(friendsFromSocket(data))
                                 })
                             .on('disconnect', (data) => {
                                 if( data === 'io server disconnect') {
@@ -102,6 +103,7 @@ export const getUserSocketSlice = createSlice({
         getAllUsers: (state, action) => {state.allUsers = action.payload},
         addNewMessage: (state, action) => {state.newMessages.push(action.payload)}, 
         addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
+        friendsFromSocket:(state, action) => {state.friends = action.payload}
         }
     }
 );
@@ -120,5 +122,6 @@ export const {
     addNewMessage,
     addNewPrivateMessage,
     getAllUsers,
+    friendsFromSocket,
     writing
     } = actions;

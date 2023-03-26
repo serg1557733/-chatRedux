@@ -19,6 +19,7 @@ export const UserInfoButton = ({item, i}) => {
     const storeUserAvatar = useSelector(state => state.userDataReducer.avatar)
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline)
     const userNamesOnlineSet =  new Set(usersOnline.map( i => i.userName))
+    
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
