@@ -411,38 +411,30 @@ socket.emit('my chats', privateChats)
 
           });
 
+//add and remove friends functions
+
           socket.on('addToFriends', async (data) => {
-
-//need to fix finding created user in db and delet if its true
-
-
-            // const isFriend  = await User.find({userName: dbUser.userName}, {'friends': data.user._id})
-            // console.log('isfriend', isFriend)
-            if(dbUser.friends){
-                await User.findOneAndUpdate({userName: dbUser.userName},{ $set: {'friends':  []}},   {
-                    new: true
-                  })
-               console.log('adddedd')
-               
-            }
-            
-            // if(isFriend){
-
-            // }
-            await dbUser.friends.push(data.user._id)
+            const isFriend  =  await User.find({userName:userName,friends: {'_id':data.user._id}})
+            if(!!isFriend.length){
+                    await User.findOneAndUpdate({userName: userName},{$set: {'friends':  []}}, {new: true })
+                } 
+            await dbUser.friends.push({'_id':data.user._id})
             await dbUser.save()
-
-
+            await User.findOne({userName}).populate({path:'friends'}).then(res => socket.emit('friends',res.friends) )
             
-            
-            const newFriends = await dbUser.populate({path:'friends'})
-
-            socket.emit('friends',newFriends.friends )
-        
         }) 
           
-        socket.on('removeFromFriends', (user) => console.log('rem')) 
+        socket.on('removeFromFriends', async(user) => {
+            const res = await User.updateOne({ userName}, {
+                $pullAll: {
+                    friends: [{_id: user.user._id}],
+                },
+            });
+         await User.findOne({userName}).populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
 
+    })
+    
+//admin functions 
 
         socket.on("banUser",async (data) => {
             if(!socket.user.isAdmin){
@@ -463,10 +455,15 @@ socket.emit('my chats', privateChats)
             // }
            });
 
+
+
+
            socket.on('userWriting', async () => {
                 let isTyping = true;
                 io.emit('writing', {userName, isTyping})
            })
+
+// edit and remove messages
 
            socket.on('editmessage', async (data) => {
             console.log(data.messageNewText)

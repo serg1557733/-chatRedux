@@ -12,7 +12,6 @@ export const AddToFriends = (user) => {
 
     socket.on('friends', data =>  console.log(data))
    
-
     return (
         <div onClick={() => {
                             setIsFreind(!isFriend)
