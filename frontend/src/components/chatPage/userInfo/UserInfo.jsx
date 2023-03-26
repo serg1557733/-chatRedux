@@ -36,6 +36,7 @@ export const UserInfo = () => {
     const chatId = useSelector(state => state.userDataReducer.chatId)
     const showUserInfoBox = useSelector(state => state.userDataReducer.showUserInfoBox)
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
+    const friends = useSelector(state => state.getUserSocketReducer.friends)
 
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
@@ -77,6 +78,10 @@ console.log(user)
                         }}
                     onChange = {e => inputHandler(e)}/>
 
+
+                 
+                {friends.map((item, i) =>(user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} /> )}
+                    
                    
                 <MainChatButtton/>     
 

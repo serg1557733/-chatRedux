@@ -8,9 +8,14 @@ export const AddToFriends = (user) => {
 
     const isTabletorMobile = (window.screen.width < 730);
 
-    const [isFriend, setIsFreind] = useState(false)
+    const usersFriends = useSelector(state => state.getUserSocketReducer.socketUserData).friends
 
-    socket.on('friends', data =>  console.log(data))
+    let isMyFriend = false;
+    if(usersFriends) {
+        isMyFriend = usersFriends.find(friend => friend._id === user.user._id)
+    }
+
+    const [isFriend, setIsFreind] = useState(false)
    
     return (
         <div onClick={() => {
@@ -18,7 +23,7 @@ export const AddToFriends = (user) => {
                             isFriend ? socket.emit('removeFromFriends', user) : socket.emit('addToFriends', user)       
             }} >
             <div className= {isTabletorMobile ?'mobileButton addToFriendsButton': "addToFriendsButton" } 
-               style ={{backgroundColor:(isFriend ? 'red': '#1976d3' )}}
+               style ={{backgroundColor:(isFriend || isMyFriend? 'red': '#1976d3' )}}
             >
                 
             </div>
