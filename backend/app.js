@@ -249,8 +249,8 @@ io.on("connection", async (socket) => {
             
             const dbUser = await getOneUser(socket.user.userName)
             usersInSocket.push({...dbUser._doc,socketId: id });
+            
         }
-
 // const onUser = []
 //     const usersOnlineID = usersOnline.map(users => Object.values(users)[0])
 //     const userSet = new Set(usersOnlineID)
@@ -269,6 +269,7 @@ io.on("connection", async (socket) => {
 // }
 
     io.emit('usersOnline', usersInSocket); // send array online users  
+    
     dbUser.populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
     //send private chats for user
 
@@ -341,7 +342,7 @@ socket.emit('my chats', privateChats)
             const filteredUsersOnline = usersOnline.filter(user => exist.user.id !== user.id)
         
            
-           io.emit('usersOnline', filteredUsersOnline);
+        //   io.emit('usersOnline', filteredUsersOnline);
 
             // const sockets = await io.fetchSockets();
             // io.emit('usersOnline', sockets.map(sock => sock.user));
@@ -392,13 +393,15 @@ socket.emit('my chats', privateChats)
           
         const privateMessageSentUser = await User.find({_id: fromUser }) // send from user what messaged
         //const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
+           console.log(to)
+         socket.to(to).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
 
-            socket.to(to).emit("private", {...privateMessage._doc, sender: privateMessageSentUser });
 
 // fix time start and messages after private 
 
 
 
+      
 
 
 
@@ -408,7 +411,7 @@ socket.emit('my chats', privateChats)
 
             // const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id, toUser._id]}}).sort({ 'createDate': 1 })
 
-            // socket.emit('send privat messages', {privateMessagesToUser, fromUser})
+            //socket.emit('private', {privateMessageSentUser, fromUser})
 
           });
 

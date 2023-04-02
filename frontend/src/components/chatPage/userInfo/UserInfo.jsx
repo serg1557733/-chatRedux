@@ -36,8 +36,12 @@ export const UserInfo = () => {
     const chatId = useSelector(state => state.userDataReducer.chatId)
     const showUserInfoBox = useSelector(state => state.userDataReducer.showUserInfoBox)
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
+    const newMessage = useSelector(state => state.getUserSocketReducer.newMessages)
+
     const friends = useSelector(state => state.getUserSocketReducer.friends)
 
+    console.log('friends', friends)
+    const friendsIds = friends.map(friend => friend._id)
 
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
@@ -52,6 +56,10 @@ console.log(user)
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
+
+console.log(usersOnline)
+        
+
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>
@@ -94,7 +102,7 @@ console.log(user)
                         :
 
                             usersOnline.map((item, i) =>
-                                    (user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} />                   
+                                    (user.userName !== item.userName && !friendsIds.includes(item._id) ) && <UserInfoButton item = {item} i = {i}  key={i} />                   
                             )
                     }
 

@@ -19,10 +19,10 @@ import useSound from 'use-sound';
 import getNotif from '../../assets/sendSound.mp3'
 import { PrivateChat } from './privateChat/PrivateChat';
 import { PrivatChatHeader } from './privateChat/PrivatChatHeader';
+import { socketEvents } from '../../utils/socketsEvents';
 
 export const ChatPage = () => {
-
-    const SOCKET_EVENTS = ['allmessages', 'usersOnline', 'allDbUsers']
+    console.log('render')
 
     const dispatch = useDispatch();
 
@@ -76,6 +76,7 @@ export const ChatPage = () => {
 
 
     const sendPrivateMessage = () => {
+        console.log(toUser.socketId)
         socket.emit("private message", {
             fromUser: user,
             message: message.message,
@@ -84,34 +85,22 @@ export const ChatPage = () => {
           })
     }
 
-
-    
-
-
-
     useEffect(() => {
         if(socket) {
             socket.on('writing', (data) => { 
                     setUserTyping(data) 
                     setTimeout(() => setUserTyping([]), 500 )
                 })  
-            socket.on("private message", ({ content, from }) => {
-                    console.log(content, from)
-                
-                  });
         }
-   }, [])
+   }, [socket, token])
 
 
-
+ 
     useEffect(() => {
-   
-        if(token){
-          //  const events = ['allmessages', 'usersOnline', 'allDbUsers'] // if start page dont get users or add dispatch for this events
-            dispatch(getSocket('allmessages')) //use const SOCKETS EVENT
-            dispatch(getSocket('allDbUsers'))
+        if(token && socket){
+            socketEvents(socket)
         }
-    }, [token, editOldMessage, showUserInfoBox])
+    }, [token, socket])
 
 
 
@@ -179,7 +168,7 @@ export const ChatPage = () => {
                                         e.preventDefault()
                                         if (message.message.length){
                                             isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}));
-                                            isPrivatChat && dispatch(getSocket('allmessages'))
+                                           // isPrivatChat && dispatch(getSocket('allmessages'))
                                             isPrivatChat &&dispatch(editMessage({editMessage: ''}))
                                             setMessage({message: ''})
                                             play()
@@ -255,14 +244,14 @@ export const ChatPage = () => {
                                 if (e.key === "Enter")   {
                                     e.preventDefault();
                                     isPrivatChat? sendPrivateMessage() : dispatch(sendMessage({user, socket}));
-                                    dispatch(getSocket('allmessages'))
+                                    //dispatch(getSocket('allmessages'))
                                     dispatch(editMessage({editMessage: ''}))
                                     setMessage({message: ''})
                                 }
                             }}
                             onChange={e => { 
                                 dispatch(storeMessage({message: e.target.value}))
-                                socket.emit('userWriting');
+                               !isPrivatChat &&socket.emit('userWriting');
                                 setMessage({message: e.target.value})}
                             } 
                             // onFocus={ e => {
