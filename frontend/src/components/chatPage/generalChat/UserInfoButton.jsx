@@ -26,6 +26,7 @@ export const UserInfoButton = ({item, i}) => {
 
     const [isPrivate, setIsPrivate] = useState(false)
 
+    console.log('usersinfobutton Item',item)
 
     useEffect(() => {
         if(newPrivateMessages.text && newPrivateMessages?.sender[0].userName === item.userName){
@@ -40,6 +41,7 @@ export const UserInfoButton = ({item, i}) => {
             store.dispatch(selectedUser(item))
             store.dispatch(privateMessage({toUser: item}))
             setIsPrivate(false) 
+            console.log('item', item)
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,

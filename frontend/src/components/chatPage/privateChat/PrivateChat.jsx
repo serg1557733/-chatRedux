@@ -27,6 +27,7 @@ export const PrivateChat = () => {
     const selectedUser = useSelector(state => state.dataReducer.selectedUser)
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
+
     const isNewMessage = newPrivateMessages.length > 0
     const [startMessages, setStartMessages] = useState([])   
 
@@ -36,8 +37,7 @@ socket.on('send privat messages', (messages)=> {
     setStartMessages(messages)
   });
   
-
-// bug need to fix
+// bug need to fix****************
 
 
     const [isEditing, setIsEditing] = useState(false)   
@@ -46,6 +46,7 @@ socket.on('send privat messages', (messages)=> {
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
     const [play] = useSound(notifSound);
+
 
     useEffect(() => {
         if (!isEditing) {

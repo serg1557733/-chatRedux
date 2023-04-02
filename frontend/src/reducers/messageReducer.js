@@ -13,7 +13,7 @@ const initialState = {
     ref: null
 }
 
-const POST_FILES_URL = `http://localhost:5000/files`;
+const POST_FILES_URL = process.env.REACT_APP_SERVER_URL + `/files`;
 
 
 export const sendMessageToSocket = (state, data) => {
