@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
 import { MainChatButtton } from '../generalChat/MainChatButtton';
@@ -51,12 +51,15 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
+console.log(user)
+
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
 
-    console.log(usersOnline)
+console.log(usersOnline)
         
+
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>
@@ -90,13 +93,14 @@ export const UserInfo = () => {
                    
                 <MainChatButtton/>     
 
-                <FindUserBox/>        
+                <FindUserBox/>     
                 
                     { user.isAdmin && !isTabletorMobile ? 
                             allUsers.map((item, i) =>
                             (user.userName !== item?.userName) 
                                 && <AdminUserInfiButton item={item} i={i} key={i}/>) 
                         :
+
                             usersOnline.map((item, i) =>
                                     (user.userName !== item.userName && !friendsIds.includes(item._id) ) && <UserInfoButton item = {item} i = {i}  key={i} />                   
                             )
@@ -114,6 +118,7 @@ export const UserInfo = () => {
                 </div>
 
             
+
             </>
         )
 }

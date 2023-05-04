@@ -26,7 +26,7 @@ export const UserInfoButton = ({item, i}) => {
 
     const [isPrivate, setIsPrivate] = useState(false)
 
-    console.log('usersinfobutton Item',item)
+  //  console.log('usersinfobutton Item',item)
 
     useEffect(() => {
         if(newPrivateMessages.text && newPrivateMessages?.sender[0].userName === item.userName){
