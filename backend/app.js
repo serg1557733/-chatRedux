@@ -241,15 +241,8 @@ io.on("connection", async (socket) => {
     const dbUser = await getOneUser(userName);
     const allUsers = await getAllDbUsers(socket) // send allUsers from DB to socket user
     //need to use this ID to socket privat messges
-<<<<<<< HEAD
-    socket.emit('connected', dbUser); //socket.user
-
-    
-=======
  
-
     socket.emit('connected', dbUser); //socket.user
->>>>>>> new-branch
     const usersInSocket = [];
         for (let [id, socket] of io.of("/").sockets) {
             
@@ -293,10 +286,6 @@ io.on("connection", async (socket) => {
 
 socket.emit('my chats', privateChats)
 
-<<<<<<< HEAD
-=======
-  
->>>>>>> new-branch
   
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 

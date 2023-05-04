@@ -11,12 +11,9 @@ import useSound from 'use-sound';
 import { PrivatChatHeader } from './PrivatChatHeader';
 import { privateMessage } from '../../../reducers/userDataReducer';
 import notifSound from '../../../assets/get.mp3'
-<<<<<<< HEAD
 import {isNewPrivateMessages} from "../../../reducers/dataReducers";
 import { UserInfoButton } from '../generalChat/UserInfoButton';
-=======
 import { YoutubeMessage } from '../YoutubeMessage';
->>>>>>> new-branch
 
 //need to fix update wenn message sendet and icon for new private messages
 
@@ -34,22 +31,13 @@ export const PrivateChat = () => {
 
     const [startMessages, setStartMessages] = useState([])   
     let endMessages = useRef(null);
-<<<<<<< HEAD
-
     socket.on('send privat messages', (messages)=> {
         setStartMessages(messages)
     });
   
 // bug need to fix****************
 
-=======
-    socket.on('send privat messages', (messages)=> {
-        setStartMessages(messages)    
-    });
-    
-    
-    
->>>>>>> new-branch
+
 
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
