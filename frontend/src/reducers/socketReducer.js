@@ -16,11 +16,8 @@ const initialState = {
     usersWriting: [],
     newMessages : [],
     newPrivateMessages: {},
-<<<<<<< HEAD
-    newPrivateMessagesArray: []
-=======
+    newPrivateMessagesArray: [],
     friends: []
->>>>>>> new-branch
 }
 
 
@@ -41,18 +38,15 @@ export const getUserSocketSlice = createSlice({
         getUsersOnline: (state, action) => {state.usersOnline = action.payload},
         getAllUsers: (state, action) => {state.allUsers = action.payload},
         addNewMessage: (state, action) => {state.newMessages.push(action.payload)}, 
-<<<<<<< HEAD
         addNewPrivateMessage: (state, action) => {
             state.newPrivateMessages = action.payload
             state.newPrivateMessagesArray.push(action.payload)
         }, 
-=======
-        addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
-        friendsFromSocket:(state, action) => {state.friends = action.payload}
->>>>>>> new-branch
+        // addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
+        // friendsFromSocket:(state, action) => {state.friends = action.payload}
+        
         }
-    }
-);
+    });
 
 
 const {actions, reducer} = getUserSocketSlice;
