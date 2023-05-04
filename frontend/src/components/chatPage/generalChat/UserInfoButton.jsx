@@ -43,7 +43,7 @@ useEffect(() => {
 
     const [isPrivate, setIsPrivate] = useState(false)
 
-    console.log('usersinfobutton Item',item)
+  //  console.log('usersinfobutton Item',item)
 
     useEffect(() => {
         if(newPrivateMessages.text && newPrivateMessages?.sender[0].userName === item.userName){
@@ -60,7 +60,6 @@ useEffect(() => {
             store.dispatch(isNewPrivateMessages(false))
             setCounter(0) 
             setIsPrivate(false) 
-            console.log('item', item)
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,

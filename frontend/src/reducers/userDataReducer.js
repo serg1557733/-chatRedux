@@ -17,8 +17,6 @@ const initialState = {
     toUser: {},
     avatar: ''
 }
-const SERVER_URL =  process.env.REACT_APP_SERVER_URL
-
 const POST_URL =  process.env.REACT_APP_SERVER_URL + '/login';
 const GET_AVATAR_URL = process.env.REACT_APP_SERVER_URL +  '/avatar';
 

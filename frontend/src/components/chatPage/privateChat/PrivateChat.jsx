@@ -11,8 +11,12 @@ import useSound from 'use-sound';
 import { PrivatChatHeader } from './PrivatChatHeader';
 import { privateMessage } from '../../../reducers/userDataReducer';
 import notifSound from '../../../assets/get.mp3'
+<<<<<<< HEAD
 import {isNewPrivateMessages} from "../../../reducers/dataReducers";
 import { UserInfoButton } from '../generalChat/UserInfoButton';
+=======
+import { YoutubeMessage } from '../YoutubeMessage';
+>>>>>>> new-branch
 
 //need to fix update wenn message sendet and icon for new private messages
 
@@ -28,11 +32,9 @@ export const PrivateChat = () => {
     const selectedUser = useSelector(state => state.dataReducer.selectedUser)
     const newPrivateMessages = useSelector(state => state.getUserSocketReducer.newPrivateMessages)
 
-
-    const isNewMessage = newPrivateMessages.length > 0
     const [startMessages, setStartMessages] = useState([])   
-
     let endMessages = useRef(null);
+<<<<<<< HEAD
 
     socket.on('send privat messages', (messages)=> {
         setStartMessages(messages)
@@ -40,22 +42,39 @@ export const PrivateChat = () => {
   
 // bug need to fix****************
 
+=======
+    socket.on('send privat messages', (messages)=> {
+        setStartMessages(messages)    
+    });
+    
+    
+    
+>>>>>>> new-branch
 
     const [isEditing, setIsEditing] = useState(false)   
     const [isEditiedMessage, setIsEditiedMessage] = useState(false) //need to type in the bottom of message after message was edited
 
+    const [play] = useSound(notifSound);
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
-    const [play] = useSound(notifSound);
+
+    console.log(newPrivateMessages)
 
 
-    useEffect(() => {
-        if (!isEditing) {
-            
-            scrollToBottom((endMessages)) 
+    
+      useEffect(() => {
+        if(startMessages.length > 0){
+           setStartMessages([...startMessages, newPrivateMessages]) 
         }
-      }, [startMessages, newPrivateMessages]);
+        }, [newPrivateMessages]);
 
+
+        useEffect(() => {
+            if (!isEditing) {
+                scrollToBottom((endMessages)) 
+            }
+    
+          }, [startMessages]);
            
     return (  
 
@@ -69,7 +88,6 @@ export const PrivateChat = () => {
                         <div key={i + 1} className={ 
                             (item.fromUser === user._id)? 'message myMessage' :'message'}
                             onClick = {(e) => {
-                                console.log(e.target)
                                 if(e.target.closest("div").className.includes('myMessage') && (item.userName === user.userName) && (item.text === e.target.textContent)){
                                     e.currentTarget.className += ' editMessage'  
                                     dispatch(editMessage({socket, editMessage: e.target.textContent, messageId: item._id}))  
@@ -86,18 +104,7 @@ export const PrivateChat = () => {
                                     (item.fromUser === user._id)? 'message myMessage' :'message'}>
                             
                             { 
-                            item.text.match(regYoutube) ?
-                            <iframe 
-                                    width="280" 
-                                    height="160" 
-                                    style={{'maxWidth': "90%"}}
-                                    src={`https://www.youtube.com/embed/`+ (item.text.match(regYoutube)[1])}
-                                    title="YouTube video player" 
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                                    allowFullScreen> 
-                                    
-                                </iframe>
-                                :
+                            item.text.match(regYoutube) ? <YoutubeMessage item = {item} />: 
                                 (item.file && item.fileType && item.fileType.split('/')[0] !== 'image') ? 
 
                                 <div style={{'display': 'flex', 'alignItems': 'center'}} >

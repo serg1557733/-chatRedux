@@ -1,9 +1,4 @@
 import {createSlice } from '@reduxjs/toolkit';
-import {io} from 'socket.io-client';
-import { store } from '../store';
-import { removeToken } from './userDataReducer';
-import { privateMessage } from './userDataReducer';
-
 
 const initialState = {
     socketStatus: 'idle',
@@ -19,8 +14,6 @@ const initialState = {
     newPrivateMessagesArray: [],
     friends: []
 }
-
-
 
 export const getUserSocketSlice = createSlice({
     name: 'userSocket',

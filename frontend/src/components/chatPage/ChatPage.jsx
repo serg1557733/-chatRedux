@@ -20,12 +20,11 @@ import getNotif from '../../assets/sendSound.mp3'
 import { PrivateChat } from './privateChat/PrivateChat';
 import { PrivatChatHeader } from './privateChat/PrivatChatHeader';
 import { socketEvents } from '../../utils/socketsEvents';
+import { addNewPrivateMessage } from '../../reducers/socketReducer';
 
 export const ChatPage = () => {
-    console.log('render')
 
     const dispatch = useDispatch();
-
     const token = useSelector(state => localStorage.getItem('token') || state.userDataReducer.token);
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
@@ -41,7 +40,9 @@ export const ChatPage = () => {
     const [isCamActiv, setisCamActiv] = useState(false);
     const [showSpinner, setshowSpinner] = useState(false);
     const [loadingPercentage, setLoadPercentage] = useState(0)
-    
+
+    const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline);
+
     const isTabletorMobile = (window.screen.width < 730);
     const isNewMessage = newPrivateMessages.length > 0
 
@@ -73,16 +74,29 @@ export const ChatPage = () => {
             setisCamActiv(!isCamActiv) // test camera
     }
 
-
-
     const sendPrivateMessage = () => {
-        console.log(toUser.socketId)
+        
+        const toUserSocket = usersOnline.find(user => user._id == toUser._id)
+        const fromUserSocket = usersOnline.find(userInSocket => userInSocket._id == user._id)
+
+        ///***need to fix  sending own messages to me
+
+
+        // store.dispatch(addNewPrivateMessage({
+        //     fromUser: fromUserSocket,
+        //     message: message.message,
+        //     to: chatId,
+        //     toUser:toUserSocket
+        //   }))
+
+
         socket.emit("private message", {
-            fromUser: user,
+            fromUser: fromUserSocket,
             message: message.message,
             to: chatId,
-            toUser
+            toUser:toUserSocket
           })
+        
     }
 
     useEffect(() => {
@@ -100,7 +114,7 @@ export const ChatPage = () => {
         if(token && socket){
             socketEvents(socket)
         }
-    }, [token, socket])
+    }, [token, socket, user])
 
 
 
@@ -157,9 +171,7 @@ export const ChatPage = () => {
                  ""}
                     {isPrivatChat? <PrivateChat/>   : <MessageForm/>}
                    
-
-
-                    {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
+                    {isUserTyping.isTyping && !isPrivatChat &&(isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
 
                     <Box 
 
