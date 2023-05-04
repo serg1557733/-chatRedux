@@ -73,8 +73,6 @@ export const ChatPage = () => {
             setisCamActiv(!isCamActiv) // test camera
     }
 
-
-    console.log('************render*************')
     const sendPrivateMessage = () => {
         console.log(toUser.socketId)
         socket.emit("private message", {
@@ -157,9 +155,7 @@ export const ChatPage = () => {
                  ""}
                     {isPrivatChat? <PrivateChat/>   : <MessageForm/>}
                    
-
-
-                    {isUserTyping.isTyping && (isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
+                    {isUserTyping.isTyping && !isPrivatChat &&(isUserTyping.userName !== user.userName)? <span> User {isUserTyping.userName} typing..</span> : ""}
 
                     <Box 
 
