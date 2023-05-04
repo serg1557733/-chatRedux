@@ -18,7 +18,6 @@ socket.on('connected',  data => {
             store.dispatch(addNewMessage(data))
             })
         .on('private', (data) => {
-            console.log(data)
             store.dispatch(addNewPrivateMessage(data))
                 })
         .on('ban', (data) => {

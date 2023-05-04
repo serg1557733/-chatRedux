@@ -241,6 +241,7 @@ io.on("connection", async (socket) => {
     const dbUser = await getOneUser(userName);
     const allUsers = await getAllDbUsers(socket) // send allUsers from DB to socket user
     //need to use this ID to socket privat messges
+ 
 
     socket.emit('connected', dbUser); //socket.user
     const usersInSocket = [];
@@ -268,7 +269,9 @@ io.on("connection", async (socket) => {
 // }
 
     io.emit('usersOnline', usersInSocket); // send array online users  
+
     dbUser.populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
+
     //send private chats for user
 
     const privateChats = await PrivateMessage.find( {$or:[ {toUser: dbUser._id}, {fromUser: dbUser._id }],foreignField: '_id'}).populate( ['fromUser','toUser'])//need to optimal way found
@@ -379,7 +382,7 @@ socket.emit('my chats', privateChats)
           })
 
         socket.on("private message", async ({ fromUser, from, message, toUser , to}) => {
-//create message and save to DB            
+//create message and save to DB      
             const privateMessage = new PrivateMessage({
                 text:  message,
                 createDate: Date.now(),
@@ -391,15 +394,60 @@ socket.emit('my chats', privateChats)
           
         const privateMessageSentUser = await User.find({_id: fromUser }) // send from user what messaged
         //const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
-           console.log(to)
-         socket.to(to).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
+        socket.to(toUser?.socketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
+        //socket.to(fromUser?.socketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
 
 
 // fix time start and messages after private 
 
+//********EXEMPLE DOCUMENTATION
+
+// Persistent messages
+// On the server-side (server/index.js), we now persist the message in our new store:
+
+// io.on("connection", (socket) => {
+//   // ...
+//   socket.on("private message", ({ content, to }) => {
+//     const message = {
+//       content,
+//       from: socket.userID,
+//       to,
+//     };
+//     socket.to(to).to(socket.userID).emit("private message", message);
+//     messageStore.saveMessage(message);
+//   });
+//   // ...
+// });
+
+// And we fetch the list of messages upon connection:
+
+// io.on("connection", (socket) => {
+//   // ...
+//   const users = [];
+//   const messagesPerUser = new Map();
+//   messageStore.findMessagesForUser(socket.userID).forEach((message) => {
+//     const { from, to } = message;
+//     const otherUser = socket.userID === from ? to : from;
+//     if (messagesPerUser.has(otherUser)) {
+//       messagesPerUser.get(otherUser).push(message);
+//     } else {
+//       messagesPerUser.set(otherUser, [message]);
+//     }
+//   });
+//   sessionStore.findAllSessions().forEach((session) => {
+//     users.push({
+//       userID: session.userID,
+//       username: session.username,
+//       connected: session.connected,
+//       messages: messagesPerUser.get(session.userID) || [],
+//     });
+//   });
+//   socket.emit("users", users);
+//   // ...
+// });
 
 
-      
+//*********** PRIVAT EXEMPLE */      
 
 
 

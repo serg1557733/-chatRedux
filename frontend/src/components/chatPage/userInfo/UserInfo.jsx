@@ -39,10 +39,7 @@ export const UserInfo = () => {
     const newMessage = useSelector(state => state.getUserSocketReducer.newMessages)
 
     const friends = useSelector(state => state.getUserSocketReducer.friends)
-
-    console.log('friends', friends)
     const friendsIds = friends.map(friend => friend._id)
-
     let userAvatarUrl = storeUserAvatar || user.avatar;
 
     const inputHandler = (e) => {
@@ -69,9 +66,7 @@ export const UserInfo = () => {
                 
                <div
                     className={isTabletorMobile ? 'mobileUsersInfoBox' : 'pcUsersInfoBox'} 
-                    style={showUserInfoBox && isTabletorMobile ? {'transform':'translate(-100%)'}:{ 'transform':'translate(0)'}}
-                    
-                    
+                    style={showUserInfoBox && isTabletorMobile ? {'transform':'translate(-100%)'}:{ 'transform':'translate(0)'}}   
                 >
                 <input
                     type="file"
@@ -84,7 +79,8 @@ export const UserInfo = () => {
 
 
                  
-                {friends.map((item, i) =>(user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} /> )}
+                {friends.map((item, i) =>(user.userName !== item.userName) && <UserInfoButton item = {item} i = {i}  key={i} 
+                /> )}
                     
                    
                 <MainChatButtton/>     
@@ -112,9 +108,6 @@ export const UserInfo = () => {
                     }
 
                 </div>
-
-            
-
             </>
         )
 }

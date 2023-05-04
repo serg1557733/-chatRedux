@@ -41,7 +41,6 @@ export const UserInfoButton = ({item, i}) => {
             store.dispatch(selectedUser(item))
             store.dispatch(privateMessage({toUser: item}))
             setIsPrivate(false) 
-            console.log('item', item)
             socket.emit('privat chat', {
                 user,
                 to: item.socketId,
