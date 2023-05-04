@@ -14,8 +14,6 @@ export const dataReducersSlice = createSlice({
     },
   })
   
-  // Action creators are generated for each case reducer function
-
 const {actions, reducer} = dataReducersSlice;
 const dataReducer = reducer;
 

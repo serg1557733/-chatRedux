@@ -1,7 +1,9 @@
 import { createSlice} from '@reduxjs/toolkit';
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import { sendMessageToSocket } from '../utils/messagesSocketEvents';
+import { deleteMessageHandler } from '../utils/messagesSocketEvents';
+import { editMessageHandler } from '../utils/messagesSocketEvents';
 
 const initialState = {
     message:'',
@@ -14,40 +16,6 @@ const initialState = {
 }
 
 const POST_FILES_URL = process.env.REACT_APP_SERVER_URL + `/files`;
-
-
-export const sendMessageToSocket = (state, data) => {
-             if (!!state.message && state.message.length < 200) {    //remove to other file
-                data.socket.emit('message', {...data.user, message: state.message}); 
-            } 
-    };
-
-export const sendPrivateMessageToSocket = (state, data) => {
-        if (!!state.message && state.message.length < 200) {    //remove to other file
-
-            //need to check and fix data from dispatch
-            
-        // data.socket.emit("private message", {
-        //     fromUser: data.user,
-        //     message: data.message.message,
-        //     to: data.chatId,
-        //     toUser:data.toUser
-        //   })
-    
-          // data.socket.emit('message', {...data.user, message: state.message}); 
-       } 
-};
-
-export const deleteMessageHandler = (state, data) => {
-    data.socket.emit('deleteMessage', {messageId: data.messageId, token: data.socket.auth.token});  
-};
-
-    
-export const editMessageHandler = (state, data) => {
-    if(data.socket){
-         data.socket.emit('editmessage', {messageNewText: data.editMessage.message, messageId: data.messageId, token: data.socket.auth.token}); //add backend functional later find by id and edit 
-    }
-};
 
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessageStatus',
@@ -88,19 +56,15 @@ const messageReducerSlice = createSlice({
             },
         deleteMessage: (state, action) => {
             deleteMessageHandler(state, action.payload)
-           
         },
         sendMessage: (state, action) => sendMessageToSocket(state, action.payload),
-        sendPrivateMessage:(state, action) => sendPrivateMessageToSocket(state, action.payload),
         clearMessage: (state) => {state.message = ''}
 
     },
     extraReducers: (bilder) => {
     bilder
     .addCase(fileMessage.fulfilled, (state, action) => {
-        console.log(action.payload)
-        state.files = action.payload.data?.files
-            
+        state.files = action.payload.data?.files           
     })  
     .addCase(fileMessage.pending, (state, action) => {
         console.log('pending', fileMessage.pending())

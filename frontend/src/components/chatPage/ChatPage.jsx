@@ -98,7 +98,6 @@ export const ChatPage = () => {
  
     useEffect(() => {
         if(token && socket){
-            console.log('useEffect...')
             socketEvents(socket)
         }
     }, [token, socket, user])
