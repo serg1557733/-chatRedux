@@ -74,7 +74,7 @@ export const ChatPage = () => {
     }
 
 
-
+    console.log('************render*************')
     const sendPrivateMessage = () => {
         console.log(toUser.socketId)
         socket.emit("private message", {
@@ -98,9 +98,10 @@ export const ChatPage = () => {
  
     useEffect(() => {
         if(token && socket){
+            console.log('useEffect...')
             socketEvents(socket)
         }
-    }, [token, socket])
+    }, [token, socket, user])
 
 
 

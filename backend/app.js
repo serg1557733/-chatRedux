@@ -240,10 +240,9 @@ io.on("connection", async (socket) => {
     const sockets = await io.fetchSockets();
     const dbUser = await getOneUser(userName);
     const allUsers = await getAllDbUsers(socket) // send allUsers from DB to socket user
-
     //need to use this ID to socket privat messges
 
-    
+    socket.emit('connected', dbUser); //socket.user
     const usersInSocket = [];
         for (let [id, socket] of io.of("/").sockets) {
             
@@ -269,7 +268,6 @@ io.on("connection", async (socket) => {
 // }
 
     io.emit('usersOnline', usersInSocket); // send array online users  
-    
     dbUser.populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
     //send private chats for user
 
@@ -286,7 +284,7 @@ io.on("connection", async (socket) => {
 
 socket.emit('my chats', privateChats)
 
-    //socket.emit('connected', dbUser); //socket.user
+  
   
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 
