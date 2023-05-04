@@ -242,6 +242,7 @@ io.on("connection", async (socket) => {
     const allUsers = await getAllDbUsers(socket) // send allUsers from DB to socket user
 
     //need to use this ID to socket privat messges
+    socket.emit('connected', dbUser); //socket.user
 
     
     const usersInSocket = [];
@@ -286,7 +287,6 @@ io.on("connection", async (socket) => {
 
 socket.emit('my chats', privateChats)
 
-    //socket.emit('connected', dbUser); //socket.user
   
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 
