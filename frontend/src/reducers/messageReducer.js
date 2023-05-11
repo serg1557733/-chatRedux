@@ -15,7 +15,7 @@ const initialState = {
     ref: null
 }
 
-const POST_FILES_URL = process.env.REACT_APP_SERVER_URL + `/files`;
+const POST_FILES_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL + `/files` : process.env.REACT_APP_PUBLIC_URL + `/files`;
 
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessageStatus',

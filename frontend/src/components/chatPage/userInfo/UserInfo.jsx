@@ -25,7 +25,7 @@ export const UserInfo = () => {
             setDisplayType('none')
         }, 4000)
     }
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL
+    const SERVER_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
@@ -48,7 +48,6 @@ export const UserInfo = () => {
         setDisplayType('none')
     }
 
-console.log(user)
 
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))

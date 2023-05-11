@@ -22,7 +22,7 @@ export const PrivateChat = () => {
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const SERVER_URL =process.env.REACT_APP_SERVER_URL
+    const SERVER_URL =process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const storeMessageId = useSelector(state => state.messageReducer.messageId)
@@ -44,9 +44,6 @@ export const PrivateChat = () => {
 
     const [play] = useSound(notifSound);
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
-
-
-
 
     
       useEffect(() => {

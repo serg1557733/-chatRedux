@@ -13,7 +13,7 @@ import { AddToFriends } from "./AddToFriends";
 export const UserInfoButton = ({item, i}) => {
 
 
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL
+    const SERVER_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)
     const socket = useSelector(state => state.getUserSocketReducer.socket)
@@ -33,11 +33,8 @@ export const UserInfoButton = ({item, i}) => {
 
 const [counter, setCounter] = useState(newPrivateMessagesArray.length)
 
-console.log(newPrivateMessagesArray.length)
-
 useEffect(() => {
     store.dispatch(isNewPrivateMessages(true))
-    console.log('true')
  } , [newPrivateMessagesArray]);
 
 

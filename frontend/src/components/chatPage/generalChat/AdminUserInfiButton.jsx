@@ -25,7 +25,6 @@ export const AdminUserInfiButton = ({item, i}) => {
             key={item._id}
             className={isPrivatChat&&(chatId === item._id)? 'online active' :'online' }                       
             onClick={() => {
-                console.log(item._id, user._id)
                 store.dispatch(privateMessage({chatId: item._id}))
                 socket.emit('privat chat', {
                     user,

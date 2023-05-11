@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 
 export default function App() {
     const token = useSelector(state => localStorage.getItem('token') || state.userDataReducer.token);
-    const SOCKET_URL = process.env.REACT_APP_SERVER_URL;
+    
+    const SOCKET_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
     const dispatch = useDispatch();
 

@@ -3,10 +3,8 @@ import { getAllMessages, getAllUsers, addNewMessage, getUser,addNewPrivateMessag
 import { removeToken } from "../reducers/userDataReducer";
 
 export const socketEvents = (socket) => {
-console.log('socket event...')
 socket.on('connected',  data => {
                         store.dispatch(getUser(data));
-                        console.log('getuserdata', data)
         })
         .on('allmessages', (data) => {
             store.dispatch(getAllMessages(data));

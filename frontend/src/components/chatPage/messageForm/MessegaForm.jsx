@@ -17,7 +17,7 @@ export const MessageForm = () => {
     const dispatch = useDispatch();
     const socket = useSelector(state => state.getUserSocketReducer.socket)
 
-    const SERVER_URL =process.env.REACT_APP_SERVER_URL
+    const SERVER_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
     const startMessages = useSelector(state => state.getUserSocketReducer.startMessages)
     const user = useSelector(state => state.getUserSocketReducer.socketUserData)

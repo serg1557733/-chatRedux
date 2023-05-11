@@ -5,7 +5,7 @@ import { Avatar } from "@mui/material";
 
 export const PrivatChatHeader = () => {
 
-    const SERVER_URL = process.env.REACT_APP_SERVER_URL
+    const SERVER_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL : process.env.REACT_APP_PUBLIC_URL;
 
 //add dispatch and saving name for user to store
     const selectedUser = useSelector(state => state.dataReducer.selectedUser)

@@ -17,8 +17,8 @@ const initialState = {
     toUser: {},
     avatar: ''
 }
-const POST_URL =  process.env.REACT_APP_SERVER_URL + '/login';
-const GET_AVATAR_URL = process.env.REACT_APP_SERVER_URL +  '/avatar';
+const POST_URL = process.env.NODE_ENV == "development"? process.env.REACT_APP_SERVER_URL +  '/login' : process.env.REACT_APP_PUBLIC_URL + '/login';
+const GET_AVATAR_URL = process.env.NODE_ENV == "development" ? process.env.REACT_APP_SERVER_URL +  '/avatar' : process.env.REACT_APP_PUBLIC_URL +  '/avatar';
 
 export const getUserData = createAsyncThunk(
     'userData/getUser',
