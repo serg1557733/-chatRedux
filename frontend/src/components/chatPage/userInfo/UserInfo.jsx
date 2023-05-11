@@ -4,11 +4,7 @@ import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-<<<<<<< HEAD
-import { useState, useCallback } from 'react';
-=======
 import { useState } from 'react';
->>>>>>> new-branch
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
 import { MainChatButtton } from '../generalChat/MainChatButtton';
@@ -57,11 +53,6 @@ console.log(user)
     // if(socket){
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
-<<<<<<< HEAD
-
-console.log(usersOnline)
-=======
->>>>>>> new-branch
         
 
     return (
@@ -119,12 +110,6 @@ console.log(usersOnline)
                     }
 
                 </div>
-<<<<<<< HEAD
-
-            
-
-=======
->>>>>>> new-branch
             </>
         )
 }
