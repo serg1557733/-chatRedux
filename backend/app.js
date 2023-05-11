@@ -374,7 +374,6 @@ socket.emit('my chats', privateChats)
         socket.on('privat chat', async (data) => {
             //find user to in Db
             const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[data.user._id, data.toUser._id]}, fromUser: {$in:[data.user._id, data.toUser._id]}}).sort({ 'createDate': 1 })
-          
             //find user from in db
             //compare users and if messages is - send 
             socket.emit('send privat messages', privateMessagesToUser)
@@ -393,7 +392,7 @@ socket.emit('my chats', privateChats)
           //emit event 
           
         const privateMessageSentUser = await User.find({_id: fromUser }) // send from user what messaged
-        //const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
+       // const privateMessagesToUser = await PrivateMessage.find({toUser: {$in:[fromUser._id, toUser._id]}, fromUser: {$in:[fromUser._id,toUser._id]}}).sort({ 'createDate': 1 })
         socket.to(toUser?.socketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
         //socket.to(fromUser?.socketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
 

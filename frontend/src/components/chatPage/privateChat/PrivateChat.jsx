@@ -43,7 +43,6 @@ export const PrivateChat = () => {
     const regYoutube = /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-\_]*)(&(amp;)?‌​[\w\?‌​=]*)?/; //for youtube video
 
 
-    console.log(newPrivateMessages)
 
 
     

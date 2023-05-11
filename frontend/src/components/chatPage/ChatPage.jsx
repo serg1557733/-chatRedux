@@ -76,7 +76,7 @@ export const ChatPage = () => {
 
     const sendPrivateMessage = () => {
         
-        const toUserSocket = usersOnline.find(user => user._id == toUser._id)
+        const toUserSocket = usersOnline.find(user => user._id == toUser._id)|| toUser
         const fromUserSocket = usersOnline.find(userInSocket => userInSocket._id == user._id)
 
         ///***need to fix  sending own messages to me
@@ -95,7 +95,16 @@ export const ChatPage = () => {
             message: message.message,
             to: chatId,
             toUser:toUserSocket
-          })
+                })
+
+        if(toUserSocket){
+            socket.emit('privat chat', {
+                    user: fromUserSocket,
+                    to: chatId,
+                    toUser: toUserSocket
+                })
+        }
+       
         
     }
 

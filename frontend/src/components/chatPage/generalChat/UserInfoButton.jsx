@@ -28,6 +28,15 @@ export const UserInfoButton = ({item, i}) => {
 
   //  console.log('usersinfobutton Item',item)
 
+
+    const privateChatHandler = (item) => {
+        socket.emit('privat chat', {
+            user,
+            to: item.socketId,
+            toUser: item
+          })
+    }
+
     useEffect(() => {
         if(newPrivateMessages.text && newPrivateMessages?.sender[0].userName === item.userName){
          setIsPrivate(!!newPrivateMessages.text)
