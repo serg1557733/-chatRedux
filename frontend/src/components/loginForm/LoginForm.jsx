@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import { Modal } from '../modalMessage/Modal';
 import { useDispatch, useSelector } from 'react-redux';
+import './loginForm.scss'
 import  {setUserName, setUserPassword, getUserData} from '../../reducers/userDataReducer';
 
 export const LoginForm = () => {
@@ -21,10 +22,13 @@ export const LoginForm = () => {
                     dispatch(getUserData())
                 }}
                 sx={{
-                    marginTop: 40,
+                    marginTop: 20,
                     display: 'flex',
                     flexDirection: 'column',
                 }}>
+
+                <h3 className='loginFormHeader'> ME-ME-SSENGER </h3>
+                <span className='loginFormSpan'>Dont have account? Just type your name and password and click login</span>          
                     
                 <TextField
                         margin="normal"

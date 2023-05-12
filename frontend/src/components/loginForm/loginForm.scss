@@ -1,0 +1,28 @@
+.loginFormHeader {
+    position: relative;
+    text-align:center;
+    color:rgb(21, 101, 192); 
+    border: solid 2px rgb(21, 101, 192); 
+    border-radius:5px;
+    padding: 3px;
+    margin-bottom: 100px;
+    animation-name: header;
+    animation-duration: 5s;
+    animation-iteration-count:infinite;
+    animation-direction: alternate; 
+    background-color:rgb(232, 240, 254);
+}
+@keyframes header {
+    0%   {color: rgb(190, 137, 231);
+        text-shadow: 2px 2px 4px #73c0d9;; left:0px; top:0px;}
+    50%  {color: rgb(31, 188, 241);
+        text-shadow: 2px 2px 4px #7aa2ee;; left:0px; top:400px;}
+    100% {color: rgb(11, 75, 123);
+        text-shadow: 2px 2px 4px #93b4c1;; left:0px; top:0px;}
+  }
+
+.loginFormSpan {
+    color:grey;
+    font-family: Verdana;
+    font-size: 14px
+}

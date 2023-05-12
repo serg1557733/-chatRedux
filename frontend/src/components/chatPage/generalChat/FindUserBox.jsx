@@ -9,7 +9,9 @@ export const FindUserBox = () => {
     const allUsers = useSelector(state => state.getUserSocketReducer.allUsers)
     const [findUser, setfindUser] = useState('');
     const [showUsers, setShowUsers] = useState(false)
+
     const res = allUsers.filter(user =>  user.userName.toLowerCase().includes(findUser.toLowerCase()))
+    
     return (
         <>
             <div className='online'>  
