@@ -36,7 +36,7 @@ export const getUserSocketSlice = createSlice({
             state.newPrivateMessagesArray.push(action.payload)
         }, 
         // addNewPrivateMessage: (state, action) => {state.newPrivateMessages = action.payload}, 
-        // friendsFromSocket:(state, action) => {state.friends = action.payload}
+        friendsFromSocket:(state, action) => {state.friends = action.payload}
         
         }
     });

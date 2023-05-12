@@ -1,23 +1,24 @@
 import { store } from "../store";
-import { getAllMessages, getAllUsers, addNewMessage, getUser,addNewPrivateMessage,getUsersOnline,friendsFromSocket } from "../reducers/socketReducer";
+import {friendsFromSocket, getAllMessages, getAllUsers, addNewMessage, getUser,addNewPrivateMessage,getUsersOnline } from "../reducers/socketReducer";
 import { removeToken } from "../reducers/userDataReducer";
 
 export const socketEvents = (socket) => {
+
 socket.on('connected',  data => {
-                        store.dispatch(getUser(data));
-        })
+            store.dispatch(getUser(data));
+            })
         .on('allmessages', (data) => {
             store.dispatch(getAllMessages(data));
-                })
+            })
         .on('allDbUsers', (data) => {
             store.dispatch(getAllUsers(data));
-                    })    
+            })    
         .on('newmessage', (data) => {
             store.dispatch(addNewMessage(data))
             })
         .on('private', (data) => {
             store.dispatch(addNewPrivateMessage(data))
-                })
+            })
         .on('ban', (data) => {
             store.dispatch(removeToken()); 
             localStorage.removeItem('token');
@@ -26,6 +27,7 @@ socket.on('connected',  data => {
                 store.dispatch(getUsersOnline(data))
             })
         .on('friends', data => {
+            console.log(data)
                 store.dispatch(friendsFromSocket(data))
             })
         .on('disconnect', (data) => {
