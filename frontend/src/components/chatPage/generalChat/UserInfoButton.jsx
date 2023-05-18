@@ -67,7 +67,7 @@ useEffect(() => {
             }
         }
         >  
-         {isPrivate && item.userName && <span style={{color:'red'}} > new </span>} 
+         {isPrivate && item.userName  && newPrivateMessages?.sender[0].userName === item.userName && <span style={{color:'red'}} > new </span>} 
             <div style={{color: item.color}}>
             <StyledAvatar  key={i}  sx={{ marginRight:2}} 
                            anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}  
@@ -85,7 +85,7 @@ useEffect(() => {
 
             </StyledAvatar>
                 <span> {item.userName}  </span>
-               {isNewPrivate && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
+               {(Object.keys(newPrivateMessages).length !== 0) && isNewPrivate&& newPrivateMessages?.sender[0].userName === item.userName  && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
             <AddToFriends user = {item}/>
 

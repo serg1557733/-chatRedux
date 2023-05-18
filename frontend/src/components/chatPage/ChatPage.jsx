@@ -73,6 +73,7 @@ export const ChatPage = () => {
             }
             setisCamActiv(!isCamActiv) // test camera
     }
+    const toUserSocket = usersOnline.find(user => user._id == toUser._id)|| toUser
 
     const sendPrivateMessage = () => {
         
@@ -125,7 +126,7 @@ export const ChatPage = () => {
         }
     }, [token, socket, user])
 
-
+console.log(toUserSocket.socketId || chatId)
 
     return (
         
@@ -225,7 +226,7 @@ export const ChatPage = () => {
                         <input
                             onChange={e =>{
                                 setshowSpinner(true)
-                                dispatch(fileMessage({files: e.target.files, axiosConfig}))
+                                isPrivatChat? dispatch(fileMessage({files: e.target.files, toUserSocket, axiosConfig })): dispatch(fileMessage({files: e.target.files, axiosConfig}))
                             }}
 
                             type="file"
