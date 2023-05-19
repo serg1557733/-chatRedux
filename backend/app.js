@@ -124,78 +124,9 @@ app.post('/avatar', async (req, res) =>  {
     
 })
 
-app.post('/files', async (req, res) =>  {
-    if (!req.files || Object.keys(req.files).length === 0) {
-        return res.status(400).json('No files were uploaded.');
-    }  
-    
-    const user = jwt.verify(req.body.token, TOKEN_KEY);
-    const oneUser = await getOneUser(user.userName);
-    if(oneUser.isMutted){  
-        return;
-     }
-    const files = req.files.files;
-    if (files.length) {
-        for (let i = 0; i < files.length; i++) {
-        let file = files[i]
-        file.mv(STATIC_PATH + '\/' + file.name) 
 
-        const message = new Message({
-            text:  file.name,
-            userName: user.userName,
-            createDate: Date.now(),
-            user: oneUser.id, //add link to other collection by id
-            file: file.name,
-            fileType: file.mimetype
-        });
 
-        try {
-            await message.save();
-            if(!oneUser.messages){
-                await oneUser.update({ $set: {'messages': []}});
-            }
-            await oneUser.messages.push(message)
-            await oneUser.save()
-        } 
-        catch (error) {
-            console.log('Message save to db error', error);   
-        }
-        const newMessages = await message.populate( {path:'user'})   
-        io.emit('newmessage', newMessages);        
-
-   }}     
-    else {
-            if (files.name == 'blob') {
-                files.name = Uuid.v4() + '.jpeg'
-            }
-            files.mv(STATIC_PATH + '\/' + files.name);      //for one file       
-            const message = new Message({
-                text: files.name,
-                userName: user.userName,
-                createDate: Date.now(),
-                user: oneUser.id, //add link to other collection by id
-                file: files.name,
-                fileType: files.mimetype
-            });
-    
-            try {
-                await message.save();
-                if(!oneUser.messages){
-                    await oneUser.update({ $set: {'messages': []}});
-                }
-                await oneUser.messages.push(message)
-                await oneUser.save()
-            } 
-            catch (error) {
-                console.log('Message save to db error', error);   
-            }
-           const newMessages = await message.populate( {path:'user'})  
-           io.emit('newmessage', newMessages); 
-    } 
-
-    return res.json({ message:'File was uploud succesfully...'})
-  })
-
+//next function 
 
 
 io.use( async (socket, next) => {
@@ -287,6 +218,132 @@ io.on("connection", async (socket) => {
 socket.emit('my chats', privateChats)
 
   
+
+//File messaging 
+
+app.post('/files', async (req, res) =>  {
+    if (!req.files || Object.keys(req.files).length === 0) {
+        return res.status(400).json('No files were uploaded.');
+    }  
+    const user = jwt.verify(req.body.token, TOKEN_KEY);
+    const oneUser = await getOneUser(user.userName);
+    if(oneUser.isMutted){  
+        return;
+     }
+    const files = req.files.files;
+ // const longFileName = files[i].name.split('.').join('')
+                    // const fileExt = files[i].name.split('.')[files[i].name.split('.').length - 1];
+                    // const shortFileName = longFileName.slice(0,25) + fileExt;
+                    // console.log(shortFileName)
+
+//**if file not one */
+
+    if (files.length) {
+        for (let i = 0; i < files.length; i++) {
+        let file = files[i]
+        file.mv(STATIC_PATH + '\/' + file.name) 
+
+    if( req.body.toUserSocketId && req.body.toUserDbId){
+                const privateMessageSentUser = await User.find({_id: req.body.toUserDbId })
+                const privateMessage = new PrivateMessage({
+                        text: file.name,
+                        createDate: Date.now(),
+                        fromUser: oneUser.id,
+                        toUser: req.body.toUserDbId,
+                        file: file.name,
+                        fileType: file.mimetype
+                    });
+            try {
+                    await privateMessage.save()
+                } catch (error) {
+                    console.log(error)
+                }
+        
+                socket.to(req.body.toUserSocketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
+
+
+            } else {
+                const message = new Message({
+                    text:  file.name,
+                    userName: user.userName,
+                    createDate: Date.now(),
+                    user: oneUser.id, //add link to other collection by id
+                    file: file.name,
+                    fileType: file.mimetype
+                });
+        
+                try {
+                    await message.save();
+                    if(!oneUser.messages){
+                        await oneUser.update({ $set: {'messages': []}});
+                    }
+                    await oneUser.messages.push(message)
+                    await oneUser.save()
+                } 
+                catch (error) {
+                    console.log('Message save to db error', error);   
+                }
+                const newMessages = await message.populate( {path:'user'})   
+                io.emit('newmessage', newMessages);    
+            }  
+   }}     
+   //*if file just one ******
+    else {
+            if (files.name == 'blob') { //**if this is pictr add jpeg*/
+                files.name = Uuid.v4() + '.jpeg'
+            }
+            files.mv(STATIC_PATH + '\/' + files.name);      //for one file   
+/******** */
+            if(req.body.toUserSocketId && req.body.toUserDbId){
+                console.log('req body', req.body.toUserSocketId)
+                const privateMessageSentUser = await User.find({_id: req.body.toUserDbId })
+                const privateMessage = new PrivateMessage({
+                            text: files.name,
+                            createDate: Date.now(),
+                            fromUser: oneUser.id,
+                            toUser: req.body.toUserDbId,
+                            file: files.name,
+                            fileType: files.mimetype
+                        });
+                try {
+                        await privateMessage.save()
+                    } catch (error) {
+                        console.log(error)
+                    }
+                socket.to(req.body.toUserSocketId).emit('private', {...privateMessage._doc, sender: privateMessageSentUser });
+   
+                } else {
+            
+                        const message = new Message({
+                            text: files.name,
+                            userName: user.userName,
+                            createDate: Date.now(),
+                            user: oneUser.id, //add link to other collection by id
+                            file: files.name,
+                            fileType: files.mimetype
+                        });
+                
+                        try {
+                            await message.save();
+                            if(!oneUser.messages){
+                                await oneUser.update({ $set: {'messages': []}});
+                            }
+                            await oneUser.messages.push(message)
+                            await oneUser.save()
+                        } 
+                        catch (error) {
+                            console.log('Message save to db error', error);   
+                        }
+                    const newMessages = await message.populate( {path:'user'})  
+                    io.emit('newmessage', newMessages); 
+                    }
+            } 
+
+    return res.json({ message:'File was uploud succesfully...'})
+  })
+
+
+
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 
     }//sent all users from db to admin

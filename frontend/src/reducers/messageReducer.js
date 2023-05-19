@@ -20,16 +20,39 @@ const POST_FILES_URL = process.env.NODE_ENV == "development"? process.env.REACT_
 export const fileMessage = createAsyncThunk(
     'messageReducer/fileMessageStatus',
     async (payload) => {
-        const {files, axiosConfig} = payload;
+        const {files, userIdForFileMessage, toUserId,  axiosConfig} = payload;
         const token = localStorage.getItem('token')
         try {
             const formData = new FormData();
             if(files?.length) {
-                 for (let i = 0; i < files?.length; i++) {
-                formData.append('files', files[i])
+                for (let i = 0; i < files?.length; i++) {
+
+                    //try to fix long file names error on server
+
+                    // const longFileName = files[i].name.split('.').join('')
+                    // const fileExt = files[i].name.split('.')[files[i].name.split('.').length - 1];
+                    // const shortFileName = longFileName.slice(0,25) + fileExt;
+                    // console.log(shortFileName)
+                    // files[i].name = shortFileName
+
+                    //****** */
+                    formData.append('files', files[i])
+                    if(userIdForFileMessage && toUserId){
+                        formData.append('toUserSocketId', userIdForFileMessage)
+                        formData.append('toUserDbId', toUserId)
+                    }
                 }
             } else {
+                // const longFileName = files[0].name.split('.').join('')
+                // const fileExt = files[0].name.split('.')[files[0].name.split('.').length - 1];
+                // const shortFileName = longFileName.slice(0,25) + fileExt;
+                // console.log(shortFileName)
+
                 formData.append('files', files)
+                if(userIdForFileMessage && toUserId){
+                    formData.append('toUserSocketId', userIdForFileMessage)
+                    formData.append('toUserDbId', toUserId)
+                }
             }
             formData.append('token', token)
             const response = await axios.post(POST_FILES_URL, formData,axiosConfig);

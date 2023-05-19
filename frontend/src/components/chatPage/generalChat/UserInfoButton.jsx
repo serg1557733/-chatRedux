@@ -42,6 +42,8 @@ useEffect(() => {
 
     const [isPrivate, setIsPrivate] = useState(false)
 
+    console.log(newPrivateMessages)
+
     useEffect(() => {
         if(newPrivateMessages.text && newPrivateMessages?.sender[0].userName === item.userName){
          setIsPrivate(!!newPrivateMessages.text)
@@ -50,6 +52,7 @@ useEffect(() => {
 
     },[newPrivateMessages])
    
+
     return (
         <div 
         className={(item.socketId&&isPrivatChat&&(chatId === item.socketId))? 'online active' :'online' }                       
@@ -84,7 +87,7 @@ useEffect(() => {
                 </Avatar>   
 
             </StyledAvatar>
-                <span> {item.userName}  </span>
+                <span> {item?.userName}  </span>
                {(Object.keys(newPrivateMessages).length !== 0) && isNewPrivate&& newPrivateMessages?.sender[0].userName === item.userName  && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
             <AddToFriends user = {item}/>

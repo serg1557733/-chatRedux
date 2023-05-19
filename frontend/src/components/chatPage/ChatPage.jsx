@@ -127,6 +127,7 @@ export const ChatPage = () => {
     }, [token, socket, user])
 
 console.log(toUserSocket.socketId || chatId)
+const userIdForFileMessage = toUserSocket.socketId || chatId;
 
     return (
         
@@ -226,7 +227,7 @@ console.log(toUserSocket.socketId || chatId)
                         <input
                             onChange={e =>{
                                 setshowSpinner(true)
-                                isPrivatChat? dispatch(fileMessage({files: e.target.files, toUserSocket, axiosConfig })): dispatch(fileMessage({files: e.target.files, axiosConfig}))
+                                isPrivatChat? dispatch(fileMessage({files: e.target.files, userIdForFileMessage, toUserId: toUserSocket._id , axiosConfig })): dispatch(fileMessage({files: e.target.files, axiosConfig}))
                             }}
 
                             type="file"
