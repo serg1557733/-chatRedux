@@ -126,8 +126,9 @@ export const ChatPage = () => {
         }
     }, [token, socket, user])
 
-console.log(toUserSocket.socketId || chatId)
-const userIdForFileMessage = toUserSocket.socketId || chatId;
+console.log(toUserSocket.socketId || chatId )
+
+const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id;
 
     return (
         

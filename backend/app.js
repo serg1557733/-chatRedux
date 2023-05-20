@@ -342,8 +342,6 @@ app.post('/files', async (req, res) =>  {
     return res.json({ message:'File was uploud succesfully...'})
   })
 
-
-
     if(socket.user.isAdmin){
          getAllDbUsers(socket); 
     }//sent all users from db to admin
