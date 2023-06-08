@@ -1,4 +1,4 @@
-import { useEffect, useState} from 'react';
+import { useEffect, useRef, useState} from 'react';
 import {Button, Box} from '@mui/material';
 import TextareaAutosize from '@mui/material/TextareaAutosize';
 import { MessageForm } from './messageForm/MessegaForm';
@@ -41,6 +41,9 @@ export const ChatPage = () => {
     const [showSpinner, setshowSpinner] = useState(false);
     const [loadingPercentage, setLoadPercentage] = useState(0)
 
+
+
+
     const usersOnline = useSelector(state => state.getUserSocketReducer.usersOnline);
 
     const isTabletorMobile = (window.screen.width < 730);
@@ -74,6 +77,9 @@ export const ChatPage = () => {
             setisCamActiv(!isCamActiv) // test camera
     }
     const toUserSocket = usersOnline.find(user => user._id == toUser._id)|| toUser
+
+    //////
+
 
     const sendPrivateMessage = () => {
         
@@ -126,16 +132,30 @@ export const ChatPage = () => {
         }
     }, [token, socket, user])
 
-console.log(toUserSocket.socketId || chatId )
+
+
 
 const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id;
 
     return (
         
         <div className='rootContainer'>
+            
+                {/* <div>
+                    <button onClick = {() => connectWithUser()}> call </button>
+                    <video 
+                        src=""
+                        autoPlay
+                        playsInline
+                    //muted={chatId === 'LOCAL_VIDEO'} //muted my own audio need to fix
+                    >
+
+                    </video>
+                </div> */}
+
 
             <Box className = {isTabletorMobile?'mobileRootBox':'rootBox'}>
-           
+             
 
             <Box className={isTabletorMobile?'usersBoxMobile':'usersBox'}
                   sx = {showUserInfoBox ? {
@@ -207,6 +227,8 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                             margin: '20px 5px'}
                            
                         }>
+
+
                         <Button
                             disabled={showSpinner}
                             variant="contained" 

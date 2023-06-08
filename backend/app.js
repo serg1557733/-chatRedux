@@ -513,6 +513,31 @@ app.post('/files', async (req, res) =>  {
 
           });
 
+
+          //test audio stream
+
+          socket.on('call', data => {
+            const {answer, from, to} = data;
+            console.log('call', to, from)
+                socket.to(data.to).emit('call', {offer:data.offer, from: data.from});
+            
+          }); 
+           socket.on('call-answer', data => {
+            const {answer, from, to} = data;
+            console.log(`call-answer`, to, from)
+            socket.to(to).emit('call-answer', {answer, from, to});
+
+        })
+
+        socket.on('Ice-candidate', (candidate, from) => {
+            console.log('ice', from)
+            //socket.to(from).emit('Ice-candidate', {candidate, from})
+        })
+
+
+
+
+
 //add and remove friends functions
 
           socket.on('addToFriends', async (data) => {
