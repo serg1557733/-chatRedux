@@ -123,12 +123,13 @@ async function getMedia(constraints) {
            console.log(offer, from)
            
             
-            userMedia.getTracks().forEach(track => {
-                peerConnection2.addTrack(track, userMedia)
-            })
+            // userMedia.getTracks().forEach(track => {
+            //     peerConnection2.addTrack(track, userMedia)
+            // })
             
 
             await peerConnection2.setRemoteDescription(offer)
+
             const answer = await peerConnection2.createAnswer();
             peerConnection2.setLocalDescription(answer)
             socket.emit('call-answer', {answer, from: fromUserSocket.socketId, to: from})
@@ -325,7 +326,7 @@ async function getMedia(constraints) {
 
                             <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
-                                {dateFormat(item)}
+                                {dateFormat(item?.createDate)}
                             </div>
                             {isEditiedMessage && <i>Edited</i>}
                             {/* <div className={ 

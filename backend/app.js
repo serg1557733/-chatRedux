@@ -389,18 +389,14 @@ app.post('/files', async (req, res) =>  {
     
     try {
         socket.on("disconnect", async () => {
+            const dbUser = await getOneUser(socket.user.userName)
+            const wasInChat = Date.now();
+            await User.findOneAndUpdate({_id: dbUser._id},{ $set: {'wasInChat': wasInChat}},   {
+                     new: true
+                   });
+             console.log(`user :${socket.user.userName} , disconnected from socket, was in chat ${wasInChat}`); 
+                
 
-            const exist = sockets.find(current => current.user.userName == socket.user.userName)
-            const usersOnline = sockets.map(sock => sock.user)
-        
-            const filteredUsersOnline = usersOnline.filter(user => exist.user.id !== user.id)
-        
-           
-        //   io.emit('usersOnline', filteredUsersOnline);
-
-            // const sockets = await io.fetchSockets();
-            // io.emit('usersOnline', sockets.map(sock => sock.user));
-             console.log(`user :${socket.user.userName} , disconnected to socket`); 
 
         });
             console.log(`user :${socket.user.userName} , connected to socket`); 
@@ -531,7 +527,7 @@ app.post('/files', async (req, res) =>  {
 
         socket.on('Ice-candidate', (candidate, from) => {
             console.log('ice', from)
-            //socket.to(from).emit('Ice-candidate', {candidate, from})
+            socket.to(from).emit('Ice-candidate', {candidate, from})
         })
 
 

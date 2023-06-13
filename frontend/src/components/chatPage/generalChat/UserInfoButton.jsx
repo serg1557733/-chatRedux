@@ -5,7 +5,7 @@ import { StyledAvatar } from "../messageForm/StyledAvatar";
 import { Avatar } from "@mui/material";
 import { useState, useEffect } from "react";
 import {selectedUser} from "../../../reducers/dataReducers";
-
+import { dateFormat } from "../utils/dateFormat";
 import {isNewPrivateMessages} from "../../../reducers/dataReducers";
 
 import { AddToFriends } from "./AddToFriends";
@@ -88,6 +88,9 @@ useEffect(() => {
 
             </StyledAvatar>
                 <span> {item?.userName}  </span>
+
+             {(item?.wasInChat )&& <p style={{"fontSize":'10px'}}> was online {dateFormat(item?.wasInChat)}</p>}
+
                {(Object.keys(newPrivateMessages).length !== 0) && isNewPrivate&& newPrivateMessages?.sender[0].userName === item.userName  && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
             <AddToFriends user = {item}/>

@@ -53,7 +53,7 @@ export const UserInfo = () => {
     //     socket.on('my chats', (data)=> console.log('my chats', data))
     // }
         
-
+console.log(friends)
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>

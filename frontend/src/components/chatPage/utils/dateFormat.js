@@ -1,9 +1,10 @@
-export const dateFormat = (item) => {
+export const dateFormat = (date) => {
 
     const lang = navigator.language;
+    
     const rtf = new Intl.RelativeTimeFormat( lang, { numeric: 'auto' });
 
-    const dateSecDelta = Math.round((new Date(item.createDate).getTime() - Date.now())/1000) ;
+    const dateSecDelta = Math.round((new Date(date).getTime() - Date.now())/1000) ;
 
     const secondTimeMarkers = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity];
 

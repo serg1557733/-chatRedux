@@ -8,7 +8,8 @@ const User = new Schema({
     isMutted: {type: Boolean, default: false},
     avatar: {type: String, unique: true, required: false},
     messages: [{type: Schema.Types.ObjectId, ref: 'Message' }],
-    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    wasInChat:{type: Date, unique: false, required: false}
 })
 
 module.exports = model('User', User)

@@ -161,7 +161,7 @@ export const MessageForm = () => {
                         {isEditiedMessage && <i>Edited</i>}
                         <div className={ 
                                 (item.userName === user.userName)? 'myDate' :'date'}>
-                                {dateFormat(item)}
+                                {dateFormat(item?.createDate)}
                         </div>
                     </div>
                 )}
