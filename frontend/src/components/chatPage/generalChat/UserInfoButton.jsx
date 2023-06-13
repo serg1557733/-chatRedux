@@ -89,7 +89,7 @@ useEffect(() => {
             </StyledAvatar>
                 <span> {item?.userName}  </span>
 
-             {(item?.wasInChat )&& <p style={{"fontSize":'10px'}}> was online {dateFormat(item?.wasInChat)}</p>}
+             {!userNamesOnlineSet.has(item.userName)&&item?.wasInChat&& <p style={{"fontSize":'10px'}}> was online {dateFormat(item?.wasInChat)}</p>}
 
                {(Object.keys(newPrivateMessages).length !== 0) && isNewPrivate&& newPrivateMessages?.sender[0].userName === item.userName  && newPrivateMessagesArray.length > 0 && <span style={{color:'red',position: 'fixed' }} >  {counter}  </span>} 
             </div>
