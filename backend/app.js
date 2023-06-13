@@ -198,6 +198,9 @@ io.on("connection", async (socket) => {
 //      console.log(!!siPrivate)
 // }
 
+
+
+
     io.emit('usersOnline', usersInSocket); // send array online users  
 
     dbUser.populate({path:'friends'}).then(res => socket.emit('friends',res.friends)) 
@@ -389,14 +392,19 @@ app.post('/files', async (req, res) =>  {
     
     try {
         socket.on("disconnect", async () => {
+
             const dbUser = await getOneUser(socket.user.userName)
             const wasInChat = Date.now();
+
             await User.findOneAndUpdate({_id: dbUser._id},{ $set: {'wasInChat': wasInChat}},   {
                      new: true
                    });
-             console.log(`user :${socket.user.userName} , disconnected from socket, was in chat ${wasInChat}`); 
-                
 
+             console.log(`user :${socket.user.userName} , disconnected from socket, was in chat ${wasInChat}`); 
+
+            const usersOnline  = usersInSocket.filter(user => user.userName!== dbUser.userName)
+            
+            io.emit('usersOnline', usersOnline); // send array onlinusersOnlinee users  
 
         });
             console.log(`user :${socket.user.userName} , connected to socket`); 

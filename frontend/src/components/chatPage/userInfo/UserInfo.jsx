@@ -4,11 +4,12 @@ import { useSelector } from 'react-redux';
 import './userInfo.scss';
 import { useDispatch } from 'react-redux';
 import { getUserAvatar } from '../../../reducers/userDataReducer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { UserInfoButton } from '../generalChat/UserInfoButton';
 import { AdminUserInfiButton } from '../generalChat/AdminUserInfiButton';
 import { MainChatButtton } from '../generalChat/MainChatButtton';
 import { FindUserBox } from '../generalChat/FindUserBox';
+import { getUsersOnline } from '../../../reducers/socketReducer';
 import './userInfo.scss';
 
 
@@ -47,13 +48,7 @@ export const UserInfo = () => {
         dispatch(getUserAvatar(file))
         setDisplayType('none')
     }
-
-
-    // if(socket){
-    //     socket.on('my chats', (data)=> console.log('my chats', data))
-    // }
-        
-console.log(friends)
+     
     return (
             <>  
                 <h4 style={{color:'white'}}> Hello, {user.userName} </h4>

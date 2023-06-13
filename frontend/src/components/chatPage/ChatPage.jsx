@@ -130,9 +130,9 @@ export const ChatPage = () => {
         if(token && socket){
             socketEvents(socket)
         }
-    }, [token, socket, user])
+    }, [token, socket, user, usersOnline])
 
-
+console.log('usersOnline', usersOnline)
 
 
 const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id;
