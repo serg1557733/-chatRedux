@@ -221,14 +221,18 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                                     }}
                         sx={(isTabletorMobile)?{
                             display: 'flex',
-                            margin: '10px 2px'}
+                            minHeight: '10%',
+                            margin: '2px 2px'}
                         :{
                             display: 'flex',
-                            margin: '20px 5px'}
+                            minHeight: '10%',
+                            margin: '0px 0px'}
                            
                         }>
 
+                        <div>
 
+                        
                         <Button
                             disabled={showSpinner}
                             variant="contained" 
@@ -238,14 +242,21 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                                 minWidth: 'auto'}
                                 :
                                 {
-                                minWidth: 'auto',
+                                display:'flex',
+                                height: '50%',
                                 backgroundImage:'url(' + imgBtn + ')' ,
                                 backgroundPosition: 'center', 
                                 backgroundRepeat: "no-repeat", 
-                                backgroundSize: '20px 20px'
+                                backgroundSize: '30px 30px',
+                                backgroundColor: '#00AC83'
 
                             }}
-                            style = {{color: 'green'}}
+                            style = {(isTabletorMobile)?{
+                               
+                                
+                            }:{
+
+                            }}
                         >
                         <input
                             onChange={e =>{
@@ -263,8 +274,17 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                         <Button
                             variant="contained" 
                             component="label"
-                            sx = {{
-                                minWidth: 'auto',
+                            sx = {(isTabletorMobile)?{
+                                
+                                height: '50%',
+                                backgroundImage:'url(' + imgBtnPhoto + ')' ,
+                                backgroundPosition: 'center', 
+                                backgroundRepeat: "no-repeat", 
+                                backgroundSize: '20px 20px',
+                              
+
+                            }:{
+                                height: '50%',
                                 backgroundImage:'url(' + imgBtnPhoto + ')' ,
                                 backgroundPosition: 'center', 
                                 backgroundRepeat: "no-repeat", 
@@ -276,16 +296,17 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                         >
                             
                         </Button>          
-
+                        </div>
                         <TextareaAutosize
                             id="outlined-basic" 
                             label="Type a message..." 
                             variant="outlined" 
                             value={message.message}
                             placeholder='type you message...'
-                            minRows={2}
-                            maxRows={4}
+                            minRows={4}
+                            maxRows={6}
                             className='textArea'
+                            style = {{height: '90%'}}
                             onKeyPress={(e) => {
                                 if (e.key === "Enter")   {
                                     e.preventDefault();
@@ -316,9 +337,9 @@ const userIdForFileMessage = toUserSocket.socketId || chatId || toUserSocket._id
                             variant="contained" 
                             type='submit'
                             disabled={user?.isMutted || !message.message.length}
-                            style={{width: '20%'}}
+                            style={{borderRadius: '100%', margin: '2px 15px'}}
                         >
-                            Send
+                            send
                         </Button>
 
                     </Box>            

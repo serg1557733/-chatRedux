@@ -1,12 +1,15 @@
-// #root {
-//     max-height: 90vh;
+ #root {
 
+background-color:#292F3F;
+min-height: 100vh;
 
-// }
+ }
 .rootContainer {
-    min-height: 90vh;
+    min-height: 95vh;
     max-width: 95%;
     margin: 0 auto;
+    background-color:#292F3F;
+
 }
 
 .focus {
@@ -18,7 +21,7 @@
 
 .rootBox {
     display: flex;
-    height: 90vh;
+    height: 95vh;
     justify-content: center;
 }
 
@@ -27,7 +30,7 @@
     border-radius: 5px;
     flex-grow:2;
     border: 2px solid grey; 
-    max-width: 75%;
+    max-width: 80%;
     flex-direction: column;                 
 }
 .rootMessageFormMobile {
@@ -45,20 +48,22 @@
 
 .time {
     font-style:italic;
-    color: rgb(80, 80, 80);
+    color: rgb(211, 199, 199);
     font-size: 12px;
     margin-left: 30px;
 }
 
 .date {
     font-style:italic;
-    color: rgb(80, 80, 80);
+    color: #eae7e7;
     font-size: 8px;
 }
 .textArea {
     width: 80%;
     resize: none;
+    background-color: #272A35;
     border-radius: 4px;
+    color:aliceblue;
 }
 
 .message {
@@ -66,10 +71,12 @@
     margin: 5px 0;
     max-width: 80%;
     align-self: flex-start;
-    border-radius: 10px;
-    background-color: rgb(182, 230, 176);
+    border-radius: 20px;
+    color: #FFFFFF;
+    background-color: #272A35 ;
     p {
         word-wrap: break-word;
+        margin-top: 5px;
     }
     // span {
     //     background-color:azure;
@@ -85,14 +92,14 @@
     align-self: flex-end;
     position: relative;
     max-width: 80%;
-    background-color: rgb(240, 231, 136);
+    background-color: #373E4E ;
     cursor: pointer;
 }
 .myDate {
     align-self: flex-start;
     display: flex;
     font-style:italic;
-    color: rgb(80, 80, 80);
+    color: rgb(213, 205, 205);
     font-size: 12px;
 }
 .date {
@@ -100,7 +107,7 @@
     align-content:center;
     align-self: flex-end;
     font-style:italic;
-    color: rgb(80, 80, 80);
+    color: rgb(170, 161, 161);
     font-size: 12px;
 }
 
@@ -114,11 +121,11 @@
     position: relative;
     padding: 20px;
     border-radius: 10px;
-    background-color:rgb(229, 232, 233);
+    background-color:#292F3F    ;
     display: flex;
     flex-grow :2;
     flex-direction: column;
-    overflow: scroll;
+    overflow: auto;
      
     
 }
@@ -127,7 +134,7 @@
     text-align: center;
     margin-left: 10px;
     width: 20%;
-    overflow: scroll;
+    overflow: auto;
     border-radius: 10px;
     border: 2px solid grey; 
     background-color:rgb(30, 45, 52);
