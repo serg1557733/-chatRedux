@@ -645,10 +645,6 @@ const start = async () => {
             .then(() => console.log(`DB started`))
         
 
-        // await mongoose
-        //     .connect('mongodb+srv://serg1557733:1557733@cluster0.p9ltitx.mongodb.net/?retryWrites=true&w=majority')
-        //     .then(() => console.log(`DB started`))
-
         server.listen(PORT, () => {
             console.log(`Server started. Port: ${PORT}`);
         })
